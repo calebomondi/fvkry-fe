@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex justify-center items-center flex-col h-screen
     dark:from-green-900 dark:to-blue-900
-        bg-gradient-to-br from-green-400 via-yellow-600 to-yellow-600">
+        bg-gradient-to-br from-green-500 to-yellow-600">
         <img 
             src={logo}
             alt="" 
