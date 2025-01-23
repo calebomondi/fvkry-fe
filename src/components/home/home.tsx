@@ -5,7 +5,7 @@ export default function Home() {
     const descr = 'We enable virtual asset owners to cultivate financial discipline by locking assets for a specified duration to prevent premature withdrawals while maintaining flexibility for emergency access and periodic lock adjustments.'
 
   return (
-    <div className="flex justify-center items-center flex-col md:h-screen
+    <div className="flex justify-center items-center flex-col md:h-screen overflow-y-auto
     dark:from-green-900 dark:to-blue-900
         bg-gradient-to-br from-green-500 to-yellow-600">
         <div className="flex flex-col md:flex-row-reverse justify-evenly items-center">
@@ -22,6 +22,7 @@ export default function Home() {
             <p>{descr}</p>
           </div>
         </div>
+        <hr className="w-1/3"/>
         <Contact />
     </div>
   )

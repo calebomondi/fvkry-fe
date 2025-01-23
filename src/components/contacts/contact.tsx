@@ -2,7 +2,7 @@ import { Github, Linkedin, Twitter, Mail } from "lucide-react"
 
 export default function Contact() {
   return (
-    <div id="contact" className="h-auto flex items-center justify-center text-white">
+    <div className="flex items-center justify-center text-white  m-4">
         <div className="max-w-4xl mx-auto px-4 py-2 text-center">
           <h2 className="text-3xl font-bold mb-2">Coming Soon</h2>
           <p className="text-lg text-white/90 mb-2">
