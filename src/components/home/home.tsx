@@ -18,7 +18,7 @@ export default function Home() {
           </div>
           <div className="md:w-1/2 text-center p-3 my-5 text-lg text-white space-y-4">
             <p className="text-5xl font-semibold">Avoid  Impulsive Spending or Trading</p>
-            <p className="text-4xl">Lock Your Savings, Invest In Your Future!</p>
+            <p className="text-4xl">Lock Your Cryptos, Invest In Your Future!</p>
             <p>{descr}</p>
           </div>
         </div>
