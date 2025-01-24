@@ -2,7 +2,7 @@ import Contact from "../contacts/contact"
 import logo from '/1.png'
 
 export default function Home() {
-    const descr = 'We enable virtual asset owners to cultivate financial discipline by locking assets for a specified duration to prevent premature withdrawals while maintaining flexibility for emergency access and periodic lock adjustments.'
+    const descr = 'We enable virtual asset owners to cultivate financial discipline by locking assets for a specified duration to prevent premature withdrawals while maintaining flexibility for periodic lock adjustments.'
 
   return (
     <div className="flex justify-center items-center flex-col md:h-screen overflow-y-auto
@@ -17,7 +17,7 @@ export default function Home() {
             />
           </div>
           <div className="md:w-1/2 text-center p-3 my-5 text-lg text-white space-y-4">
-            <p className="text-5xl font-semibold">Avoid  Impulsive Spending and Trading</p>
+            <p className="text-5xl font-semibold">Avoid Impulsive Spending and Trading</p>
             <p className="text-4xl">Lock Your Cryptos, Invest In Your Future!</p>
             <p>{descr}</p>
           </div>
