@@ -9,7 +9,7 @@ export default function Contact() {
           <h2 className="text-3xl font-bold mb-2">
             <span>Launching Soon ... </span>
           </h2>
-          <div className="flex items-center space-x-2 justify-center m-1">
+          <div className="flex items-center space-x-2 justify-center md:mb-4 mb-7">
             <progress className="progress progress-accent w-56" value={percent} max="100"></progress>
             <span className="text-sm font-mono">{percent}% complete</span>
           </div>
