@@ -22,7 +22,7 @@ export default function Home() {
             <p>{descr}</p>
           </div>
         </div>
-        <hr className="w-1/3"/>
+        <hr className="w-1/3 my-5 md:my-1"/>
         <Contact />
     </div>
   )
