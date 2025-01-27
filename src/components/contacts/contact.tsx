@@ -1,10 +1,18 @@
 import { Github, Linkedin, Twitter, Mail } from "lucide-react"
 
 export default function Contact() {
+
+  const percent = 16
   return (
     <div className="flex items-center justify-center text-white  m-4">
         <div className="max-w-4xl mx-auto px-4 py-2 text-center">
-          <h2 className="text-3xl font-bold mb-2">Coming Soon</h2>
+          <h2 className="text-3xl font-bold mb-2">
+            <span>Launching Soon ... </span>
+          </h2>
+          <div className="flex items-center space-x-2 justify-center m-1">
+            <progress className="progress progress-accent w-56" value={percent} max="100"></progress>
+            <span className="text-sm font-mono">{percent}% complete</span>
+          </div>
           <p className="text-lg text-white/90 mb-2">
             Have any inquiry, comment or suggestion, let's talk
           </p>
