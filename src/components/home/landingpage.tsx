@@ -1,41 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Lock, Wallet, Shield, Clock, ChevronDown, Github, Twitter, 
-   ExternalLink, ArrowRight, Coins, Users,
-  Award, CheckCircle, AlertCircle
+   ArrowRight, Coins, Users, Menu, X, Info,
+  Award, CheckCircle
 } from 'lucide-react';
 
-// Custom hook for scroll animations
-const useScrollAnimation = () => {
-  const [visible, setVisible] = useState(false);
-  
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-        }
-      });
-    });
-    
-    const elements = document.querySelectorAll('.animate-on-scroll');
-    elements.forEach((el) => observer.observe(el));
-    
-    return () => elements.forEach((el) => observer.unobserve(el));
-  }, []);
-  
-  return visible;
-};
+import logo from '/1.png'
+import logo2 from '/2.png'
 
-const Statistic = ({ value, label }: { value: string; label: string }) => (
-  <div className="text-center p-6 bg-navy/5 rounded-lg hover:bg-navy/10 transition-all">
-    <div className="text-3xl font-bold text-navy mb-2">{value}</div>
-    <div className="text-gray-600">{label}</div>
-  </div>
-);
+import StatisticsSection from './stats';
+import TokensSection from './tokens';
 
 const TokenCard = ({ name, apy }: { name: string; apy: string }) => (
-  <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all">
+  <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-all">
     <div className="flex items-center justify-between mb-4">
       <img src="/api/placeholder/40/40" alt={name} className="w-10 h-10 rounded-full" />
       <span className="text-navy font-semibold">{name}</span>
@@ -69,6 +46,34 @@ const FAQ = ({ question, answer }: { question: string; answer: string }) => {
 const LandingPage = () => {
   const [activeTab, setActiveTab] = useState('all');
   const [showNotification, setShowNotification] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('hero');
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsVisible(lastScrollY > currentScrollY || currentScrollY < 50);
+      lastScrollY = currentScrollY;
+
+      // Update active section
+      const sections = ['hero', 'about', 'experience', 'projects', 'tech-stack', 'contact'];
+      const currentSection = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (currentSection) setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
   
   const features = [
     {
@@ -91,13 +96,6 @@ const LandingPage = () => {
       title: "Multi-Token Support",
       description: "Support for ETH and major ERC20 tokens with more assets coming soon"
     }
-  ];
-
-  const stats = [
-    { value: "$12.5M", label: "Total Value Locked" },
-    { value: "15,000+", label: "Active Users" },
-    { value: "99.99%", label: "Uptime" },
-    { value: "45,000+", label: "Successful Locks" }
   ];
 
   const tokens = [
@@ -139,29 +137,63 @@ const LandingPage = () => {
       )}
 
       {/* Navigation */}
-      <nav className="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${isVisible ? 'top-0' : '-top-20'}
+        ${activeSection === 'hero' ? ' bg-black/20 text-white' : 'dark:bg-black/90 bg-white/90  backdrop-blur-md dark:text-gray-300 text-gray-800 shadow-lg'}`}>
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between h-20">
             <div className="flex items-center">
-              <img src="/api/placeholder/40/40" alt="FVKRY PRVNTA" className="h-10" />
-              <span className="ml-2 text-xl font-bold text-navy">FVKRY PRVNTA</span>
+              <img
+                src={logo2}
+                alt=""
+                className='w-14'
+              />
             </div>
-            <div className="hidden md:flex space-x-6">
-              <a href="#features" className="text-gray-600 hover:text-navy">Features</a>
-              <a href="#tokens" className="text-gray-600 hover:text-navy">Tokens</a>
-              <a href="#stats" className="text-gray-600 hover:text-navy">Stats</a>
-              <a href="#faq" className="text-gray-600 hover:text-navy">FAQ</a>
+
+            <div className="hidden md:flex items-center space-x-8">
+              {['About', 'Experience', 'Projects', 'Tech Stack', 'Contact'].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase().replace(' ', '-')}`}
+                  className={`transition-all duration-300  relative after:content-[''] after:absolute after:w-0 after:h-0.5
+                    after:bg-teal-600 after:left-0 after:bottom-0 after:transition-all hover:after:w-full
+                    ${activeSection === item.toLowerCase().replace(' ', '-') ? 'after:w-full' : ''}`}
+                >
+                  {item}
+                </a>
+              ))}
+              <button className='btn'>Start Locking</button>
             </div>
-            <button className="bg-navy text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-all">
-              Launch App
-            </button>
+
+            <div className="md:hidden flex items-center">
+              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="focus:outline-none">
+                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
+
+        {isMenuOpen && (
+          <div className="md:hidden absolute w-full bg-white dark:bg-black dark:text-gray-300 text-gray-800 backdrop-blur-md rounded-xl my-1">
+            <div className="px-2 pt-2 pb-3 space-y-1">
+              {['About', 'Experience', 'Projects', 'Tech Stack', 'Contact'].map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase().replace(' ', '-')}`}
+                  className="block px-3 py-2 hover:text-blue-500"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item}
+                </a>
+              ))}
+              <button className='btn'>Start Locking</button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-28 bg-gradient-to-br from-navy via-navy/95 to-navy/90 text-white min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 py-20">
+      <section className="pt-28 text-white h-screen flex items-center justify-center">
+        <div className="mx-auto px-4 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="animate-on-scroll">
               <h1 className="text-5xl font-bold mb-6">Secure Your Crypto Future</h1>
@@ -169,7 +201,7 @@ const LandingPage = () => {
               <div className="flex space-x-4">
                 <button className="bg-golden text-navy px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all flex items-center">
                   Start Saving Now
-                  <ArrowRight className="ml-2 w-5 h-5" />
+                  <ArrowRight className="ml-2 w-5 h-5 animate-pulse" />
                 </button>
                 <button className="border border-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white/10 transition-all">
                   Learn More
@@ -177,22 +209,14 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="animate-on-scroll">
-              <img src="/api/placeholder/600/400" alt="Platform Preview" className="rounded-lg shadow-2xl" />
+              <img src={logo} alt="Platform Preview" className="" />
             </div>
           </div>
         </div>
       </section>
 
       {/* Statistics Section */}
-      <section id="stats" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <Statistic key={index} {...stat} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <StatisticsSection />
 
       {/* Features Section */}
       <section id="features" className="py-20">
@@ -211,38 +235,7 @@ const LandingPage = () => {
       </section>
 
       {/* Tokens Section */}
-      <section id="tokens" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-navy">Supported Tokens</h2>
-          <div className="flex justify-center mb-8">
-            <div className="bg-white rounded-lg shadow-sm p-1 inline-flex">
-              <button
-                className={`px-4 py-2 rounded ${activeTab === 'all' ? 'bg-navy text-white' : 'text-gray-600'}`}
-                onClick={() => setActiveTab('all')}
-              >
-                All Tokens
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${activeTab === 'stablecoins' ? 'bg-navy text-white' : 'text-gray-600'}`}
-                onClick={() => setActiveTab('stablecoins')}
-              >
-                Stablecoins
-              </button>
-              <button
-                className={`px-4 py-2 rounded ${activeTab === 'defi' ? 'bg-navy text-white' : 'text-gray-600'}`}
-                onClick={() => setActiveTab('defi')}
-              >
-                DeFi Tokens
-              </button>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {tokens.map((token, index) => (
-              <TokenCard key={index} {...token} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <TokensSection />
 
       {/* FAQ Section */}
       <section id="faq" className="py-20">
@@ -270,7 +263,7 @@ const LandingPage = () => {
       {/* Footer */}
       <footer className="bg-navy/95 text-white">
         <div className="max-w-7xl mx-auto px-4 py-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="flex items-center justify-between">
                 <div>
                 <h3 className="text-xl font-bold mb-4">FVKRY PRVNTA</h3>
                 <p className="text-gray-300">Secure crypto savings platform</p>
@@ -306,6 +299,7 @@ const LandingPage = () => {
                     <li className="hover:text-golden transition-colors cursor-pointer">Terms of Service</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Privacy Policy</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Risk Disclosure</li>
+                    <li className="hover:text-golden transition-colors cursor-pointer">Data Protection</li>
                 </ul>
                 </div>
             <div>
