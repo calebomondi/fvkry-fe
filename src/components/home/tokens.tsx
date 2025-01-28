@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Info, ExternalLink, TrendingUp, Lock, AlertCircle } from 'lucide-react';
+import { Search, Info, ExternalLink, TrendingUp, AlertCircle } from 'lucide-react';
 import { tokens, categories } from './data';
 
 const TokensSection = () => {
@@ -30,7 +30,7 @@ const TokensSection = () => {
             <input
               type="text"
               placeholder="Search tokens..."
-              className="w-full pl-10 pr-4 py-2 border border-amber-200 rounded-lg focus:ring-amber-500 outline-amber-600"
+              className="w-full pl-10 pr-4 py-2 border border-amber-500 rounded-lg focus:ring-amber-500 outline-amber-600"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -42,7 +42,7 @@ const TokensSection = () => {
                 key={category.id}
                 className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
                   activeTab === category.id
-                    ? 'bg-amber-700 text-white shadow-md'
+                    ? 'bg-amber-600 text-white shadow-md'
                     : 'bg-white text-gray-600 hover:bg-gray-100'
                 }`}
                 onClick={() => setActiveTab(category.id)}

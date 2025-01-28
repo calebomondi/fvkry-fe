@@ -18,7 +18,7 @@ export const tokens = [
     name: 'zeta',
     symbol: 'BTC',
     icon: '₿',
-    category: ['all', 'new'],
+    category: ['all', 'meme'],
     lockCount: '12.5K',
     totalLocked: '$245M',
     minLockPeriod: '1 hour',
@@ -56,15 +56,13 @@ export const tokens = [
     marketCap: '$800B',
     supported: true
     },
-// Add more tokens as needed
 ];
 
 export const categories = [
-{ id: 'all', name: 'All Tokens', count: tokens.length },
-{ id: 'stablecoins', name: 'Stablecoins', count: tokens.filter(t => t.category.includes('stablecoins')).length },
-{ id: 'defi', name: 'DeFi Tokens', count: tokens.filter(t => t.category.includes('defi')).length },
-{ id: 'popular', name: 'Popular', count: tokens.filter(t => t.category.includes('popular')).length },
-{ id: 'new', name: 'Recently Added', count: tokens.filter(t => t.category.includes('new')).length }
+    { id: 'all', name: 'All', count: tokens.length },
+    { id: 'stablecoins', name: 'Stablecoins', count: tokens.filter(t => t.category.includes('stablecoins')).length },
+    { id: 'defi', name: 'DeFi Tokens', count: tokens.filter(t => t.category.includes('defi')).length },
+    { id: 'meme', name: 'Meme Tokens', count: tokens.filter(t => t.category.includes('popular')).length }
 ];
 
   export const faqs = [

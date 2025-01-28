@@ -1,4 +1,4 @@
-import { Lock, Shield, Coins, Users } from 'lucide-react';
+import { Lock, Activity, Coins, Users } from 'lucide-react';
 
 // First, enhance the Statistic component
 const Statistic = ({ value, label, description, icon, trend }:{ value:string, label:string, description:string, icon:any, trend: { type: string, value: number } }) => (
@@ -40,7 +40,7 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
         value: "99.99%",
         label: "Uptime",
         description: "Reliable platform performance and availability",
-        icon: <Shield className="w-6 h-6 text-amber-500" />,
+        icon: <Activity className="w-6 h-6 text-amber-500" />,
         trend: { type: 'up', value: 0.01 }
       },
       {

@@ -45,7 +45,7 @@ const Home = () => {
       lastScrollY = currentScrollY;
 
       // Update active section
-      const sections = ['hero', 'about', 'experience', 'projects', 'tech-stack', 'contact'];
+      const sections = ['hero', 'about', 'experience', 'projects'];
       const currentSection = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -110,12 +110,12 @@ const Home = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              {['About', 'Experience', 'Projects', 'Tech Stack', 'Contact'].map((item) => (
+              {['Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase().replace(' ', '-')}`}
                   className={`transition-all duration-300  relative after:content-[''] after:absolute after:w-0 after:h-0.5
-                    after:bg-teal-600 after:left-0 after:bottom-0 after:transition-all hover:after:w-full
+                    after:bg-amber-600 after:left-0 after:bottom-0 after:transition-all hover:after:w-full
                     ${activeSection === item.toLowerCase().replace(' ', '-') ? 'after:w-full' : ''}`}
                 >
                   {item}
@@ -135,7 +135,7 @@ const Home = () => {
         {isMenuOpen && (
           <div className="md:hidden absolute w-full bg-white dark:bg-black dark:text-gray-300 text-gray-800 backdrop-blur-md rounded-xl my-1">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {['About', 'Experience', 'Projects', 'Tech Stack', 'Contact'].map((item) => (
+              {['Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
                   href={`#${item.toLowerCase().replace(' ', '-')}`}
