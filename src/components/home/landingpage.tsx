@@ -308,11 +308,46 @@ const LandingPage = () => {
                     <li className="hover:text-golden transition-colors cursor-pointer">Risk Disclosure</li>
                 </ul>
                 </div>
+            <div>
+              <h4 className="font-semibold mb-4">Connect With Us</h4>
+              <div className="flex space-x-4">
+                <a href="#" className="hover:text-golden transition-colors">
+                  <Github className="w-6 h-6" />
+                </a>
+                <a href="#" className="hover:text-golden transition-colors">
+                  <Twitter className="w-6 h-6" />
+                </a>
+              </div>
+              <div className="mt-4">
+                <h5 className="text-sm font-semibold mb-2">Our Communities</h5>
+                <ul className="space-y-2 text-gray-300">
+                  <li className="hover:text-golden transition-colors cursor-pointer">Telegram Group</li>
+                  <li className="hover:text-golden transition-colors cursor-pointer">Discord Server</li>
+                  <li className="hover:text-golden transition-colors cursor-pointer">Reddit</li>
+                </ul>
+              </div>
             </div>
+          </div>
+          <div className="border-t border-gray-700 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <p className="text-gray-300 text-sm">
+                &copy; {new Date().getFullYear()} FVKRY PRVNTA. All rights reserved.
+              </p>
+              <div className="flex items-center mt-4 md:mt-0">
+                <span className="flex items-center text-gray-300 text-sm">
+                  <Shield className="w-4 h-4 mr-2" />
+                  Smart Contracts Audited by
+                  <a href="#" className="text-golden hover:text-golden/80 ml-1">
+                    CertiK
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-    </footer>
+      </footer>
     </div>
-);
-}
+  );
+};
 
 export default LandingPage;
