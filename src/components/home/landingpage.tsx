@@ -98,13 +98,6 @@ const LandingPage = () => {
     }
   ];
 
-  const tokens = [
-    { name: "ETH", apy: "4.5%" },
-    { name: "USDT", apy: "8.2%" },
-    { name: "USDC", apy: "7.8%" },
-    { name: "DAI", apy: "6.5%" }
-  ];
-
   const faqs = [
     {
       question: "How does FVKRY PRVNTA work?",

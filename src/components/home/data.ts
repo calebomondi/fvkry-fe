@@ -15,7 +15,7 @@ export const tokens = [
     supported: true
 },
 {
-    name: 'Bitcoin',
+    name: 'zeta',
     symbol: 'BTC',
     icon: '₿',
     category: ['all', 'new'],
