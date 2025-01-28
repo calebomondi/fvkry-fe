@@ -57,7 +57,7 @@ const TokensSection = () => {
         </div>
 
         {/* Tokens Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-h-[600px] overflow-y-auto">
           {filteredTokens.map((token, index) => (
             <>
                 {

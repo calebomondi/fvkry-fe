@@ -98,7 +98,7 @@ const Home = () => {
 
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isVisible ? 'top-0' : '-top-20'}
-        ${activeSection === 'hero' ? ' bg-black/20' : 'dark:bg-black/90 bg-white/90  backdrop-blur-md  shadow-lg'}`}>
+        ${activeSection === 'hero' ? ' dark:bg-black/20 bg-white/60' : 'dark:bg-black/90 bg-white/90  backdrop-blur-md  shadow-lg'}`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between md:h-20 h-16">
             <div className="flex items-center">
@@ -110,6 +110,7 @@ const Home = () => {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
+              <a href="#">About</a>
               {['Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
@@ -121,7 +122,7 @@ const Home = () => {
                   {item}
                 </a>
               ))}
-              <button className='btn bg-amber-600 text-white border-none'>Start Locking</button>
+              <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
             </div>
 
             <div className="md:hidden flex items-center">
@@ -133,8 +134,9 @@ const Home = () => {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden absolute w-full bg-white dark:bg-black dark:text-gray-300 text-gray-800 backdrop-blur-md rounded-xl my-1">
+          <div className="md:hidden absolute w-full bg-white dark:bg-black dark: text-gray-800 backdrop-blur-md rounded-xl my-1">
             <div className="px-2 pt-2 pb-3 space-y-1">
+              <a href="#">About</a>
               {['Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
@@ -145,7 +147,7 @@ const Home = () => {
                   {item}
                 </a>
               ))}
-              <button className='btn bg-amber-600 text-white border-none'>Start Locking</button>
+              <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
             </div>
           </div>
         )}
@@ -159,11 +161,11 @@ const Home = () => {
               <h1 className="text-5xl font-bold mb-6 text-center">Avoid Impulsive Spending And Trading</h1>
               <p className="text-2xl mb-8 text-center">Lock your assets. Build discipline. Achieve your goals.</p>
               <div className="flex space-x-4 justify-center items-center">
-                <button className="md:px-8 px-5 py-3 bg-amber-300 rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all flex items-center">
+                <button className="md:px-8 px-5 py-3 bg-amber-400 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-all flex items-center">
                   Start Locking
                   <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
                 </button>
-                <button className="md:px-8 px-5 py-3 bg-amber-300 rounded-lg text-lg font-semibold hover:bg-opacity-90 transition-all flex items-center">
+                <button className="md:px-8 px-5 py-3 bg-amber-400 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-all flex items-center">
                   Learn More
                   <BookOpen  className="ml-2 w-5 h-5 animate-pulse" />
                 </button>
@@ -215,7 +217,7 @@ const Home = () => {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
           <p className="text-xl mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
-          <button className='btn bg-amber-600 text-white border-none'>Start Locking</button>
+          <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
         </div>
       </section>
 
@@ -225,7 +227,7 @@ const Home = () => {
             <div className="flex md:items-center justify-between md:flex-row flex-col">
                 <div>
                 <h3 className="text-xl font-bold mb-4">FVKRY PRVNTA</h3>
-                <p className="text-gray-300">Secure crypto savings platform</p>
+                <p className="">Secure crypto savings platform</p>
                 <div className="mt-4">
                     <input
                     type="email"
@@ -237,16 +239,16 @@ const Home = () => {
                         setShowNotification(true);
                         setTimeout(() => setShowNotification(false), 3000);
                     }}
-                    className="mt-2 bg-golden text-navy px-4 py-2 rounded w-full hover:bg-opacity-90 transition-all"
+                    className="mt-2 px-4 py-2 rounded w-full hover:bg-opacity-90 transition-all border border-white shadow-sm"
                     >
                     Subscribe to Updates
                     </button>
                 </div>
                 </div>
-                <div className='mt-4'>
+                <div className='mt-4 '>
                 <h4 className="font-semibold mb-4">Quick Links</h4>
-                <ul className="space-y-2 text-gray-300">
-                    <li className="hover:text-amber-500 transition-colors cursor-pointer">About</li>
+                <ul className="space-y-2">
+                    <li className="hover:scale-105 transition-colors cursor-pointer">About</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Features</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Documentation</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Support</li>
@@ -254,7 +256,7 @@ const Home = () => {
                 </div>
                 <div className='mt-4'>
                 <h4 className="font-semibold mb-4">Legal</h4>
-                <ul className="space-y-2 text-gray-300">
+                <ul className="space-y-2 ">
                     <li className="hover:text-golden transition-colors cursor-pointer">Terms of Service</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Privacy Policy</li>
                     <li className="hover:text-golden transition-colors cursor-pointer">Risk Disclosure</li>
@@ -273,7 +275,7 @@ const Home = () => {
               </div>
               <div className="mt-4">
                 <h5 className="text-sm font-semibold mb-2">Our Communities</h5>
-                <ul className="space-y-2 text-gray-300">
+                <ul className="space-y-2 ">
                   <li className="hover:text-golden transition-colors cursor-pointer">Telegram Group</li>
                   <li className="hover:text-golden transition-colors cursor-pointer">Discord Server</li>
                   <li className="hover:text-golden transition-colors cursor-pointer">Reddit</li>
@@ -283,11 +285,11 @@ const Home = () => {
           </div>
           <div className="border-t dark:border-w-700 mt-8 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-300 text-sm">
+              <p className=" text-sm">
                 &copy; {new Date().getFullYear()} FVKRY PRVNTA. All rights reserved.
               </p>
               <div className="flex items-center mt-4 md:mt-0">
-                <span className="flex items-center text-gray-300 text-sm">
+                <span className="flex items-center  text-sm">
                   <Shield className="w-4 h-4 mr-2" />
                   Smart Contracts Audited by
                   <a href="#" className="text-golden hover:text-golden/80 ml-1">
