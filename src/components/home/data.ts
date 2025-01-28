@@ -66,3 +66,22 @@ export const categories = [
 { id: 'popular', name: 'Popular', count: tokens.filter(t => t.category.includes('popular')).length },
 { id: 'new', name: 'Recently Added', count: tokens.filter(t => t.category.includes('new')).length }
 ];
+
+  export const faqs = [
+    {
+      question: "How does FVKRY PRVNTA work?",
+      answer: "Our platform allows you to lock your crypto assets for a specified period, helping you achieve your savings goals while earning rewards."
+    },
+    {
+      question: "Is it safe to lock my assets?",
+      answer: "Yes, our smart contracts are audited by leading security firms and we implement industry best practices for asset security."
+    },
+    {
+      question: "What are the fees?",
+      answer: "We charge a minimal 0.3% fee only upon withdrawal to maintain platform sustainability and development."
+    },
+    {
+      question: "Can I withdraw early?",
+      answer: "Early withdrawals are possible in emergency situations, subject to a higher fee to discourage premature withdrawals."
+    }
+  ];

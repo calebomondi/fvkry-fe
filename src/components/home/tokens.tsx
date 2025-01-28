@@ -15,7 +15,7 @@ const TokensSection = () => {
     <section id="tokens" className="py-24">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-300 mb-4">
+          <h2 className="text-3xl font-bold text-navy mb-4">
             Supported Tokens
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -30,7 +30,7 @@ const TokensSection = () => {
             <input
               type="text"
               placeholder="Search tokens..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-amber-200 rounded-lg focus:ring-amber-500 outline-amber-600"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -62,7 +62,7 @@ const TokensSection = () => {
             <>
                 {
                     token.category.includes(activeTab) && (
-                        <div key={index} className="rounded-xl p-6 border hover:shadow-lg transition-all">
+                        <div key={index} className="rounded-xl p-6 border border-amber-700 hover:shadow-lg transition-all">
                             <div>
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="flex items-center gap-3">
@@ -99,16 +99,6 @@ const TokensSection = () => {
                                             <AlertCircle className="w-4 h-4 text-gray-400" />
                                         </span>
                                     </div>
-                                </div>
-
-                                <div className="mt-6">
-                                    <button 
-                                    className="w-full py-2 px-4 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"
-                                    disabled={!token.supported}
-                                    >
-                                        <Lock className="w-4 h-4" />
-                                        Lock {token.symbol}
-                                    </button>
                                 </div>
 
                                 {token.category.includes('popular') && (

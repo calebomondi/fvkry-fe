@@ -26,28 +26,28 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
         value: "$12.5M",
         label: "Total Value Locked",
         description: "Total assets secured in our smart contracts",
-        icon: <Coins className="w-6 h-6 text-navy" />,
+        icon: <Coins className="w-6 h-6 text-amber-500" />,
         trend: { type: 'up', value: 23 }
       },
       {
         value: "15,000+",
         label: "Active Users",
         description: "Trusted by thousands of crypto savers worldwide",
-        icon: <Users className="w-6 h-6 text-navy" />,
+        icon: <Users className="w-6 h-6 text-amber-500" />,
         trend: { type: 'up', value: 12 }
       },
       {
         value: "99.99%",
         label: "Uptime",
         description: "Reliable platform performance and availability",
-        icon: <Shield className="w-6 h-6 text-navy" />,
+        icon: <Shield className="w-6 h-6 text-amber-500" />,
         trend: { type: 'up', value: 0.01 }
       },
       {
         value: "45,000+",
         label: "Successful Locks",
         description: "Successfully completed savings goals",
-        icon: <Lock className="w-6 h-6 text-navy" />,
+        icon: <Lock className="w-6 h-6 text-amber-500" />,
         trend: { type: 'up', value: 15 }
       }
     ];
@@ -74,9 +74,9 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
   
           {/* Additional Info Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-            <div className="bg-navy text-white p-6 rounded-lg">
+            <div className="bg-navy p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Security First</h3>
-              <p className="text-gray-200">
+              <p className="">
                 Multiple security audits and continuous monitoring ensure your assets remain safe.
               </p>
             </div>
@@ -86,9 +86,9 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
                 Join our rapidly expanding community of smart crypto savers.
               </p>
             </div>
-            <div className="bg-navy text-white p-6 rounded-lg">
+            <div className="bg-navy p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Transparent Operations</h3>
-              <p className="text-gray-200">
+              <p className="">
                 Real-time statistics and open-source code for complete transparency.
               </p>
             </div>
@@ -96,7 +96,7 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
   
           {/* Call to Action */}
           <div className="text-center mt-10">
-            <button className="bg-navy text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition-all">
+            <button className="bg-navy px-8 py-3 rounded-lg hover:text-amber-600 transition-all">
               View Detailed Analytics
             </button>
             <p className="text-sm text-gray-500 mt-4">
