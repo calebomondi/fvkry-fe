@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { faqs } from './data';
 
-import logo from '/1.png'
+import vault from '/vault.png'
 import logo2 from '/2.png'
 
 import StatisticsSection from './stats';
@@ -172,7 +172,7 @@ const Home = () => {
               </div>
             </div>
             <div className="order-1 lg:order-2 grid place-items-center">
-              <img src={logo} alt="Platform Preview" className="" />
+              <img src={vault} alt="Platform Preview" className="" />
             </div>
           </div>
         </div>
