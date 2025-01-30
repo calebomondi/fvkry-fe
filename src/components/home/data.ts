@@ -190,21 +190,33 @@ export const categories = [
     { id: 'meme', name: 'Meme Tokens', count: tokens.filter(t => t.category.includes('popular')).length }
 ];
 
-  export const faqs = [
-    {
-      question: "How does FVKRY PRVNTA work?",
-      answer: "Our platform allows you to lock your crypto assets for a specified period, helping you achieve your savings goals while earning rewards."
-    },
-    {
-      question: "Is it safe to lock my assets?",
-      answer: "Yes, our smart contracts are audited by leading security firms and we implement industry best practices for asset security."
-    },
-    {
-      question: "What are the fees?",
-      answer: "We charge a minimal 0.3% fee only upon withdrawal to maintain platform sustainability and development."
-    },
-    {
-      question: "Can I withdraw early?",
-      answer: "Early withdrawals are possible in emergency situations, subject to a higher fee to discourage premature withdrawals."
-    }
-  ];
+export const faqs = [
+  {
+    question: "How does FVKRY PRVNTA work?",
+    answer: "Our platform allows you to lock your crypto assets for a specified period, helping you achieve your savings goals while ensuring financial discipline. You can select your preferred lock duration and monitor your locked assets in real time."
+  },
+  {
+    question: "Is it safe to lock my assets?",
+    answer: "Yes, security is our top priority. Our smart contracts are audited by leading security firms, and we implement best practices such as multi-signature authentication and decentralized governance to ensure asset safety."
+  },
+  {
+    question: "What are the fees?",
+    answer: "We charge a minimal 0.3% withdrawal fee to support platform sustainability and continuous development. There are no hidden fees, and all costs are transparently displayed before you initiate a lock."
+  },
+  {
+    question: "Can I withdraw early?",
+    answer: "No. Once locked, your assets are secured until the lock period expires. This feature is designed to promote financial discipline and discourage impulsive decisions. However, you can unlock your assets if they achieve their set value goal."
+  },
+  {
+    question: "What happens when my lock period ends?",
+    answer: "Once your lock period expires, you can withdraw your assets instantly without any additional fees. You can also extend the lock period if you feel like you need the funds locked up for another set period."
+  },
+  {
+    question: "Which cryptocurrencies are supported?",
+    answer: "FVKRY PRVNTA supports a wide range of ERC-20 tokens, including Ethereum (ETH), stablecoins like USDT and USDC, DeFi tokens such as AAVE and UNI, and popular meme tokens like SHIB and PEPE."
+  },
+  {
+    question: "How do I track my locked assets?",
+    answer: "You can track your locked assets through our intuitive dashboard, which provides real-time updates on your balance, lock duration, and maturity date."
+  }
+];
