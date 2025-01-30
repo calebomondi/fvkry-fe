@@ -1,37 +1,15 @@
 import { useState, useEffect } from 'react';
-import { 
-  Lock, Wallet, Shield, Clock, ChevronDown, Github, Twitter, LockKeyhole , 
-  BookOpen , Menu, X, CheckCircle
-} from 'lucide-react';
-import { faqs } from './data';
+import { Lock, Wallet, Shield, Clock, LockKeyhole , BookOpen , Menu, X } from 'lucide-react';
 
 import vault from '/vault.png'
 import logo2 from '/2.png'
 
 import StatisticsSection from './stats';
 import TokensSection from './tokens';
-
-const FAQ = ({ question, answer }: { question: string; answer: string }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  
-  return (
-    <div className="border-b border-gray-200 py-4">
-      <button
-        className="flex justify-between items-center w-full text-left"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="text-lg font-medium text-navy">{question}</span>
-        <ChevronDown className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
-      <div className={`mt-2 text-gray-600 transition-all ${isOpen ? 'block' : 'hidden'}`}>
-        {answer}
-      </div>
-    </div>
-  );
-};
+import FAQ from './faq';
+import Footer from './footer';
 
 const Home = () => {
-  const [showNotification, setShowNotification] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [isVisible, setIsVisible] = useState(true);
@@ -86,16 +64,6 @@ const Home = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Notification */}
-      {showNotification && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50 animate-fade-in">
-          <div className="flex items-center">
-            <CheckCircle className="w-5 h-5 mr-2" />
-            <span>Thank you for subscribing!</span>
-          </div>
-        </div>
-      )}
-
       {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${isVisible ? 'top-0' : '-top-20'}
         ${activeSection === 'hero' ? ' dark:bg-black/20 bg-white/60' : 'dark:bg-black/90 bg-white/90  backdrop-blur-md  shadow-lg'}`}>
@@ -201,16 +169,7 @@ const Home = () => {
       <TokensSection />
 
       {/* FAQ Section */}
-      <section id="faq" className="py-10">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-navy">Frequently Asked Questions</h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <FAQ key={index} {...faq} />
-            ))}
-          </div>
-        </div>
-      </section>
+      <FAQ />
 
       {/* CTA Section */}
       <section className="py-20 bg-navy ">
@@ -222,85 +181,7 @@ const Home = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-amber-600 text-white ">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-            <div className="flex md:items-center justify-between md:flex-row flex-col">
-                <div>
-                <h3 className="text-xl font-bold mb-4">FVKRY PRVNTA</h3>
-                <p className="">Secure crypto savings platform</p>
-                <div className="mt-4">
-                    <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="bg-white text-gray-800 rounded px-4 py-2 w-full focus:outline-amber-800"
-                    />
-                    <button
-                    onClick={() => {
-                        setShowNotification(true);
-                        setTimeout(() => setShowNotification(false), 3000);
-                    }}
-                    className="mt-2 px-4 py-2 rounded w-full hover:bg-opacity-90 transition-all border border-white shadow-sm"
-                    >
-                    Subscribe to Updates
-                    </button>
-                </div>
-                </div>
-                <div className='mt-4 '>
-                <h4 className="font-semibold mb-4">Quick Links</h4>
-                <ul className="space-y-2">
-                    <li className="hover:scale-105 transition-colors cursor-pointer">About</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Features</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Documentation</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Support</li>
-                </ul>
-                </div>
-                <div className='mt-4'>
-                <h4 className="font-semibold mb-4">Legal</h4>
-                <ul className="space-y-2 ">
-                    <li className="hover:text-golden transition-colors cursor-pointer">Terms of Service</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Privacy Policy</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Risk Disclosure</li>
-                    <li className="hover:text-golden transition-colors cursor-pointer">Data Protection</li>
-                </ul>
-                </div>
-            <div className='mt-4'>
-              <h4 className="font-semibold mb-4">Connect With Us</h4>
-              <div className="flex space-x-4">
-                <a href="#" className="hover:text-golden transition-colors">
-                  <Github className="w-6 h-6" />
-                </a>
-                <a href="#" className="hover:text-golden transition-colors">
-                  <Twitter className="w-6 h-6" />
-                </a>
-              </div>
-              <div className="mt-4">
-                <h5 className="text-sm font-semibold mb-2">Our Communities</h5>
-                <ul className="space-y-2 ">
-                  <li className="hover:text-golden transition-colors cursor-pointer">Telegram Group</li>
-                  <li className="hover:text-golden transition-colors cursor-pointer">Discord Server</li>
-                  <li className="hover:text-golden transition-colors cursor-pointer">Reddit</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="border-t dark:border-w-700 mt-8 pt-8">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className=" text-sm">
-                &copy; {new Date().getFullYear()} FVKRY PRVNTA. All rights reserved.
-              </p>
-              <div className="flex items-center mt-4 md:mt-0">
-                <span className="flex items-center  text-sm">
-                  <Shield className="w-4 h-4 mr-2" />
-                  Smart Contracts Audited by
-                  <a href="#" className="text-golden hover:text-golden/80 ml-1">
-                    CertiK
-                  </a>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
