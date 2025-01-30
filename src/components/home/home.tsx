@@ -42,7 +42,7 @@ export default function Home () {
         <div className="mx-auto px-4 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-1 md:gap-12 items-center">
             <div className="order-2 lg:order-1 ">
-              <h1 className="text-5xl font-bold mb-6 text-center">Avoid Impulsive Spending And Trading By Locking Your Crypto Assets</h1>
+              <h1 className="md:text-5xl text-3xl font-bold mb-6 text-center">Avoid Impulsive Spending And Trading By Locking Your Crypto Assets</h1>
               <p className="text-lg mb-8 text-center">Lock your assets for long-term goals, protect against impulsive spending, and build a stronger financial future—whether you're a trader, investor, or just holding for the long haul.</p>
               <div className="flex flex-col space-y-5 justify-center items-center">
                 <p className="text-amber-500 text-center">Ready to lock your crypto and stay disciplined?</p>
