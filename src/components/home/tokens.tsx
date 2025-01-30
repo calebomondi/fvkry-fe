@@ -86,6 +86,10 @@ const TokensSection = () => {
                         Popular Token
                         </div>
                     )}
+
+                    <div className='py-2 grid place-items-center'>
+                      <button className='btn btn-sm text-white bg-amber-500 w-1/5 p-2'>Lock</button>
+                    </div>
                 </div>
             </div>
             ) : (
