@@ -57,7 +57,7 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
         <div className="max-w-7xl mx-auto px-4">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-navy mb-4">
+            <h2 className="text-2xl font-bold text-navy mb-4">
               Platform Statistics
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">

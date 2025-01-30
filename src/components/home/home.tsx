@@ -71,7 +71,7 @@ export default function Home () {
       {/* Features Section */}
       <section id="features" className="py-10">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-navy my-5 text-center">Why Choose FVKRY PRVNTA</h2>
+          <h2 className="text-2xl font-bold text-navy my-5 text-center">Why Choose FVKRY PRVNTA</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="p-6 border border-gray-200 rounded-lg hover:shadow-lg transition-all">
@@ -93,8 +93,8 @@ export default function Home () {
       {/* CTA Section */}
       <section className="py-20 bg-navy ">
         <div className="max-w-3xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
-          <p className="text-xl mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
+          <h2 className="text-2xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
+          <p className="text-lg mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
           <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
         </div>
       </section>
