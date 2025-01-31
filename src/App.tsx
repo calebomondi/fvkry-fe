@@ -1,10 +1,10 @@
-import Home from "./components/home/home"
+import MyRoutes from "./components/Routes/routes"
 
 function App() {
 
   return (
     <>
-      <Home />
+      <MyRoutes />
     </>
   )
 }

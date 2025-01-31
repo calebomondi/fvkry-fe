@@ -53,7 +53,7 @@ const TokensSection = () => {
                             <span className="text-sm text-gray-500">{`${firstToken.symbol} (${firstToken.category[1]})`}</span>
                         </div>
                         </div>
-                        <button className="text-amber-600 hover:text-amber-700">
+                        <button className="text-amber-500 hover:text-amber-700">
                         <ExternalLink className="w-5 h-5" />
                         </button>
                     </div>
@@ -88,7 +88,7 @@ const TokensSection = () => {
                     )}
 
                     <div className='py-2 grid place-items-center'>
-                      <button className='btn btn-sm text-white bg-amber-500 w-1/5 p-2'>Lock</button>
+                      <button className='btn btn-sm text-white bg-amber-500 hover:bg-amber-600 hover:scale-105 w-1/5 p-2'>Lock</button>
                     </div>
                 </div>
             </div>

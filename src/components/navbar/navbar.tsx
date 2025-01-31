@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
 import { X, Menu } from "lucide-react";
 import logo2 from "/2.png";
 
@@ -38,19 +40,20 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between md:h-20 h-16">
             <div className="flex items-center">
-              <img
-                src={logo2}
-                alt=""
-                className='md:w-14 w-10'
-              />
+              <a href="/">
+                <img
+                  src={logo2}
+                  alt=""
+                  className='md:w-14 w-10'
+                />
+              </a>
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#">About</a>
-              {['Features', 'Tokens', 'FAQ'].map((item) => (
+              {['About','Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
-                  href={`#${item.toLowerCase().replace(' ', '-')}`}
+                  href={item == "About" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
                   className={`transition-all duration-300  relative after:content-[''] after:absolute after:w-0 after:h-0.5
                     after:bg-amber-600 after:left-0 after:bottom-0 after:transition-all hover:after:w-full
                     ${activeSection === item.toLowerCase().replace(' ', '-') ? 'after:w-full' : ''}`}
@@ -58,7 +61,7 @@ export default function Navbar() {
                   {item}
                 </a>
               ))}
-              <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
+              <button className='btn bg-amber-500 hover:bg-amber-600 hover:scale-105 text-white border-none'>Start Locking</button>
             </div>
 
             <div className="md:hidden flex items-center">
@@ -72,7 +75,7 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden absolute w-full bg-white dark:bg-black dark: text-gray-800 backdrop-blur-md rounded-xl my-1">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              <a href="#">About</a>
+              <Link to="/documentation">About</Link>
               {['Features', 'Tokens', 'FAQ'].map((item) => (
                 <a
                   key={item}
