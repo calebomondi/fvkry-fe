@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Search, Info, ExternalLink, TrendingUp, AlertCircle } from 'lucide-react';
 import { tokens } from './data';
 
+import {motion} from 'framer-motion';
+import AnimatedSection from '../AnimatedSection/animatedsection';
+
 const TokensSection = () => {
   const [searchQuery, setSearchQuery] = useState('ETH');
 
@@ -25,7 +28,13 @@ const TokensSection = () => {
         </div>
 
         {/* Search and Filter Bar */}
-        <div className="mb-8 flex items-center justify-center gap-4">
+        <motion.div 
+          className="mb-8 flex items-center justify-center gap-4"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+          viewport={{ once: true }}
+        >
           <div className="relative w-full md:w-1/2">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
@@ -36,10 +45,16 @@ const TokensSection = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-        </div>
+        </motion.div>
 
         {/* Tokens Grid */}
-        <div className="grid grid-cols-1 place-items-center">
+        <motion.div 
+          className="grid grid-cols-1 place-items-center"
+          initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                viewport={{ once: true }}
+        >
             {firstToken ? (
             <div className="rounded-xl p-6 border border-amber-700 hover:shadow-lg transition-all md:w-1/2">
                 <div>
@@ -96,10 +111,16 @@ const TokensSection = () => {
               <div className='rounded-xl p-6 border border-amber-700 w-full md:w-1/2 text-center'>Token <span className="font-semibold text-lg">{searchQuery}</span> Not Found</div>
             )
           }
-        </div>
+        </motion.div>
 
         {/* Information Section */}
-        <div className="mt-12 p-6 bg-amber-200 rounded-lg">
+        <motion.div 
+          className="mt-12 p-6 bg-amber-200 rounded-lg"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.7 }}
+          viewport={{ once: true }}
+        >
           <div className="flex items-start gap-4">
             <Info className="w-6 h-6 text-amber-600 mt-1" />
             <div>
@@ -114,7 +135,7 @@ const TokensSection = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

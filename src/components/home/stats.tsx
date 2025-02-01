@@ -1,3 +1,4 @@
+import {motion} from 'framer-motion';
 import { Lock, Activity, Coins, Users } from 'lucide-react';
 
 // First, enhance the Statistic component
@@ -66,14 +67,26 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
           </div>
   
           {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+          >
             {stats.map((stat, index) => (
               <Statistic key={index} {...stat} />
             ))}
-          </div>
+          </motion.div>
   
           {/* Additional Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay:  0.6 }}
+            viewport={{ once: true }}
+          >
             <div className="bg-navy p-6 rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Security First</h3>
               <p className="">
@@ -92,17 +105,22 @@ const Statistic = ({ value, label, description, icon, trend }:{ value:string, la
                 Real-time statistics and open-source code for complete transparency.
               </p>
             </div>
-          </div>
+          </motion.div>
   
           {/* Call to Action */}
-          <div className="text-center mt-10">
+          <motion.div 
+            className="text-center mt-10"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+            viewport={{ once: true }}>
             <button className="bg-navy px-8 py-3 rounded-lg hover:text-amber-600 transition-all">
               View Detailed Analytics
             </button>
             <p className="text-sm text-gray-500 mt-4">
               Statistics updated every 24 hours. Last updated: {new Date().toLocaleDateString()}
             </p>
-          </div>
+          </motion.div>
         </div>
       </section>
     );
