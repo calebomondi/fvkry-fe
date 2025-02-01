@@ -56,7 +56,7 @@ export default function Home () {
               className="order-2 lg:order-1 "
             >
               <h1 className="md:text-5xl text-3xl font-bold mb-6 text-center">Avoid Impulsive Spending And Trading By Locking Your Crypto Assets</h1>
-              <p className="text-lg mb-8 text-center">Lock your assets for short and long-term goals, protect against impulsive spending, and build a stronger financial future—whether you're a trader, investor, or just holding for the long haul.</p>
+              <p className="text-lg mb-8 text-center">Lock your assets for short and long-term goals, protect against impulsive spending, and build a stronger financial future—whether you're a trader, investor, or just holding for the short and long haul.</p>
               <div className="flex flex-col space-y-5 justify-center items-center">
                 <p className="text-amber-500 text-center">Ready to lock your crypto and stay disciplined?</p>
                 <div className='flex space-x-4 justify-center items-center'>
