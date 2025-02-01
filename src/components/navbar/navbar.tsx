@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import { X, Menu } from "lucide-react";
 import logo2 from "/2.png";
 
