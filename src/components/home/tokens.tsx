@@ -3,7 +3,6 @@ import { Search, Info, ExternalLink, TrendingUp, AlertCircle } from 'lucide-reac
 import { tokens } from './data';
 
 import {motion} from 'framer-motion';
-import AnimatedSection from '../AnimatedSection/animatedsection';
 
 const TokensSection = () => {
   const [searchQuery, setSearchQuery] = useState('ETH');
