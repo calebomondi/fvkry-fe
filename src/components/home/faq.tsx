@@ -1,19 +1,6 @@
 import { faqs } from './data';
 import {motion} from 'framer-motion';
 
-const FAQs = ({ question, answer }: { question: string; answer: string }) => {
-  
-    return (
-      <div className="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2"/>
-        <div className="collapse-title text-lg font-medium">{question}</div>
-        <div className="collapse-content">
-          <p>{answer}</p>
-        </div>
-      </div>
-    );
-};
-
 export default function FAQ() {
   return (
     <section id="faq" className="py-10">
