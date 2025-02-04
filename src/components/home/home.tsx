@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from '../AnimatedSection/animatedsection';
 
-import { Lock, Wallet, Shield, Clock, LockKeyhole , BookOpen} from 'lucide-react';
+import { Lock, Wallet, Shield, Clock, BookOpen} from 'lucide-react';
 import vault from '/vault.png'
 
 import StatisticsSection from './stats';
@@ -9,6 +9,7 @@ import TokensSection from './tokens';
 import FAQ from './faq';
 import Footer from './footer';
 import Navbar from '../navbar/navbar';
+import { CustomConnectButton } from './walletconnectflow';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -64,18 +65,11 @@ export default function Home () {
               className="order-2 lg:order-1 "
             >
               <h1 className="md:text-5xl text-3xl font-bold mb-6 text-center">Avoid Impulsive Spending And Trading By Locking Your Crypto Assets</h1>
-              <p className="text-lg mb-8 text-center">Lock your assets for short and long-term goals, protect against impulsive spending, and build a stronger financial future—whether you're a trader, investor, or just holding for the short and long haul.</p>
+              <p className="text-lg mb-8 text-center">Lock your assets for short and long-term goals, protect against impulsive spending, and build a stronger financial future — whether you're a trader, investor, or just holding for the short and long haul.</p>
               <div className="flex flex-col space-y-5 justify-center items-center">
                 <p className="text-amber-500 text-center">Ready to lock your crypto and stay disciplined?</p>
                 <div className='flex space-x-4 justify-center items-center'>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
-                  >
-                    Start Locking Now
-                    <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
-                  </motion.button>
+                  <CustomConnectButton />
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -142,16 +136,10 @@ export default function Home () {
 
       {/* CTA Section */}
       <AnimatedSection className="py-20 bg-navy ">
-        <div className="max-w-3xl mx-auto px-4 text-center">
+        <div className="max-w-3xl mx-auto px-4 text-center flex flex-col items-center">
           <h2 className="text-2xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
           <p className="text-lg mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
-          <motion.button 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className='btn bg-amber-500 hover:bg-amber-600 hover:scale-105 text-white border-none'
-          >
-            Start Locking
-          </motion.button>
+          <CustomConnectButton />
         </div>
       </AnimatedSection>
 
