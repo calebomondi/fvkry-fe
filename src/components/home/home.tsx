@@ -10,6 +10,8 @@ import FAQ from './faq';
 import Footer from './footer';
 import Navbar from '../navbar/navbar';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function Home () {
   const features = [
     {
@@ -33,6 +35,12 @@ export default function Home () {
       description: "Support for ETH and major ERC20 tokens with more assets coming soon"
     }
   ];
+
+  const navigate = useNavigate()
+
+  const handledDocu = () => {
+    navigate("/documentation");
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -72,6 +80,7 @@ export default function Home () {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
+                    onClick={handledDocu}
                   >
                     How It Works
                     <BookOpen  className="ml-2 w-5 h-5 animate-pulse" />
