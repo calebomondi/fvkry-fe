@@ -33,30 +33,3 @@ export const CustomConnectButton = () => {
     </ConnectButton.Custom>
   );
 };
-
-export const DashboardPage = () => {
-  const { isConnected } = useAccount();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isConnected) {
-      navigate('/');
-    }
-  }, [isConnected, navigate]);
-
-  return (
-    <div className="p-6">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-2xl font-bold">Your Dashboard</h1>
-        <div className="flex flex-col gap-2">
-          <ConnectButton 
-            showBalance={true}
-            chainStatus="full"
-            accountStatus="full"
-          />
-        </div>
-        {/* Add your dashboard content here */}
-      </div>
-    </div>
-  );
-};
