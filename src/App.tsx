@@ -8,11 +8,11 @@ import {
 import { WagmiProvider } from 'wagmi';
 import {
   mainnet,
-  lisk,
+  sepolia,
   base,
-  liskSepolia,
   baseSepolia,
-  sepolia
+  lisk,
+  liskSepolia,
 } from 'wagmi/chains';
 import {
   QueryClientProvider,

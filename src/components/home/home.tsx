@@ -9,7 +9,7 @@ import TokensSection from './tokens';
 import FAQ from './faq';
 import Footer from './footer';
 import Navbar from '../navbar/navbar';
-import { CustomConnectButton } from './walletconnectflow';
+import { CustomConnectButton } from '../walletconnect/walletconnect';
 
 import { useNavigate } from 'react-router-dom';
 

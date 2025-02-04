@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { X, Menu } from "lucide-react";
 import logo2 from "/2.png";
 
-import { CustomConnectButton } from "../home/walletconnectflow";
+import { CustomConnectButton } from "../walletconnect/walletconnect";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -85,7 +85,7 @@ export default function Navbar() {
                   {item}
                 </a>
               ))}
-              <button className='btn bg-amber-500 text-white border-none'>Start Locking</button>
+              <CustomConnectButton />
             </div>
           </div>
         )}

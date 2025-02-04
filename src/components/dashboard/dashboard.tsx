@@ -1,9 +1,10 @@
 import { Button } from "../ui/button"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { useAccount } from 'wagmi';
 
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+import ConnectedNavbar from "../navbar/connectednavbar";
 
 export default function Dashboard() {
   const { isConnected } = useAccount();
@@ -16,8 +17,8 @@ export default function Dashboard() {
   }, [isConnected, navigate]);
   return (
     <>
+      <ConnectedNavbar />
       <Button variant="secondary">Click Me</Button>
-      <ConnectButton />
     </>
   )
 }
