@@ -1108,4 +1108,4 @@ export const contractABI = [
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+]

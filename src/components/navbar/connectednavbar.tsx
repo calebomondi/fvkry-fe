@@ -1,43 +1,99 @@
-import { useState } from "react";
-import { X, Menu } from "lucide-react";
 import logo2 from "/2.png";
+
+import { Link } from "react-router-dom";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function ConnectedNavbar() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 top-0 dark:bg-black/90 bg-white/90  backdrop-blur-md  shadow-lg`}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-between h-14">
-            <div className="flex items-center">
-              <a href="/">
-                <img
-                  src={logo2}
-                  alt=""
-                  className='md:w-11 w-10'
-                />
-              </a>
-            </div>
-
-            <div className="hidden md:flex items-center space-x-8 scale-75">
-              <ConnectButton />
-            </div>
-
-            <div className="md:hidden flex items-center">
-              <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="focus:outline-none">
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
+    <div className="navbar dark:bg-black/90">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
           </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            <li>
+              <Link to="/dashboard/days">Days</Link>
+            </li>
+            <li>
+              <Link to="/dashboard/weekly">Weekly</Link>
+            </li>
+            <li>
+              <Link to="/dashboard/monthly">Monthly</Link>
+            </li>
+            <li>
+              <Link to="/dashboard/yearly">Yearly</Link>
+            </li>
+            <li>
+              <a>Markets</a>
+              <ul className="p-2">
+                <li>
+                  <Link to="/dashboard/monthly">Token Scanner</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/yearly">How It Works</Link>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-
-        {isMenuOpen && (
-          <div className="md:hidden absolute w-full bg-white dark:bg-black dark: text-gray-800 backdrop-blur-md rounded-xl my-1 p-2 grid place-items-center">
-            <ConnectButton />
-          </div>
-        )}
-      </nav>
+        <div className="flex items-center">
+          <a href="/">
+            <img
+              src={logo2}
+              alt=""
+              className='md:w-11 w-10'
+            />
+          </a>
+        </div>
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <li>
+            <Link to="/dashboard/days">Days</Link>
+          </li>
+          <li>
+            <Link to="/dashboard/weekly">Weekly</Link>
+          </li>
+          <li>
+            <Link to="/dashboard/monthly">Monthly</Link>
+          </li>
+          <li>
+            <Link to="/dashboard/yearly">Yearly</Link>
+          </li>
+          <li>
+            <details>
+              <summary>Markets</summary>
+              <ul className="p-2">
+                <li>
+                  <Link to="/dashboard/monthly">Token Scanner</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/yearly">How It Works</Link>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+      <div className="navbar-end scale-75">
+        <ConnectButton />
+      </div>
+    </div>
   )
 }

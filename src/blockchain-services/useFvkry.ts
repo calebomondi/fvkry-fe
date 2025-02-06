@@ -25,6 +25,7 @@ export async function getWalletClient() {
     return {walletClient, address}
 }
 
+//Read Functions
 export async function getContractEthBalance() {
     const balance = await publicClient.readContract({
         address: contractAddress as `0x${string}`,
