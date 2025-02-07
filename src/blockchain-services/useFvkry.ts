@@ -1,6 +1,7 @@
 import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { contractABI, contractAddress } from "./core";
 import { liskSepolia } from 'viem/chains'
+import { parseEther } from "viem";
 
 //set up public cient
 const publicClient = createPublicClient({
@@ -23,6 +24,58 @@ export async function getWalletClient() {
     console.log('Connected Address: ', address)
 
     return {walletClient, address}
+}
+
+//Write Functions
+export async function createETHSubVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
+    try {
+        const { walletClient, address } = await getWalletClient();
+
+        //convert days to seconds
+        const daysToSeconds = _lockperiod * 24 * 60 * 60;
+
+        //convert amount to wei
+        const ethToWei = parseEther(_amount);
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "lockETH",
+            args: [ _vault, daysToSeconds, _title],
+            account: address,
+            value: ethToWei
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+
+    } catch (error: any) {
+        console.log('Error in creating ETH sub-vault', error);
+
+        // Check for custom contract errors
+        if (error.message.includes('VaultIsFull')) {
+            throw new Error('This vault has reached maximum capacity');
+        }
+        
+        if (error.message.includes('AmountBeGreaterThan0')) {
+            throw new Error('Amount must be greater than 0');
+        }
+
+        // Handle other common wallet/network errors
+        if (error.message.includes('user rejected')) {
+            throw new Error('Transaction rejected by user');
+        }
+
+        if (error.message.includes('insufficient funds')) {
+            throw new Error('Insufficient balance for transaction');
+        }
+
+        // For any other error, throw the original message
+        throw new Error(error.message || 'Transaction failed');
+    }
+
 }
 
 //Read Functions
