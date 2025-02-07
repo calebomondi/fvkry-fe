@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from "react"
 import { LockMyAsset } from "@/types";
 
+import { publicClient } from "@/blockchain-services/useFvkry";
+import { contractABI, contractAddress } from "@/blockchain-services/core";
+import { isAddress } from "viem";
+
 export default function LockAsset({vault}:{vault:string}) {
-   
+    //listen to add events
+   useEffect(() => {
+        //AssetLocked
+        const unwatchAssetLocked = publicClient.watchContractEvent({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            eventName: 'AssetLocked',
+            onError: error => console.log(`error - ${error}`),
+            onLogs: logs => console.log(`logs - ${logs}`)
+        });
+
+        return () => {
+            unwatchAssetLocked();
+        }
+   },[])
 
     //form
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -50,6 +68,8 @@ export default function LockAsset({vault}:{vault:string}) {
             if (isNaN(Number(formValues.duration)) || Number(formValues.duration) <= 0) {
                 throw new Error('Duration must be a number and greater than 0')
             }
+            if (!isAddress(formValues.address) && formValues.assettype) 
+                throw new Error('Token Address Should Be Valid!')
 
             alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.duration} -- ${formValues.address}`)
 
@@ -116,6 +136,7 @@ export default function LockAsset({vault}:{vault:string}) {
                         onChange={handleChange}
                         className="dark:text-white text-gray-700 md:w-5/6 p-2" 
                         placeholder="Address"
+                        disabled = {!formValues.assettype}
                         required
                     />
                 </label>

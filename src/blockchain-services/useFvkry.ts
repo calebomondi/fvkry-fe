@@ -4,7 +4,7 @@ import { liskSepolia } from 'viem/chains'
 import { parseEther } from "viem";
 
 //set up public cient
-const publicClient = createPublicClient({
+export const publicClient = createPublicClient({
     chain: liskSepolia,
     transport: http(`${import.meta.env.VITE_LISK_RPC_URL}`)
 });
