@@ -1,18 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { LockMyAsset } from "@/types";
-import { useAccount } from "wagmi";
-import { useNavigate } from "react-router-dom";
 
 export default function LockAsset({vault}:{vault:string}) {
-    //check if connected or not
-    const { isConnected } = useAccount();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!isConnected) {
-        navigate('/');
-        }
-    }, [isConnected, navigate]);
+   
 
     //form
     const [isLoading, setIsLoading] = useState<boolean>(false);
