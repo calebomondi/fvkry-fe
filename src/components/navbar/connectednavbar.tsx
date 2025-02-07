@@ -46,10 +46,10 @@ export default function ConnectedNavbar() {
               <a>Markets</a>
               <ul className="p-2">
                 <li>
-                  <Link to="/dashboard/months">Token Scanner</Link>
+                  <Link to="/dashboard/ts">Token Scanner</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/yearly">How It Works</Link>
+                  <Link to="/dashboard/hit">How It Works</Link>
                 </li>
               </ul>
             </li>
@@ -77,7 +77,7 @@ export default function ConnectedNavbar() {
             <Link to="/dashboard/weeks">Weekly</Link>
           </li>
           <li>
-            <Link to="/dashboard/monthly">Monthly</Link>
+            <Link to="/dashboard/months">Monthly</Link>
           </li>
           <li>
             <Link to="/dashboard/years">Yearly</Link>
@@ -87,10 +87,10 @@ export default function ConnectedNavbar() {
               <summary>Markets</summary>
               <ul className="p-2">
                 <li>
-                  <Link to="/dashboard/monthly">Token Scanner</Link>
+                  <Link to="/dashboard/ts">Token Scanner</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/yearly">How It Works</Link>
+                  <Link to="/dashboard/hit">How It Works</Link>
                 </li>
               </ul>
             </details>

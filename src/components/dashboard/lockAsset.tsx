@@ -4,6 +4,7 @@ import { LockMyAsset } from "@/types";
 import { publicClient } from "@/blockchain-services/useFvkry";
 import { contractABI, contractAddress } from "@/blockchain-services/core";
 import { isAddress } from "viem";
+//import { createETHSubVault } from "@/blockchain-services/useFvkry";
 
 export default function LockAsset({vault}:{vault:string}) {
     //listen to add events
@@ -21,6 +22,18 @@ export default function LockAsset({vault}:{vault:string}) {
             unwatchAssetLocked();
         }
    },[])
+
+   //select vault
+   const setVault = (): number => {
+        let lockVault = 0;
+
+        if (vault === 'days') lockVault = 1;
+        if (vault === 'weeks') lockVault = 2;
+        if (vault === 'months') lockVault = 3;
+        if (vault === 'years') lockVault = 4;
+        
+        return lockVault;
+   }
 
     //form
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -71,7 +84,8 @@ export default function LockAsset({vault}:{vault:string}) {
             if (!isAddress(formValues.address) && formValues.assettype) 
                 throw new Error('Token Address Should Be Valid!')
 
-            alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.duration} -- ${formValues.address}`)
+            alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.duration} -- ${formValues.address} -- ${setVault()}`)
+            //await createETHSubVault(formValues.amount,)
 
         } catch (error:any) {
             console.error("Failed to create campaign:", error.message);
