@@ -3,10 +3,9 @@ import { LockMyAsset } from "@/types";
 
 import { publicClient } from "@/blockchain-services/useFvkry";
 import { contractABI, contractAddress } from "@/blockchain-services/core";
-import { isAddress } from "viem";
 //import { createETHSubVault } from "@/blockchain-services/useFvkry";
 
-export default function LockAsset({vault}:{vault:string}) {
+export default function LockAsset() {
     //listen to add events
    useEffect(() => {
         //AssetLocked
@@ -23,26 +22,17 @@ export default function LockAsset({vault}:{vault:string}) {
         }
    },[])
 
-   //select vault
-   const setVault = (): number => {
-        let lockVault = 0;
-
-        if (vault === 'days') lockVault = 1;
-        if (vault === 'weeks') lockVault = 2;
-        if (vault === 'months') lockVault = 3;
-        if (vault === 'years') lockVault = 4;
-        
-        return lockVault;
-   }
-
     //form
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formValues, setFormValues] = useState<LockMyAsset>({
         title: '',
-        address: '0x',
         amount: '',
+        symbol: '',
         duration: '',
-        assettype: false, // false for ETH, true for TKN
+        durationType: 'days',
+        lockType: 'fixed',
+        assetType: 'ethereum',
+        goal: ''
     })
 
     const TITLE_WORD_LIMIT = 10;
@@ -51,19 +41,14 @@ export default function LockAsset({vault}:{vault:string}) {
         return text.trim() ? text.trim().split(/\s+/).length : 0;
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value, type } = e.target;
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement  | HTMLSelectElement>) => {
+        const { name, value } = e.target;
         
         if (name === 'title') {
             const words = countWords(value);
             if (words <= TITLE_WORD_LIMIT || value.length < formValues.title.length) {
                 setFormValues(prev => ({ ...prev, [name]: value }));
             }
-        } else if (type === 'checkbox') {
-            setFormValues(prev => ({ 
-                ...prev, 
-                [name]: (e.target as HTMLInputElement).checked 
-            }));
         } else {
             setFormValues(prev => ({ ...prev, [name]: value }));
         }
@@ -81,10 +66,11 @@ export default function LockAsset({vault}:{vault:string}) {
             if (isNaN(Number(formValues.duration)) || Number(formValues.duration) <= 0) {
                 throw new Error('Duration must be a number and greater than 0')
             }
-            if (!isAddress(formValues.address) && formValues.assettype) 
-                throw new Error('Token Address Should Be Valid!')
+            if (isNaN(Number(formValues.goal)) || Number(formValues.goal) <= 0) {
+                throw new Error('Goal must be a number and greater than 0')
+            }
 
-            alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.duration} -- ${formValues.address} -- ${setVault()}`)
+            alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.symbol} -- ${formValues.duration} -- ${formValues.durationType} -- ${formValues.lockType} -- ${formValues.assetType} -- ${formValues.goal}}`)
             //await createETHSubVault(formValues.amount,)
 
         } catch (error:any) {
@@ -93,10 +79,13 @@ export default function LockAsset({vault}:{vault:string}) {
             setIsLoading(false)
             setFormValues({
                 title: '',
-                address: '',
                 amount: '',
+                symbol: '',
                 duration: '',
-                assettype: false,
+                durationType: 'days',
+                lockType: 'fixed',
+                assetType: 'ethereum',
+                goal: ''
             })
         }
     }
@@ -105,21 +94,34 @@ export default function LockAsset({vault}:{vault:string}) {
 
   return (
     <div className="flex justify-center items-center">
-        <div className="md:w-1/2 m-2 p-2 flex flex-col justify-center items-center rounded-lg">
-            <h2 className="text-center text-lg font-semibold">Create A {vault.toUpperCase()} Sub Vault</h2>
+        <div className="m-2 p-2 flex flex-col justify-center items-center rounded-lg">
+            <h2 className="text-center text-lg font-semibold">Lock Asset</h2>
             <form onSubmit={handleSubmit} className="w-full p-1">
-                <div className="mb-2 p-2 grid place-items-center">
-                    <label className="flex cursor-pointer gap-2">
-                        <span className={`label-text font-semibold ${!formValues.assettype && 'text-amber-600'}`}>ETH</span>
-                        <input 
-                            type="checkbox" 
-                            id="assettype" 
-                            name="assettype" 
-                            checked={formValues.assettype} 
-                            onChange={handleChange}
-                            className="toggle theme-controller" 
-                        />
-                        <span className={`label-text font-semibold ${formValues.assettype && 'text-amber-600'}`}>TKN</span>
+                <div className="flex flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-2 space-x-0 items-center justify-center">
+                    <label className="input input-bordered flex items-center justify-between gap-2 font-semibold text-amber-600">
+                        Duration
+                        <select onChange={handleChange} value={formValues.durationType} name="durationType" id="" className="bg-transparent outline-none border-none dark:text-white text-gray-700">
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="days">Day(s)</option>
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="weeks">Week(s)</option>
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="months">Month(s)</option>
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="years">Year(s)</option>
+                        </select>
+                    </label>
+                    <label className="input input-bordered flex items-center justify-between gap-2 font-semibold text-amber-600">
+                        Type
+                        <select onChange={handleChange} value={formValues.lockType} name="lockType" id="" className="bg-transparent outline-none border-none dark:text-white text-gray-700">
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="fixed">Fixed Duration</option>
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="goal">Goal Based</option>
+                        </select>
+                    </label>
+                </div>
+                <div className="p-2 grid place-items-center">
+                    <label className="input input-bordered flex items-center justify-between gap-2 font-semibold text-amber-600">
+                        Asset
+                        <select onChange={handleChange} value={formValues.assetType} name="assetType" id="" className="bg-transparent outline-none border-none dark:text-white text-gray-700">
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="ethereum">Ethereum</option>
+                            <option className="dark:text-white text-gray-700 dark:bg-black/90" value="token">Token</option>
+                        </select>
                     </label>
                 </div>
                 <div className="mb-2">
@@ -132,7 +134,7 @@ export default function LockAsset({vault}:{vault:string}) {
                             value={formValues.title}
                             onChange={handleChange}
                             className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                            placeholder="Tag your lock" 
+                            placeholder="#Longtime saving" 
                             required
                         />
                     </label>
@@ -140,17 +142,17 @@ export default function LockAsset({vault}:{vault:string}) {
                         {remainingTitleWords} words remaining
                     </div>
                 </div>
-                <label className={`${!formValues.assettype && 'hidden'} input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600`}>
+                <label className={`${formValues.assetType === 'ethereum' && 'hidden'} input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600`}>
                     Token
                     <input 
                         type="text" 
-                        id="address"
-                        name="address"
-                        value={formValues.address}
+                        id="symbol"
+                        name="symbol"
+                        value={formValues.symbol}
                         onChange={handleChange}
                         className="dark:text-white text-gray-700 md:w-5/6 p-2" 
-                        placeholder="Address"
-                        disabled = {!formValues.assettype}
+                        placeholder="Symbol"
+                        disabled = {formValues.assetType === 'ethereum'}
                         required
                     />
                 </label>
@@ -163,12 +165,12 @@ export default function LockAsset({vault}:{vault:string}) {
                         value={formValues.amount}
                         onChange={handleChange}
                         className="dark:text-white text-gray-700 md:w-5/6 p-2" 
-                        placeholder={`In ${formValues.assettype ? 'TKN' : 'ETH'}`}
+                        placeholder={`${formValues.assetType === 'token' ? '100 Token X' : '1 ETH'}`}
                         required
                     />
                 </label>
                 <label className="input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600">
-                    Duration
+                    Period
                     <input 
                         type="text" 
                         id="duration"
@@ -176,7 +178,21 @@ export default function LockAsset({vault}:{vault:string}) {
                         value={formValues.duration}
                         onChange={handleChange}
                         className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                        placeholder={`In ${vault.toUpperCase()}`} 
+                        placeholder={`In`} 
+                        required
+                    />
+                </label>
+                <label className={`${formValues.lockType === 'fixed' && 'hidden'} input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600`}>
+                    Goal
+                    <input 
+                        type="text" 
+                        id="goal"
+                        name="goal"
+                        value={formValues.goal}
+                        onChange={handleChange}
+                        className="dark:text-white text-gray-700 md:w-5/6 p-2" 
+                        placeholder="$2000"
+                        disabled = {formValues.lockType === 'fixed'}
                         required
                     />
                 </label>
@@ -186,7 +202,7 @@ export default function LockAsset({vault}:{vault:string}) {
                         className="btn bg-amber-500 w-1/2 text-white text-base border border-amber-500 hover:bg-amber-600"
                     >
                         {
-                            isLoading ? (<span className="loading loading-ring loading-xs"></span>) : 'create'
+                            isLoading ? (<span className="loading loading-ring loading-xs"></span>) : 'Lock'
                         }
                     </button>
                 </div>

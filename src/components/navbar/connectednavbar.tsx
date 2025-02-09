@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+import LockAsset from "../dashboard/lockAsset";
+
 export default function ConnectedNavbar() {
 
   return (
@@ -28,30 +30,27 @@ export default function ConnectedNavbar() {
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
             <li>
-              <Link to="/dashboard/">General</Link>
+              <Link to="/dashboard/">Dashboard</Link>
             </li>
             <li>
-              <Link to="/dashboard/days">Days</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/weeks">Weekly</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/months">Monthly</Link>
-            </li>
-            <li>
-              <Link to="/dashboard/years">Yearly</Link>
-            </li>
-            <li>
-              <a>Markets</a>
+              <a>My Vaults</a>
               <ul className="p-2">
                 <li>
-                  <Link to="/dashboard/ts">Token Scanner</Link>
+                  <Link to="/dashboard/days">Days</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/hit">How It Works</Link>
+                  <Link to="/dashboard/weeks">Weeks</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/months">Months</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/years">Years</Link>
                 </li>
               </ul>
+            </li>
+            <li>
+              <Link to="/dashboard/ts">Token Scanner</Link>
             </li>
           </ul>
         </div>
@@ -68,37 +67,58 @@ export default function ConnectedNavbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <Link to="/dashboard/">General</Link>
-          </li>
-          <li>
-            <Link to="/dashboard/days">Days</Link>
-          </li>
-          <li>
-            <Link to="/dashboard/weeks">Weekly</Link>
-          </li>
-          <li>
-            <Link to="/dashboard/months">Monthly</Link>
-          </li>
-          <li>
-            <Link to="/dashboard/years">Yearly</Link>
+            <Link to="/dashboard/">Dashboard</Link>
           </li>
           <li>
             <details>
-              <summary>Markets</summary>
+              <summary>My Vaults</summary>
               <ul className="p-2">
                 <li>
-                  <Link to="/dashboard/ts">Token Scanner</Link>
+                  <Link to="/dashboard/days">Days</Link>
                 </li>
                 <li>
-                  <Link to="/dashboard/hit">How It Works</Link>
+                  <Link to="/dashboard/weeks">Weeks</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/months">Months</Link>
+                </li>
+                <li>
+                  <Link to="/dashboard/years">Years</Link>
                 </li>
               </ul>
             </details>
           </li>
+          <li>
+            <Link to="/dashboard/ts">Token Scanner</Link>
+          </li>
         </ul>
       </div>
       <div className="navbar-end scale-75">
-        <ConnectButton />
+        <button className="btn rounded-md border-none text-base bg-amber-500 text-white font-semibold hover:scale-95 hover:bg-amber-600" onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement).showModal()}>
+          Lock
+        </button>
+        <dialog id="my_modal_4" className="modal">
+          <div className="modal-box">
+            <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <LockAsset />             
+          </div>
+        </dialog>
+        <div className="hidden md:block ml-4">
+          <ConnectButton />
+        </div>
+        <button className="md:hidden btn rounded-md border-none text-base bg-transparent text-white font-semibold hover:scale-95" onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement).showModal()}>
+          account
+        </button>
+        <dialog id="my_modal_5" className="modal">
+          <div className="modal-box">
+              <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              </form>
+              <ConnectButton />              
+          </div>
+        </dialog>
       </div>
     </div>
   )

@@ -1,7 +1,10 @@
 export interface LockMyAsset {
     title: string;
-    address: string;
     amount: string;
+    symbol: string;
     duration: string;
-    assettype: boolean;
+    durationType: string;
+    lockType: string;
+    assetType: string;
+    goal: string;
 }

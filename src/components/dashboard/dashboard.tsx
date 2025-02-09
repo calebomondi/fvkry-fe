@@ -34,7 +34,7 @@ export default function Dashboard() {
   return (
     <div className="">
       <ConnectedNavbar />
-      <p className="">Address: {address} Balance: {value}</p>
+      <p className="">Address: {address.slice(0,8)} Balance: {value}</p>
     </div>
   )
 }
