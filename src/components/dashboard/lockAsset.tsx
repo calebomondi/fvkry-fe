@@ -32,7 +32,7 @@ export default function LockAsset() {
         durationType: 'days',
         lockType: 'fixed',
         assetType: 'ethereum',
-        goal: ''
+        goal: '0'
     })
 
     const TITLE_WORD_LIMIT = 10;
@@ -61,22 +61,30 @@ export default function LockAsset() {
         try {
             //validate input data
             if (isNaN(Number(formValues.amount)) || Number(formValues.amount) <= 0) {
-                throw new Error('Amount must be a number and greater than 0')
+                throw new Error('Amount to lock must be a value and greater than 0')
             }
             if (isNaN(Number(formValues.duration)) || Number(formValues.duration) <= 0) {
-                throw new Error('Duration must be a number and greater than 0')
+                throw new Error('Lock period must be a value and greater than 0')
             }
-            if (isNaN(Number(formValues.goal)) || Number(formValues.goal) <= 0) {
-                throw new Error('Goal must be a number and greater than 0')
+            if (isNaN(Number(formValues.goal)) || Number(formValues.goal) < 0) {
+                throw new Error('Locking Goal must be a value and greater than 0')
+            }
+            if (formValues.durationType === 'days' && Number(formValues.duration) > 6) {
+                throw new Error('Days Cannot Exceed 7')
+            }
+            if (formValues.durationType === 'weeks' && Number(formValues.duration) > 3) {
+                throw new Error('Weeks Cannot Exceed 4')
+            }
+            if (formValues.durationType === 'months' && Number(formValues.duration) > 11) {
+                throw new Error('Months Cannot Exceed 11')
+            }
+            if (formValues.durationType === 'years' && Number(formValues.duration) > 5) {
+                throw new Error('Years Cannot Exceed 5')
             }
 
             alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.symbol} -- ${formValues.duration} -- ${formValues.durationType} -- ${formValues.lockType} -- ${formValues.assetType} -- ${formValues.goal}}`)
             //await createETHSubVault(formValues.amount,)
 
-        } catch (error:any) {
-            console.error("Failed to create campaign:", error.message);
-        } finally {
-            setIsLoading(false)
             setFormValues({
                 title: '',
                 amount: '',
@@ -87,8 +95,20 @@ export default function LockAsset() {
                 assetType: 'ethereum',
                 goal: ''
             })
+
+        } catch (error:any) {
+            console.error("Failed to create campaign:", error.message);
+        } finally {
+            setIsLoading(false)
         }
     }
+
+    const durationPlaceholders: Record<string, string> = {
+        days: "1 - 6 days",
+        weeks: "1 - 3 weeks",
+        months: "1 - 11 months",
+        years: "1 - 5 years",
+    };
 
     const remainingTitleWords = TITLE_WORD_LIMIT - countWords(formValues.title);
 
@@ -126,7 +146,7 @@ export default function LockAsset() {
                 </div>
                 <div className="mb-2">
                     <label className="input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600">
-                        Title
+                        Name
                         <input 
                             type="text" 
                             id="title"
@@ -178,7 +198,7 @@ export default function LockAsset() {
                         value={formValues.duration}
                         onChange={handleChange}
                         className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                        placeholder={`In`} 
+                        placeholder={durationPlaceholders[formValues.durationType]} 
                         required
                     />
                 </label>
