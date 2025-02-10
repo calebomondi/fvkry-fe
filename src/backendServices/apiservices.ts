@@ -2,10 +2,10 @@ import axios, {AxiosResponse} from 'axios'
 import { API_URL } from './apiurl'
 
 const apiService = {
-    lockETH: async (parsedData:any): Promise<any> => {
+    lockAsset: async (parsedData:any): Promise<any> => {
         try {
             const response: AxiosResponse<any> = await axios.post(
-              `${API_URL}/api/admin/upload/teachers`,
+              `${API_URL}/api/write/lockAsset`,
               {
                 data: parsedData
               },
@@ -19,7 +19,7 @@ const apiService = {
             return response.data;
             
           } catch (error) {
-            console.error('Error in uploadTeachers:', error);
+            console.error('Asset Locking Failed:', error);
             throw error;
           }
     },

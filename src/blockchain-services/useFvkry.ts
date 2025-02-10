@@ -27,7 +27,7 @@ export async function getWalletClient() {
 }
 
 //Write Functions
-export async function createETHSubVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
+export async function createETHVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
     try {
         const { walletClient, address } = await getWalletClient();
 
@@ -80,11 +80,31 @@ export async function createETHSubVault(_amount:string, _vault:number, _lockperi
 
 //Read Functions
 export async function getContractEthBalance() {
-    const balance = await publicClient.readContract({
-        address: contractAddress as `0x${string}`,
-        abi: contractABI,
-        functionName: 'getContractETHBalance'
-    });
+    try {
+        const balance = await publicClient.readContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: 'getContractETHBalance'
+        });
+    
+        return balance;
+    } catch (error) {
+        throw new Error("Cannot Get Contract ETH Balance!");
+    }
+}
 
-    return balance;
+//dummy token address 0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf
+export async function getContractTokenBalance(address: string) {
+    try {
+        const balance = await publicClient.readContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: 'getContractTokenBalance',
+            args:[address]
+        });
+    
+        return balance;
+    } catch (error) {
+        throw new Error("Cannot Get Contract Token Balance!");
+    }
 }

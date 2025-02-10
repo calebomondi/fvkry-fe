@@ -3,6 +3,7 @@ import { LockMyAsset } from "@/types";
 
 import { publicClient } from "@/blockchain-services/useFvkry";
 import { contractABI, contractAddress } from "@/blockchain-services/core";
+import apiService from "@/backendServices/apiservices";
 //import { createETHSubVault } from "@/blockchain-services/useFvkry";
 
 export default function LockAsset() {
@@ -82,8 +83,11 @@ export default function LockAsset() {
                 throw new Error('Years Cannot Exceed 5')
             }
 
-            alert(`${formValues.title} -- ${formValues.amount} -- ${formValues.symbol} -- ${formValues.duration} -- ${formValues.durationType} -- ${formValues.lockType} -- ${formValues.assetType} -- ${formValues.goal}}`)
-            //await createETHSubVault(formValues.amount,)
+            //1. lock asset
+
+            //2. record in db
+            const response = apiService.lockAsset({title: formValues.title, amount: formValues.amount, asset:formValues.assetType, durationtype: formValues.durationType});
+            console.log(`resp: ${response}`)
 
             setFormValues({
                 title: '',
