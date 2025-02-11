@@ -96,8 +96,9 @@ export default function LockAsset() {
                 assetType: formValues.assetType,
                 goal: formValues.goal.length === 0 ? '0' : formValues.goal
             }
-            const response = apiService.lockAsset(data2DB);
-            console.log(`resp: ${response}`)
+            console.log(`lockData: ${JSON.stringify(data2DB)}`)
+            const response = await apiService.lockAsset(data2DB);
+            console.log(`resp: ${JSON.stringify(response)}`)
 
             setFormValues({
                 title: '',
