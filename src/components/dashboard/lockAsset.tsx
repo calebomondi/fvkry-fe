@@ -33,7 +33,7 @@ export default function LockAsset() {
         durationType: 'days',
         lockType: 'fixed',
         assetType: 'ethereum',
-        goal: '0'
+        goal: ''
     })
 
     const TITLE_WORD_LIMIT = 10;
@@ -86,7 +86,17 @@ export default function LockAsset() {
             //1. lock asset
 
             //2. record in db
-            const response = apiService.lockAsset({title: formValues.title, amount: formValues.amount, asset:formValues.assetType, durationtype: formValues.durationType});
+            const data2DB = {
+                title: formValues.title,
+                amount: formValues.amount,
+                symbol: formValues.assetType === 'ethereum' ? 'ETH' : formValues.symbol,
+                duration: formValues.duration,
+                durationType: formValues.durationType,
+                lockType: formValues.lockType,
+                assetType: formValues.assetType,
+                goal: formValues.goal.length === 0 ? '0' : formValues.goal
+            }
+            const response = apiService.lockAsset(data2DB);
             console.log(`resp: ${response}`)
 
             setFormValues({

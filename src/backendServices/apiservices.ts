@@ -1,13 +1,18 @@
 import axios, {AxiosResponse} from 'axios'
 import { API_URL } from './apiurl'
+import { LockMyAsset } from '@/types';
+import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
-    lockAsset: async (parsedData:any): Promise<any> => {
+    lockAsset: async (data:LockMyAsset): Promise<any> => {
+        const { address } = await getWalletClient();
+
         try {
             const response: AxiosResponse<any> = await axios.post(
               `${API_URL}/api/write/lockAsset`,
               {
-                data: parsedData
+                address,
+                data
               },
               {
                 headers: {
