@@ -1,4 +1,5 @@
 import MyRoutes from "./components/Routes/routes"
+import { Toaster } from "./components/ui/toaster";
 
 import '@rainbow-me/rainbowkit/styles.css';
 import {
@@ -34,6 +35,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <RainbowKitProvider>
           <MyRoutes />
+          <Toaster />
         </RainbowKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

@@ -4,9 +4,15 @@ import { LockMyAsset } from "@/types";
 import { publicClient } from "@/blockchain-services/useFvkry";
 import { contractABI, contractAddress } from "@/blockchain-services/core";
 import apiService from "@/backendServices/apiservices";
+
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast"
+
 //import { createETHSubVault } from "@/blockchain-services/useFvkry";
 
 export default function LockAsset() {
+    const { toast } = useToast()
+
     //listen to add events
    useEffect(() => {
         //AssetLocked
@@ -83,6 +89,11 @@ export default function LockAsset() {
                 throw new Error('Years Cannot Exceed 5')
             }
 
+            toast({
+                title: "Uh oh! Something went wrong.",
+                description: "There was a problem with your request.",
+              })
+
             //1. lock asset
 
             //2. record in db
@@ -97,9 +108,8 @@ export default function LockAsset() {
                 goal: formValues.goal.length === 0 ? '0' : formValues.goal
             }
             console.log(`lockData: ${JSON.stringify(data2DB)}`)
-            const response = await apiService.lockAsset(data2DB);
-            console.log(`resp: ${JSON.stringify(response)}`)
-
+            //const response = await apiService.lockAsset(data2DB);
+            
             setFormValues({
                 title: '',
                 amount: '',
@@ -113,6 +123,12 @@ export default function LockAsset() {
 
         } catch (error:any) {
             console.error("Failed to create campaign:", error.message);
+            toast({
+                variant: "destructive",
+                title: "ERROR",
+                description: error.message,
+                action: <ToastAction altText="Try again">Try again</ToastAction>,
+              })
         } finally {
             setIsLoading(false)
         }
