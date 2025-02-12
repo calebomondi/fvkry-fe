@@ -2,6 +2,7 @@ import { createPublicClient, createWalletClient, custom, http } from "viem";
 import { contractABI, contractAddress } from "./core";
 import { liskSepolia } from 'viem/chains'
 import { parseEther } from "viem";
+import { Lock } from "@/types";
 
 //set up public cient
 export const publicClient = createPublicClient({
@@ -93,8 +94,30 @@ export async function getContractEthBalance() {
     }
 }
 
-export async function getSubVaults(vault: number) {
-    console.log(vault)
+export async function getSubVaults(vault: number): Promise<Lock[]> {
+    const { address } = await getWalletClient();
+    try {
+      const data = await publicClient.readContract({
+        address: contractAddress as `0x${string}`,
+        abi: contractABI,
+        functionName: 'getUserLocks',
+        args: [vault],
+        account: address
+      }) as Lock[]
+
+      // Ensure the data is properly typed
+      return data.map(lock => ({
+        token: lock.token,
+        amount: BigInt(lock.amount.toString()),
+        lockEndTime: Number(lock.lockEndTime),
+        title: lock.title,
+        withdrawn: lock.withdrawn,
+        isNative: lock.isNative
+      }))
+    } catch (error) {
+      console.error('Error fetching vault data:', error)
+      throw new Error("Cannot Get Vault Data!")
+    }
 }
 
 //dummy token address 0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf - humanade(MAN)
