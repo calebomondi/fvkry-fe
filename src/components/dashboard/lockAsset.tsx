@@ -8,7 +8,7 @@ import apiService from "@/backendServices/apiservices";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 
-//import { createETHSubVault } from "@/blockchain-services/useFvkry";
+import { createETHVault } from "@/blockchain-services/useFvkry";
 
 export default function LockAsset() {
     const { toast } = useToast()
@@ -21,7 +21,7 @@ export default function LockAsset() {
             abi: contractABI,
             eventName: 'AssetLocked',
             onError: error => console.log(`error - ${error}`),
-            onLogs: logs => console.log(`logs - ${logs}`)
+            onLogs: logs => console.log(`logs - ${JSON.stringify(logs)}`)
         });
 
         return () => {
@@ -47,6 +47,31 @@ export default function LockAsset() {
     const countWords = (text: string): number => {
         return text.trim() ? text.trim().split(/\s+/).length : 0;
     };
+
+    const durationTypeToNumber = (period: string): number => {
+        const periodMap: { [key: string]: number } = {
+            'days': 1,
+            'weeks': 2,
+            'months': 3,
+            'years': 4
+        };
+    
+        const normalizedPeriod = period.toLowerCase();
+        return periodMap[normalizedPeriod] || 0; 
+    }
+
+    const convertToDays = (durationType: string, duration: number): number => {
+        const conversionRates: { [key: string]: number } = {
+            'days': 1,
+            'weeks': 7,
+            'months': 30, // Assuming 30 days per month for simplicity
+            'years': 365, // Not accounting for leap years
+        };
+    
+        const normalizedType = durationType.toLowerCase();
+    
+        return duration * conversionRates[normalizedType];
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement  | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -89,37 +114,48 @@ export default function LockAsset() {
                 throw new Error('Years Cannot Exceed 5')
             }
 
-            toast({
-                title: "Uh oh! Something went wrong.",
-                description: "There was a problem with your request.",
-              })
+            //get vault and duration in day
+            const vault = durationTypeToNumber(formValues.durationType)
+            const days = convertToDays(formValues.durationType,Number(formValues.duration))
 
-            //1. lock asset
-
-            //2. record in db
             const data2DB = {
                 title: formValues.title,
                 amount: formValues.amount,
                 symbol: formValues.assetType === 'ethereum' ? 'ETH' : formValues.symbol,
-                duration: formValues.duration,
+                duration: String(days),
                 durationType: formValues.durationType,
                 lockType: formValues.lockType,
                 assetType: formValues.assetType,
                 goal: formValues.goal.length === 0 ? '0' : formValues.goal
             }
-            console.log(`lockData: ${JSON.stringify(data2DB)}`)
-            //const response = await apiService.lockAsset(data2DB);
-            
-            setFormValues({
-                title: '',
-                amount: '',
-                symbol: '',
-                duration: '',
-                durationType: 'days',
-                lockType: 'fixed',
-                assetType: 'ethereum',
-                goal: ''
-            })
+
+            //1. lock asset
+            let tx = "";
+
+            if(formValues.assetType === 'ethereum') {
+                tx = await createETHVault(formValues.amount, vault, days, formValues.title);
+            }           
+            if(tx) {
+                //toast
+                toast({
+                    title: `Lock ${formValues.title} Was Created Successfully`,
+                    description: `TxHash: ${tx}`,
+                });
+                //clear form
+                setFormValues({
+                    title: '',
+                    amount: '',
+                    symbol: '',
+                    duration: '',
+                    durationType: 'days',
+                    lockType: 'fixed',
+                    assetType: 'ethereum',
+                    goal: ''
+                })
+                setIsLoading(false)
+                //uplaod to db
+                await apiService.lockAsset(data2DB)
+            }
 
         } catch (error:any) {
             console.error("Failed to create campaign:", error.message);

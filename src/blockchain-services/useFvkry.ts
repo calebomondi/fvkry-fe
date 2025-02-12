@@ -93,7 +93,11 @@ export async function getContractEthBalance() {
     }
 }
 
-//dummy token address 0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf
+export async function getSubVaults(vault: number) {
+    console.log(vault)
+}
+
+//dummy token address 0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf - humanade(MAN)
 export async function getContractTokenBalance(address: string) {
     try {
         const balance = await publicClient.readContract({
