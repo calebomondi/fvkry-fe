@@ -9,7 +9,7 @@ import LockAsset from "../dashboard/lockAsset";
 export default function ConnectedNavbar() {
 
   return (
-    <div className="navbar dark:bg-black/90">
+    <div className="navbar dark:bg-black/90 sticky top-0">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">

@@ -16,4 +16,18 @@ export interface Lock {
     title: string;
     withdrawn: boolean;
     isNative: boolean;
-  }
+}
+
+type LockType = "goal" | "fixed";
+
+export interface VaultData {
+    title: string;
+    amount: number;
+    start_time: string;
+    end_time: string;
+    unlock_goal_usd: number;
+    lock_type: LockType;
+    withdrawn: boolean;
+    asset_address: string;
+    asset_symbol: string;
+}
