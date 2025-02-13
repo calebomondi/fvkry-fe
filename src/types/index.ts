@@ -30,4 +30,7 @@ export interface VaultData {
     withdrawn: boolean;
     asset_address: string;
     asset_symbol: string;
+    unlock_schedule: number;
+    next_unlock: string;
+    unlock_amount: number;
 }

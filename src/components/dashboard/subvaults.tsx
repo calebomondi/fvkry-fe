@@ -7,8 +7,6 @@ import { VaultData } from "@/types"
 import apiService from "@/backendServices/apiservices"
 import { LockKeyholeOpen } from 'lucide-react';
 
-import mockVaultData from "./mockvaultdata"
-
 export default function SubVaultsContainer() {
   const [vaultData, setVaultData] = useState<VaultData[]>([])
   const [loading, setLoading] = useState(true)
@@ -34,10 +32,10 @@ export default function SubVaultsContainer() {
         setError(null)
         const vaultType = durationTypeToNumber(String(id))
         //get data from contract
-        //1. const subVaults = await getSubVaults(vaultType)
+        const subVaults = await getSubVaults(vaultType)
         //get combined data from db and contract
-        //2. const combinedData = await apiService.getCombinedVaultData(String(id),subVaults)
-        setVaultData(mockVaultData)
+        const combinedData = await apiService.getCombinedVaultData(String(id),subVaults)
+        setVaultData(combinedData)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch vault data')
       } finally {
