@@ -34,3 +34,23 @@ export interface VaultData {
     next_unlock: string;
     unlock_amount: number;
 }
+
+export interface TokenConfig {
+    address: `0x${string}`;
+    abi: any;
+    decimals: number;
+    symbol: string;
+}
+
+export interface ApproveTokenParams {
+    symbol: string;
+    amount: bigint;
+}
+
+export interface TokenVaultParams {
+    symbol: string;
+    amountT: string;
+    vault: number;
+    lockPeriod: number;  // in days
+    title: string;
+}

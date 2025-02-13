@@ -1,8 +1,11 @@
-import { createPublicClient, createWalletClient, custom, http } from "viem";
+import { createPublicClient, createWalletClient, custom, http, parseEther, getContract, parseUnits } from "viem";
 import { contractABI, contractAddress } from "./core";
 import { liskSepolia } from 'viem/chains'
-import { parseEther } from "viem";
 import { Lock } from "@/types";
+
+import { ApproveTokenParams, TokenVaultParams } from "@/types";
+
+import { getTokenConfig } from "./tokens";
 
 //set up public cient
 export const publicClient = createPublicClient({
@@ -33,7 +36,7 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
         const { walletClient, address } = await getWalletClient();
 
         //convert days to seconds
-        const daysToSeconds = _lockperiod * 24 * 60 * 60;
+        const daysToSeconds = BigInt(_lockperiod * 24 * 60 * 60);
 
         //convert amount to wei
         const ethToWei = parseEther(_amount);
@@ -77,6 +80,89 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
         throw new Error(error.message || 'Transaction failed');
     }
 
+}
+
+async function approveToken({symbol, amount}: ApproveTokenParams) {
+    try {
+        const { walletClient, address } = await getWalletClient();
+
+        //get token
+        const token = getTokenConfig(symbol);
+
+        //get contract instance
+        const contract = getContract({
+            address: token.address,
+            abi: token.abi,
+            client : {
+                public: publicClient,
+                wallet: walletClient
+            }
+        });
+
+        //convert to proper decimals
+        const amountInWei = parseUnits(amount.toString(), token.decimals);
+
+        //send approve transaction
+        const hash = await contract.write.approve([contractAddress, amountInWei], { account: address });
+
+        // Wait for transaction confirmation
+        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+
+        console.log(`receipt => ${receipt}`)
+
+        return {
+            receipt,
+            tokenAddress: token.address,
+            amount: amountInWei,
+            walletClient,
+            address
+        };
+    } catch(error: any) {
+        throw new Error(`Error approving ${symbol} tokens`)
+    }
+
+}   
+
+export async function createTokenVault({ symbol, amountT, vault, lockPeriod, title }: TokenVaultParams) {
+    try {
+        //aprove token
+        const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: symbol, amount: BigInt(amountT)});
+
+        //convert days to seconds
+        const daysToSeconds = BigInt(lockPeriod * 24 * 60 * 60);
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "lockToken",
+            args: [ tokenAddress, approvedAmount, vault, daysToSeconds, title],
+            account: address
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+    } catch (error) {
+        if (error instanceof Error) {
+            // Check for common contract errors
+            if (error.message.includes('VaultIsFull')) {
+              throw new Error('Vault has reached maximum capacity');
+            }
+            if (error.message.includes('TokenIsBlackListed')) {
+              throw new Error(`Token ${symbol} is blacklisted`);
+            }
+            if (error.message.includes('InadequateTokenBalance')) {
+              throw new Error('Insufficient token balance');
+            }
+            if (error.message.includes('InvalidTokenAddress')) {
+              throw new Error('Invalid token address provided');
+            }
+        }
+
+        // Re-throw other errors
+        throw error;
+    }
 }
 
 //Read Functions

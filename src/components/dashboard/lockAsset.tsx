@@ -8,7 +8,8 @@ import apiService from "@/backendServices/apiservices";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 
-import { createETHVault } from "@/blockchain-services/useFvkry";
+import { createETHVault, createTokenVault } from "@/blockchain-services/useFvkry";
+import { isTokenSupported } from "@/blockchain-services/tokens";
 
 export default function LockAsset() {
     const { toast } = useToast()
@@ -113,6 +114,9 @@ export default function LockAsset() {
             if (formValues.durationType === 'years' && Number(formValues.duration) > 5) {
                 throw new Error('Years Cannot Exceed 5')
             }
+            if ( formValues.assetType !== 'ethereum' && !isTokenSupported(formValues.symbol)) {
+                throw new Error(`${formValues.symbol.toUpperCase()} token Is Not Supported Yet!`)
+            }
 
             //get vault and duration in day
             const vault = durationTypeToNumber(formValues.durationType)
@@ -134,12 +138,17 @@ export default function LockAsset() {
 
             if(formValues.assetType === 'ethereum') {
                 tx = await createETHVault(formValues.amount, vault, days, formValues.title);
-            }           
+            } else {
+                tx = await createTokenVault({symbol: formValues.symbol, amountT: formValues.amount, vault: vault, lockPeriod: days , title: formValues.title})
+            }        
             if(tx) {
                 //toast
                 toast({
-                    title: `Lock ${formValues.title} Was Created Successfully`,
-                    description: `TxHash: ${tx}`,
+                    title: `${formValues.title.toUpperCase()}`,
+                    description: `Lock has been Created Successfully`,
+                    action: (
+                        <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+                    )
                 });
                 //clear form
                 setFormValues({
