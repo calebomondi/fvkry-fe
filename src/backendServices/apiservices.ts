@@ -1,10 +1,10 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { LockMyAsset, Lock, VaultData } from '@/types';
+import { Send2DB, Lock, VaultData } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
-    lockAsset: async (formData:LockMyAsset): Promise<any> => {
+    lockAsset: async (formData:Send2DB): Promise<any> => {
         const { address } = await getWalletClient();
         
         try {
@@ -38,7 +38,7 @@ const apiService = {
         amount: vault.amount.toString(),
         // Convert other BigInt fields if they exist
         lockEndTime: vault.lockEndTime.toString()
-    }));
+      }));
       
       try {
           const response: AxiosResponse<VaultData[]> = await axios.post(

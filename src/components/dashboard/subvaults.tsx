@@ -35,6 +35,7 @@ export default function SubVaultsContainer() {
         const subVaults = await getSubVaults(vaultType)
         //get combined data from db and contract
         const combinedData = await apiService.getCombinedVaultData(String(id),subVaults)
+        console.log(`combinedData: ${JSON.stringify(combinedData)}`)
         setVaultData(combinedData)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch vault data')

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { LockMyAsset } from "@/types";
+import { LockMyAsset, Send2DB, TokenConfig } from "@/types";
 
 import { publicClient } from "@/blockchain-services/useFvkry";
 import { contractABI, contractAddress } from "@/blockchain-services/core";
@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 
 import { createETHVault, createTokenVault } from "@/blockchain-services/useFvkry";
-import { isTokenSupported } from "@/blockchain-services/tokens";
+import { isTokenSupported, getTokenConfig } from "@/blockchain-services/tokens";
 
 export default function LockAsset() {
     const { toast } = useToast()
@@ -122,15 +122,23 @@ export default function LockAsset() {
             const vault = durationTypeToNumber(formValues.durationType)
             const days = convertToDays(formValues.durationType,Number(formValues.duration))
 
-            const data2DB = {
+            //get asset details
+            let token: TokenConfig = {address: '0x0000000000000000000000000000000000000000', abi: [], decimals: 18, symbol: ''}
+            if (formValues.assetType !== 'ethereum') {
+                token = getTokenConfig(formValues.symbol);
+            }
+
+            const data2DB: Send2DB = {
                 title: formValues.title,
                 amount: formValues.amount,
-                symbol: formValues.assetType === 'ethereum' ? 'ETH' : formValues.symbol,
+                symbol: formValues.assetType === 'ethereum' ? 'ETH' : formValues.symbol.toUpperCase(),
                 duration: String(days),
                 durationType: formValues.durationType,
                 lockType: formValues.lockType,
                 assetType: formValues.assetType,
-                goal: formValues.goal.length === 0 ? '0' : formValues.goal
+                goal: formValues.goal.length === 0 ? '0' : formValues.goal,
+                token: token.address,
+                decimals: token.decimals
             }
 
             //1. lock asset

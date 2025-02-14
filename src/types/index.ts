@@ -9,6 +9,11 @@ export interface LockMyAsset {
     goal: string;
 }
 
+export interface Send2DB extends LockMyAsset {
+    token: `0x${string}`;
+    decimals: number;
+}
+
 export interface Lock {
     token: `0x${string}`;
     amount: bigint;
