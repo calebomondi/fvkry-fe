@@ -50,10 +50,10 @@ export default function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              {['About','Features', 'Tokens', 'FAQ'].map((item) => (
+              {['How It Works', 'FAQ'].map((item) => (
                 <a
                   key={item}
-                  href={item == "About" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
+                  href={item == "How It Works" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
                   className={`transition-all duration-300  relative after:content-[''] after:absolute after:w-0 after:h-0.5
                     after:bg-amber-600 after:left-0 after:bottom-0 after:transition-all hover:after:w-full
                     ${activeSection === item.toLowerCase().replace(' ', '-') ? 'after:w-full' : ''}`}
@@ -75,10 +75,10 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden absolute w-full bg-white dark:bg-black dark: text-gray-800 backdrop-blur-md rounded-xl my-1">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {['About','Features', 'Tokens', 'FAQ'].map((item) => (
+              {['How It Works','FAQ'].map((item) => (
                 <a
                   key={item}
-                  href={item == "About" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
+                  href={item == "How It Works" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
                   className="block px-3 py-2 hover:text-amber-600 dark:text-gray-300"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -89,6 +89,6 @@ export default function Navbar() {
             </div>
           </div>
         )}
-      </nav>
+    </nav>
   )
 }

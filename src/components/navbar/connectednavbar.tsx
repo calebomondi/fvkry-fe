@@ -1,12 +1,11 @@
 import logo2 from "/2.png";
-
 import { Link } from "react-router-dom";
-
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-
 import LockAsset from "../dashboard/lockAsset";
+import { useAccount } from "wagmi";
 
 export default function ConnectedNavbar() {
+  const { isConnected } = useAccount();
 
   return (
     <div className="navbar dark:bg-black/90 sticky top-0">
@@ -34,7 +33,7 @@ export default function ConnectedNavbar() {
             </li>
             <li>
               <a>My Vaults</a>
-              <ul className="p-2">
+              <ul className="p-2 dark:bg-gray-900">
                 <li>
                   <Link to="/dashboard/days">Days</Link>
                 </li>
@@ -50,7 +49,7 @@ export default function ConnectedNavbar() {
               </ul>
             </li>
             <li>
-              <Link to="/dashboard/ts">Token Scanner</Link>
+              <Link to="/rewards/">Rewards</Link>
             </li>
           </ul>
         </div>
@@ -89,12 +88,12 @@ export default function ConnectedNavbar() {
             </details>
           </li>
           <li>
-            <Link to="/dashboard/ts">Token Scanner</Link>
+            <Link to="/rewards/">Rewards</Link>
           </li>
         </ul>
       </div>
       <div className="navbar-end scale-75">
-        <button className="btn rounded-md border-none text-base bg-amber-500 text-white font-semibold hover:scale-95 hover:bg-amber-600" onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement).showModal()}>
+        <button className={`${!isConnected && 'hidden'} btn rounded-md border-none text-base bg-amber-500 text-white font-semibold hover:scale-95 hover:bg-amber-600`} onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement).showModal()}>
           Lock
         </button>
         <dialog id="my_modal_4" className="modal">

@@ -3,24 +3,14 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { LockKeyholeOpen, Timer, Target, Calendar, Wallet, ArrowUpRight, Anchor } from 'lucide-react';
 import { VaultCardProps, VaultGridProps } from '@/types';
 import { useNavigate } from 'react-router-dom';
-import { getWalletClient } from '@/blockchain-services/useFvkry';
   
-const VaultCard: React.FC<VaultCardProps> = ({ subvault, vaultType, vaultId }) => {
+const VaultCard: React.FC<VaultCardProps> = ({ subvault, vaultType }) => {
     const [timeLeft, setTimeLeft] = useState<string>('');
-    const [address, setAddress] = useState<string>('')
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-      navigate(`/vault/${vaultType}?address=${address}&id=${vaultId}`)
+      navigate(`/vault/${vaultType}?address=${subvault.asset_address}&title=${subvault.title}&amount=${subvault.amount}`)
     }
-
-    useEffect(() => {
-      const fetchData = async () => {
-        const {address} = await getWalletClient();
-        setAddress(String(address))
-      }
-      fetchData()
-    }, [])
   
     useEffect(() => {
       const calculateTimeLeft = (): string => {

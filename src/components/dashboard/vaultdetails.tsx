@@ -1,18 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { 
-  Lock, 
-  Timer, 
-  DollarSign, 
-  Calendar, 
-  ArrowUpDown,
-  ArrowRight,
-  TrendingUp,
-  Settings,
-  Send
-} from 'lucide-react';
+import { Timer, ArrowRight, TrendingUp, Settings, Send } from 'lucide-react';
 import ConnectedNavbar from '../navbar/connectednavbar';
+import { VaultData } from '@/types';
+import { useAccount } from 'wagmi';
+import { useLocation, useSearchParams } from 'react-router-dom';
+import { getSpecificVaultData } from './fetchCombinedData';
+import { mockSingleVaultData } from './mockplatformdata';
 
 interface PriceData {
   currentPrice: number;
@@ -25,34 +20,58 @@ interface TimelineEvent {
   isWithdrawn: boolean;
 }
 
-const data = {
-    "title": "ETH Staking Reserve",
-    "amount": 0.5,
-    "start_time": "2025-02-12T07:45:58.174",
-    "end_time": "2025-02-14T07:45:58.174",
-    "unlock_goal_usd": 1000,
-    "lock_type": "goal",
-    "withdrawn": false,
-    "asset_address": "0x0000000000000000000000000000000000000000",
-    "asset_symbol": "ETH",
-    "unlock_schedule": 0,
-    "next_unlock": "2025-02-14T09:00:00.000",
-    "unlock_amount": 0.001
-}
-
 const VaultDetails = () => {
-  const [timeLeft, setTimeLeft] = useState<string>('');
+  const [vaultData, setVaultData] = useState<VaultData>(mockSingleVaultData)
+  const [timeLeft, setTimeLeft] = useState<string>('')
   const [priceData, setPriceData] = useState<PriceData>({
     currentPrice: 0,
     lockedPrice: 0
   });
   const [unlockEvents, setUnlockEvents] = useState<TimelineEvent[]>([]);
-  const isLockExpired = new Date() >= new Date(data.end_time);
+  const [isLockExpired, setIsLockExpired] = useState<boolean>(false)
+
+  //get params and query values
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+  
+  const vault = location.pathname.split('/')[2];
+  const address = searchParams.get('address');
+  const title = searchParams.get('title');
+  const amount = searchParams.get('amount');
+
+  //check if connected
+  const { isConnected } = useAccount();
+
+  //get actual spefic VaultData
+  useEffect(() => {
+    const fetchData = async () => {
+        if (isConnected) {
+          try {
+            if (address && title && amount) {
+              const resp = await getSpecificVaultData(vault, address, title, Number(amount));
+              if(resp) {
+                setVaultData(resp)
+                setIsLockExpired(new Date() >= new Date(resp.end_time))
+              }
+            }
+            console.log(`vaultData: ${JSON.stringify(vaultData)}`)
+          } catch (error) {
+            console.error("Error fetching specific vault data:", error);
+            throw new Error(`Error ${error} occured!`)
+          }
+        } else {
+          setVaultData(mockSingleVaultData)
+        }
+    }
+    fetchData();
+  }, [vault, isConnected]);
 
   // Calculate time remaining
   useEffect(() => {
+    if (!vaultData || !vaultData.end_time) return;
+
     const calculateTimeLeft = () => {
-      const endTime = new Date(data.end_time);
+      const endTime = new Date(vaultData.end_time);
       const now = new Date();
       const difference = endTime.getTime() - now.getTime();
 
@@ -71,28 +90,33 @@ const VaultDetails = () => {
 
     setTimeLeft(calculateTimeLeft());
     return () => clearInterval(timer);
-  }, [data.end_time]);
+  }, [vaultData.end_time]);
 
   // Calculate unlock schedule timeline
   useEffect(() => {
-    
+    if (vaultData.start_time && vaultData.end_time && vaultData.unlock_schedule) {
       const events: TimelineEvent[] = [];
-      const startDate = new Date(data.start_time);
-      const endDate = new Date(data.end_time);
+      const startDate = new Date(vaultData.start_time);
+      const endDate = new Date(vaultData.end_time);
       let currentDate = new Date(startDate);
 
       while (currentDate <= endDate) {
         events.push({
           date: new Date(currentDate),
-          amount: data.unlock_amount,
+          amount: vaultData.unlock_amount,
           isWithdrawn: new Date() > currentDate
         });
-        currentDate.setDate(currentDate.getDate() + data.unlock_schedule);
+        currentDate.setDate(currentDate.getDate() + vaultData.unlock_schedule);
       }
 
       setUnlockEvents(events);
-    
-  }, [data]);
+    }
+  }, [vaultData.start_time, vaultData.end_time, vaultData.unlock_schedule, vaultData.unlock_amount]);
+
+  //price data
+  useEffect(() => {
+    setPriceData({currentPrice: 1200, lockedPrice: 800})
+  }, []);
 
   const formatDate = (date: Date): string => {
     return date.toLocaleDateString('en-US', {
@@ -118,7 +142,7 @@ const VaultDetails = () => {
             <Card>
                 <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                    <span className="text-2xl text-amber-600">#{data.title}</span>
+                    <span className="text-2xl text-amber-600">#{vaultData.title}</span>
                     <p className="text-lg font-mono flex space-x-2"> <Timer /> <span>{timeLeft}</span></p>
                 </CardTitle>
                 </CardHeader>
@@ -128,10 +152,10 @@ const VaultDetails = () => {
                     <div className="space-y-2">
                         <h3 className="text-lg font-semibold text-center">Locked Amount</h3>
                         <p className="text-2xl font-bold text-center">
-                            {data.amount} {data.asset_symbol}
+                            {vaultData.amount} {vaultData.asset_symbol}
                         </p>
                         <p className="text-gray-500 text-center">
-                            ≈ {formatCurrency(data.amount * priceData.currentPrice)}
+                            ≈ {formatCurrency(vaultData.amount * priceData.currentPrice)}
                         </p>
                     </div>
                     
@@ -148,7 +172,7 @@ const VaultDetails = () => {
                             </span>
                         </div>
                         <p className="text-gray-500 text-center">
-                            Initial: {formatCurrency(data.amount * priceData.lockedPrice)}
+                            Initial: {formatCurrency(vaultData.amount * priceData.lockedPrice)}
                         </p>
                     </div>
                 </div>
@@ -156,24 +180,24 @@ const VaultDetails = () => {
                 <div className="flex flex-col md:flex-row">
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">Start Date</p>
-                    <p className="font-semibold text-center">{formatDate(new Date(data.start_time))}</p>
+                    <p className="font-semibold text-center">{formatDate(new Date(vaultData.start_time))}</p>
                     </div>
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">End Date</p>
-                    <p className="font-semibold text-center">{formatDate(new Date(data.end_time))}</p>
+                    <p className="font-semibold text-center">{formatDate(new Date(vaultData.end_time))}</p>
                     </div>
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">Lock Type</p>
-                    <p className="font-semibold text-center capitalize">{data.lock_type}</p>
+                    <p className="font-semibold text-center capitalize">{vaultData.lock_type}</p>
                     </div>
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">Unlock Schedule</p>
-                    <p className="font-semibold text-center">Every {data.unlock_schedule} days</p>
+                    <p className="font-semibold text-center">Every {vaultData.unlock_schedule} days</p>
                     </div>
-                    {data.unlock_goal_usd && (
+                    {vaultData.unlock_goal_usd && (
                     <div className='md:w-1/3'>
                         <p className="text-center text-gray-400">Goal Amount</p>
-                        <p className="font-semibold text-center">{formatCurrency(data.unlock_goal_usd)}</p>
+                        <p className="font-semibold text-center">{formatCurrency(vaultData.unlock_goal_usd)}</p>
                     </div>
                     )}
                 </div>
@@ -216,26 +240,32 @@ const VaultDetails = () => {
         <div className="space-y-4 border border-white my-2 rounded-md p-2">
             <h3 className="text-xl font-semibold text-amber-600 m-2">Unlock Schedule</h3>
             <div className="h-auto overflow-x-auto">
-                <ul className="timeline overflow-x-auto">
-                    {unlockEvents.map((event, index) => (
-                        <li key={index} className="space-x-4 flex flex-col items-center justify-center">                            
-                            <div className="timeline-start timeline-box dark:bg-gray-900">{formatDate(event.date)}</div>
-                            <div className="timeline-middle">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className="h-5 w-5">
-                                <path
-                                fillRule="evenodd"
-                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-                                clipRule="evenodd" />
-                            </svg>
-                            </div>
-                            <hr className='bg-amber-600'/>
-                        </li>
-                    ))}
-                </ul>
+              {
+                vaultData.unlock_schedule !== 0 ?
+                  <ul className="timeline overflow-x-auto">
+                      {unlockEvents.map((event, index) => (
+                          <li key={index} className="space-x-4 flex flex-col items-center justify-center">                            
+                              <div className="timeline-start timeline-box dark:bg-gray-900">{formatDate(event.date)}</div>
+                              <div className="timeline-middle">
+                              <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 20 20"
+                                  fill="currentColor"
+                                  className="h-5 w-5">
+                                  <path
+                                  fillRule="evenodd"
+                                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                                  clipRule="evenodd" />
+                              </svg>
+                              </div>
+                              <hr className='bg-amber-600'/>
+                          </li>
+                      ))}
+                  </ul> :
+                  <div className='grid place-items-center '>
+                    No Unlock Schedule Have Been Set, SetUp One.
+                  </div>
+              }
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 import { VaultData } from "@/types";
 
-const mockVaultData: VaultData[] = [
+export const mockVaultsData: VaultData[] = [
     {
         "title": "ETH Staking Reserve",
         "amount": 0.5,
@@ -143,4 +143,17 @@ const mockVaultData: VaultData[] = [
     }
 ]
 
-export default mockVaultData;
+export const mockSingleVaultData: VaultData = {
+    "title": "ETH Staking Reserve",
+    "amount": 0.5,
+    "start_time": "2025-02-12T07:45:58.174",
+    "end_time": "2026-02-14T07:45:58.174",
+    "unlock_goal_usd": 1000,
+    "lock_type": "goal",
+    "withdrawn": false,
+    "asset_address": "0x0000000000000000000000000000000000000000",
+    "asset_symbol": "ETH",
+    "unlock_schedule": 0,
+    "next_unlock": "2025-02-14T09:00:00.000",
+    "unlock_amount": 0.001
+}

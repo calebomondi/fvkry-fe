@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from '../AnimatedSection/animatedsection';
 
-import { Lock, Wallet, Shield, Clock, BookOpen} from 'lucide-react';
+import { Lock, Wallet, Shield, Clock, Activity, LockKeyhole} from 'lucide-react';
 import vault from '/vault.png'
 
 import StatisticsSection from './stats';
@@ -39,8 +39,12 @@ export default function Home () {
 
   const navigate = useNavigate()
 
-  const handledDocu = () => {
-    navigate("/documentation");
+  const handleHealth = () => {
+    navigate("/financialHealth");
+  }
+
+  const handleDash = () => {
+    navigate("/dashboard");
   }
 
   return (
@@ -69,15 +73,23 @@ export default function Home () {
               <div className="flex flex-col space-y-5 justify-center items-center">
                 <p className="text-amber-500 text-center">Ready to lock your crypto and stay disciplined?</p>
                 <div className='flex space-x-4 justify-center items-center'>
-                  <CustomConnectButton />
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
+                    onClick={handleDash}
+                  >
+                    Start Locking Now
+                    <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
+                  </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
-                    onClick={handledDocu}
+                    onClick={handleHealth}
                   >
-                    How It Works
-                    <BookOpen  className="ml-2 w-5 h-5 animate-pulse" />
+                    Check Finacial Health
+                    <Activity  className="ml-2 w-5 h-5 animate-pulse" />
                   </motion.button>
                 </div>
               </div>
