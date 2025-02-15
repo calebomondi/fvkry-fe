@@ -59,3 +59,14 @@ export interface TokenVaultParams {
     lockPeriod: number;  // in days
     title: string;
 }
+
+export interface VaultCardProps {
+    subvault: VaultData;
+    vaultType: string;
+    vaultId: number;
+}
+
+export interface VaultGridProps {
+    vaultData: VaultData[];
+    vaultType: string;
+}
