@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { LockKeyholeOpen, Timer, Target, Calendar, Wallet, ArrowUpRight, Anchor } from 'lucide-react';
+import { LockKeyholeOpen, Timer, Target, Wallet, ArrowUpRight, Anchor, Search, Lock } from 'lucide-react';
 import { VaultCardProps, VaultGridProps } from '@/types';
 import { useNavigate } from 'react-router-dom';
   
@@ -47,7 +47,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     };
   
     return (
-      <Card className="hover:cursor-pointer dark:bg-base-200 border-none shadow-md hover:shadow-sm hover:shadow-amber-400 transition-all duration-300">
+      <Card className="hover:cursor-pointer dark:bg-base-200 border-none shadow-md hover:shadow-sm hover:shadow-amber-400 transition-all duration-300 mx-4 md:mx-0">
         <CardHeader>
           <CardTitle className="text-center truncate py-1 text-amber-600">
             #{subvault.title}
@@ -65,7 +65,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
   
             {/* Lock Type */}
             <div className="flex items-center space-x-2">
-              <LockKeyholeOpen className="w-4 h-4" />
+              <Lock className="w-4 h-4" />
               <p className="text-center font-semibold capitalize">
                 {subvault.lock_type} Lock
               </p>
@@ -97,8 +97,8 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
             {/* Next Unlock Date (if applicable) */}
             {subvault.next_unlock && (
               <div className="flex items-center space-x-2 text-purple-500">
-                <Calendar className="w-4 h-4" />
-                <p className="font-semibold">Next: {formatDate(subvault.next_unlock)}</p>
+                <LockKeyholeOpen className="w-4 h-4" />
+                <p className="font-semibold">{formatDate(subvault.next_unlock)}</p>
               </div>
             )}
           </div>
@@ -112,20 +112,146 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     );
   };
   
-  // Main component that renders the grid of vault cards
-  const VaultGrid: React.FC<VaultGridProps> = ({ vaultData }) => {
+ // Main component that renders the grid of vault cards
+ const VaultGrid: React.FC<VaultGridProps> = ({ vaultData }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedAsset, setSelectedAsset] = useState('');
+  const [selectedLockType, setSelectedLockType] = useState('');
+  const [showNearExpiry, setShowNearExpiry] = useState(false);
+  const [showExpired, setShowExpired] = useState(false);
+  const [filteredVaults, setFilteredVaults] = useState(vaultData);
 
+  // Get unique asset symbols and lock types for filter options
+  const assetSymbols = [...new Set(vaultData.map(vault => vault.asset_symbol))];
+  const lockTypes = [...new Set(vaultData.map(vault => vault.lock_type))];
+
+  // Check if a vault is expiring within 7 days
+  const isExpiringSoon = (endTime: string) => {
+    const end = new Date(endTime).getTime();
+    const now = new Date().getTime();
+    const sevenDays = 7 * 24 * 60 * 60 * 1000;
+    return end - now <= sevenDays && end - now > 0;
+  };
+
+  // Check if a vault has expired
+  const isExpired = (endTime: string) => {
+    const end = new Date(endTime).getTime();
+    const now = new Date().getTime();
+    return end - now <= 0;
+  };
+
+  //search by name or address
+  const matchesSearchTerm = (vault: any, term: string) => {
+    const searchLower = term.toLowerCase();
     return (
+      vault.title.toLowerCase().includes(searchLower) ||
+      vault.asset_symbol.toLowerCase().includes(searchLower)
+    );
+  };
+
+  useEffect(() => {
+    // Apply filters and search
+    let filtered = vaultData.filter(vault => {
+      const matchesSearch = searchTerm ? matchesSearchTerm(vault, searchTerm) : true;
+      const matchesAsset = selectedAsset ? vault.asset_symbol === selectedAsset : true;
+      const matchesLockType = selectedLockType ? vault.lock_type === selectedLockType : true;
+      const matchesExpiry = showNearExpiry ? isExpiringSoon(vault.end_time) : true;
+      const matchesExpired = showExpired ? isExpired(vault.end_time) : !isExpired(vault.end_time);
+
+      return matchesSearch && matchesAsset && matchesLockType && matchesExpiry && matchesExpired;
+    });
+
+    setFilteredVaults(filtered);
+  }, [searchTerm, selectedAsset, selectedLockType, showNearExpiry, showExpired, vaultData]);
+
+  return (
+    <div className="space-y-6">
+      {/* Search and Filter Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sticky top-20 dark:bg-black/90 p-2 rounded-md">
+        {/* Search Input */}
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Title or Asset Symbol..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-10 w-full h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
+          />
+        </div>
+
+        {/* Asset Symbol Filter */}
+        <select
+          value={selectedAsset}
+          onChange={(e) => setSelectedAsset(e.target.value)}
+          className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
+        >
+          <option className='bg-base-300' value="">All Assets</option>
+          {assetSymbols.map(symbol => (
+            <option className='bg-base-300' key={symbol} value={symbol}>{symbol}</option>
+          ))}
+        </select>
+
+        {/* Lock Type Filter */}
+        <select
+          value={selectedLockType}
+          onChange={(e) => setSelectedLockType(e.target.value)}
+          className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
+        >
+          <option className='bg-base-300' value="">All Lock Types</option>
+          {lockTypes.map(type => (
+            <option className='bg-base-300' key={type} value={type}>{type}</option>
+          ))}
+        </select>
+
+        {/* Expiring Soon Toggle */}
+        <button
+          onClick={() => {
+            setShowNearExpiry(!showNearExpiry);
+            if (showExpired && !showNearExpiry) setShowExpired(false); // Disable expired when enabling near expiry
+          }}
+          className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors
+            ${showNearExpiry 
+              ? 'border-amber-600 text-amber-600 bg-amber-600/10' 
+              : 'border-gray-300 dark:border-gray-600'}`}
+        >
+          <Timer className="w-4 h-4" />
+          Expiring Soon
+        </button>
+
+        {/* Expired Toggle */}
+        <button
+          onClick={() => {
+            setShowExpired(!showExpired);
+            if (showNearExpiry && !showExpired) setShowNearExpiry(false); // Disable near expiry when enabling expired
+          }}
+          className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors
+            ${showExpired 
+              ? 'border-red-600 text-red-600 bg-red-600/10' 
+              : 'border-gray-300 dark:border-gray-600'}`}
+        >
+          <Lock className="w-4 h-4" />
+          Expired Locks
+        </button>
+
+        {/* Results Count */}
+        <div className="text-sm text-gray-500">
+          Showing {filteredVaults.length} of {vaultData.length} vaults
+        </div>
+      </div>
+
+      {/* Vaults Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {vaultData.length > 0 ? (
-          vaultData.map((subvault, index) => (
+        {filteredVaults.length > 0 ? (
+          filteredVaults.map((subvault, index) => (
             <VaultCard key={index} subvault={subvault} />
           ))
         ) : (
-          <p className="text-center col-span-full">No vaults found</p>
+          <p className="text-center col-span-full">No vaults match your criteria</p>
         )}
       </div>
-    );
-  };
+    </div>
+  );
+};
   
-  export default VaultGrid;
+ export default VaultGrid;

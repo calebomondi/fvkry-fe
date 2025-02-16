@@ -4,6 +4,7 @@ import LockAsset from "../dashboard/lockAsset";
 import { useAccount } from "wagmi";
 import { CustomConnectButton } from "../walletconnect/walletconnect";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { CircleUserIcon } from "lucide-react";
 
 export default function ConnectedNavbar() {
   const { isConnected } = useAccount();
@@ -78,8 +79,8 @@ export default function ConnectedNavbar() {
         <div className="hidden md:block ml-4">
           {isConnected ? <ConnectButton /> :<CustomConnectButton />}
         </div>
-        <button className="md:hidden btn rounded-md border-none text-base bg-transparent text-white font-semibold hover:scale-95" onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement).showModal()}>
-          account
+        <button className="md:hidden btn rounded-md border-none text-base bg-transparent font-semibold hover:scale-95" onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement).showModal()}>
+          <CircleUserIcon className="w-10 h-10"/>
         </button>
         <dialog id="my_modal_5" className="modal">
           <div className="modal-box">
