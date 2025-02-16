@@ -24,11 +24,11 @@ export default function MyRoutes() {
                 element={ <Dashboard /> }
             />     
             <Route
-                path="/dashboard/:id"
+                path="/myvaults"
                 element={ <SubVaultsContainer /> }
             /> 
             <Route
-                path="/vault/:id"
+                path="/vault/"
                 element={ <VaultDetails /> }
             /> 
             <Route

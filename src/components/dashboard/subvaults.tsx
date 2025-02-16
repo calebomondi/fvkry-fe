@@ -22,7 +22,7 @@ export default function SubVaultsContainer() {
         
         if (isConnected) {
           //get combined data from db and contract
-          const combinedData = await mergedVaultData(String(id))
+          const combinedData = await mergedVaultData()
           setVaultData(combinedData)
         } else {
           // If not connected, show mock or public data
@@ -49,7 +49,6 @@ export default function SubVaultsContainer() {
 
     return (
       <>
-        <h2 className="text-2xl font-bold mb-4">Vault Type: {id}</h2>
         <VaultGrid vaultData={vaultData} vaultType={String(id)} />
         {!isConnected && (
           <p className="text-center mt-4 text-gray-600">

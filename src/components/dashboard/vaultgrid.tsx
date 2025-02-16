@@ -4,12 +4,12 @@ import { LockKeyholeOpen, Timer, Target, Calendar, Wallet, ArrowUpRight, Anchor 
 import { VaultCardProps, VaultGridProps } from '@/types';
 import { useNavigate } from 'react-router-dom';
   
-const VaultCard: React.FC<VaultCardProps> = ({ subvault, vaultType }) => {
+const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     const [timeLeft, setTimeLeft] = useState<string>('');
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-      navigate(`/vault/${vaultType}?address=${subvault.asset_address}&title=${subvault.title}&amount=${subvault.amount}`)
+      navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}&amount=${subvault.amount}`)
     }
   
     useEffect(() => {
@@ -113,13 +113,13 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault, vaultType }) => {
   };
   
   // Main component that renders the grid of vault cards
-  const VaultGrid: React.FC<VaultGridProps> = ({ vaultData, vaultType }) => {
+  const VaultGrid: React.FC<VaultGridProps> = ({ vaultData }) => {
 
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {vaultData.length > 0 ? (
           vaultData.map((subvault, index) => (
-            <VaultCard key={index} subvault={subvault} vaultType={vaultType} vaultId={index}/>
+            <VaultCard key={index} subvault={subvault} />
           ))
         ) : (
           <p className="text-center col-span-full">No vaults found</p>

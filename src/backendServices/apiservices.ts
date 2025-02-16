@@ -28,7 +28,7 @@ const apiService = {
           throw error;
         }
     },
-    getCombinedVaultData: async (vaultType: string ,vaultData:Lock[]): Promise<VaultData[]> => {
+    getCombinedVaultData: async (vaultData:Lock[]): Promise<VaultData[]> => {
       const { address } = await getWalletClient();
 
       // Convert the vaultData to make it JSON-serializable
@@ -45,7 +45,6 @@ const apiService = {
             `${API_URL}/api/utils/combine`,
             {
               address,
-              vaultType,
               bcData: serializedVaultData
             },
             {

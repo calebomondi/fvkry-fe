@@ -1,8 +1,9 @@
 import logo2 from "/2.png";
 import { Link } from "react-router-dom";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import LockAsset from "../dashboard/lockAsset";
 import { useAccount } from "wagmi";
+import { CustomConnectButton } from "../walletconnect/walletconnect";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function ConnectedNavbar() {
   const { isConnected } = useAccount();
@@ -32,21 +33,7 @@ export default function ConnectedNavbar() {
               <Link to="/dashboard/">Dashboard</Link>
             </li>
             <li>
-              <a>My Vaults</a>
-              <ul className="p-2 dark:bg-gray-900">
-                <li>
-                  <Link to="/dashboard/days">Days</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/weeks">Weeks</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/months">Months</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/years">Years</Link>
-                </li>
-              </ul>
+              <Link to="/myvaults/">My Vaults</Link>
             </li>
             <li>
               <Link to="/rewards/">Rewards</Link>
@@ -69,23 +56,7 @@ export default function ConnectedNavbar() {
             <Link to="/dashboard/">Dashboard</Link>
           </li>
           <li>
-            <details>
-              <summary>My Vaults</summary>
-              <ul className="p-2">
-                <li>
-                  <Link to="/dashboard/days">Days</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/weeks">Weeks</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/months">Months</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard/years">Years</Link>
-                </li>
-              </ul>
-            </details>
+            <Link to="/myvaults/">My Vaults</Link>
           </li>
           <li>
             <Link to="/rewards/">Rewards</Link>
@@ -105,7 +76,7 @@ export default function ConnectedNavbar() {
           </div>
         </dialog>
         <div className="hidden md:block ml-4">
-          <ConnectButton />
+          {isConnected ? <ConnectButton /> :<CustomConnectButton />}
         </div>
         <button className="md:hidden btn rounded-md border-none text-base bg-transparent text-white font-semibold hover:scale-95" onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement).showModal()}>
           account
@@ -115,7 +86,7 @@ export default function ConnectedNavbar() {
               <form method="dialog">
               <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
               </form>
-              <ConnectButton />              
+              {isConnected ? <ConnectButton /> :<CustomConnectButton />}              
           </div>
         </dialog>
       </div>

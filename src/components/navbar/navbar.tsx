@@ -18,7 +18,7 @@ export default function Navbar() {
           lastScrollY = currentScrollY;
     
           // Update active section
-          const sections = ['hero', 'about', 'experience', 'projects'];
+          const sections = ['hero', 'stats', 'features', 'tokens', 'faq', 'cta'];
           const currentSection = sections.find(section => {
             const element = document.getElementById(section);
             if (element) {
@@ -36,7 +36,7 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-300 ${isVisible ? 'top-0' : '-top-20'}
-        ${activeSection === 'hero' ? ' dark:bg-black/20 bg-white/20' : 'dark:bg-black/90 bg-white/90  backdrop-blur-md  shadow-lg'}`}>
+        ${activeSection === 'hero' ? ' dark:bg-black/5 bg-white/5' : 'dark:bg-black/70 bg-white/70  backdrop-blur-md  shadow-lg'}`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex justify-between md:h-20 h-16">
             <div className="flex items-center">

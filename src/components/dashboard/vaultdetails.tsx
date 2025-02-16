@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Timer, ArrowRight, TrendingUp, Settings, Send } from 'lucide-react';
+import { Timer, ArrowRight, TrendingUp, Send, CircleFadingPlus } from 'lucide-react';
 import ConnectedNavbar from '../navbar/connectednavbar';
 import { VaultData } from '@/types';
 import { useAccount } from 'wagmi';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { getSpecificVaultData } from './fetchCombinedData';
 import { mockSingleVaultData } from './mockplatformdata';
+import AddSchedule from './addSchedule';
 
 interface PriceData {
   currentPrice: number;
@@ -48,13 +49,12 @@ const VaultDetails = () => {
         if (isConnected) {
           try {
             if (address && title && amount) {
-              const resp = await getSpecificVaultData(vault, address, title, Number(amount));
+              const resp = await getSpecificVaultData(address, title, Number(amount));
               if(resp) {
                 setVaultData(resp)
                 setIsLockExpired(new Date() >= new Date(resp.end_time))
               }
             }
-            console.log(`vaultData: ${JSON.stringify(vaultData)}`)
           } catch (error) {
             console.error("Error fetching specific vault data:", error);
             throw new Error(`Error ${error} occured!`)
@@ -207,11 +207,19 @@ const VaultDetails = () => {
                     <Button 
                     variant="outline" 
                     className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
-                    onClick={() => {/* Implement settings logic */}}
+                    onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
-                    <Settings className="w-4 h-4" />
+                    <CircleFadingPlus className="w-4 h-4" />
                     <span>Update Schedule</span>
                     </Button>
+                    <dialog id="my_modal_13" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <AddSchedule />            
+                      </div>
+                    </dialog>
 
                     <Button 
                     variant="outline"
@@ -231,6 +239,16 @@ const VaultDetails = () => {
                     >
                     <Send className="w-4 h-4" />
                     <span>Transfer</span>
+                    </Button>
+
+                    <Button 
+                    variant="outline"
+                    className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
+                    disabled={!isLockExpired}
+                    onClick={() => {/* Implement transfer logic */}}
+                    >
+                    <Send className="w-4 h-4" />
+                    <span>Extend</span>
                     </Button>
                 </div>
                 </CardContent>

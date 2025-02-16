@@ -62,8 +62,6 @@ export interface TokenVaultParams {
 
 export interface VaultCardProps {
     subvault: VaultData;
-    vaultType: string;
-    vaultId: number;
 }
 
 export interface VaultGridProps {

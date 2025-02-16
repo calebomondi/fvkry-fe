@@ -147,8 +147,8 @@ export default function Home () {
       </AnimatedSection>
 
       {/* CTA Section */}
-      <AnimatedSection className="py-20 bg-navy ">
-        <div className="max-w-3xl mx-auto px-4 text-center flex flex-col items-center">
+      <AnimatedSection className="py-20 bg-navy">
+        <div className="max-w-3xl mx-auto px-4 text-center flex flex-col items-center" id="cta">
           <h2 className="text-2xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
           <p className="text-lg mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
           <CustomConnectButton />
