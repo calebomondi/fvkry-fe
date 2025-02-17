@@ -1,17 +1,28 @@
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { VaultData } from '@/types';
+import { getWalletClient } from "@/blockchain-services/useFvkry";
 
 export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
-    const { toast } = useToast()
+    const { toast } = useToast();
 
+    const [userAddress,setUserAddress] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formValues, setFormValues] = useState<{amount: string, duration: string, unLockType: string}>({
         amount: '',
         duration: '',
         unLockType: 'after'
     })
+
+    //get user wallet address
+    useEffect(() => {
+        const fetchData = async () => {
+            const { address } = await getWalletClient();
+            setUserAddress(address);
+        }
+        fetchData();
+    }, [])
 
     // Calculate total lock duration in days
     const getTotalLockDays = () => {
@@ -100,7 +111,8 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                 amount: Number(formValues.amount),
                 duration: Number(formValues.duration),
                 unlockType: formValues.unLockType,
-                nextUnlock: nextUnlockTime
+                nextUnlock: nextUnlockTime,
+                userAddress: userAddress
             };
 
             alert(JSON.stringify(scheduleData, null, 2));
@@ -146,7 +158,7 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                                 value={formValues.amount}
                                 onChange={handleChange}
                                 className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                                placeholder="0.001" 
+                                placeholder={vaultData.asset_symbol === 'ETH' ? "0.001" : "1"} 
                                 required
                             />
                         </label>
@@ -169,7 +181,7 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                                 value={formValues.duration}
                                 onChange={handleChange}
                                 className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                                placeholder="11" 
+                                placeholder="1" 
                                 required
                             />
                             Days

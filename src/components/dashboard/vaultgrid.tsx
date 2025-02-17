@@ -116,7 +116,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
         </CardContent>
       </Card>
     );
-  };
+};
   
  // Main component that renders the grid of vault cards
  const VaultGrid: React.FC<VaultGridProps> = ({ vaultData }) => {
