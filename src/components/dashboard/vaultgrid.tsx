@@ -11,30 +11,36 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     const handleNavigate = () => {
       navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}&amount=${subvault.amount}`)
     }
-  
+    
     useEffect(() => {
       const calculateTimeLeft = (): string => {
-        const endTime = new Date(subvault.end_time);
+        // Get current time in UTC
         const now = new Date();
-        const difference = endTime.getTime() - now.getTime();
-  
+        const utcNow = new Date(
+          now.getTime() + (now.getTimezoneOffset() * 60000)
+        );
+    
+        // Parse the end time directly (assuming subvault.end_time is in UTC)
+        const endTime = new Date(subvault.end_time);
+        const difference = endTime.getTime() - utcNow.getTime();
+    
         if (difference <= 0) {
           return 'Expired';
         }
-  
+    
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  
+    
         return `${days}d ${hours}h ${minutes}m`;
       };
-  
+    
       const timer = setInterval(() => {
         setTimeLeft(calculateTimeLeft());
-      }, 60000); // Update every minute
-  
+      }, 60000);
+    
       setTimeLeft(calculateTimeLeft()); // Initial calculation
-  
+    
       return () => clearInterval(timer);
     }, [subvault.end_time]);
   

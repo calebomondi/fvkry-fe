@@ -68,27 +68,34 @@ const VaultDetails = () => {
 
   // Calculate time remaining
   useEffect(() => {
-    if (!vaultData || !vaultData.end_time) return;
-
-    const calculateTimeLeft = () => {
-      const endTime = new Date(vaultData.end_time);
+    const calculateTimeLeft = (): string => {
+      // Get current time in UTC
       const now = new Date();
-      const difference = endTime.getTime() - now.getTime();
-
-      if (difference <= 0) return 'Lock Expired';
-
+      const utcNow = new Date(
+        now.getTime() + (now.getTimezoneOffset() * 60000)
+      );
+  
+      // Parse the end time directly (assuming subvault.end_time is in UTC)
+      const endTime = new Date(vaultData.end_time);
+      const difference = endTime.getTime() - utcNow.getTime();
+  
+      if (difference <= 0) {
+        return 'Expired';
+      }
+  
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-
+  
       return `${days}d ${hours}h ${minutes}m`;
     };
-
+  
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 60000);
-
-    setTimeLeft(calculateTimeLeft());
+  
+    setTimeLeft(calculateTimeLeft()); // Initial calculation
+  
     return () => clearInterval(timer);
   }, [vaultData.end_time]);
 
@@ -192,7 +199,7 @@ const VaultDetails = () => {
                     </div>
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">Unlock Schedule</p>
-                    <p className="font-semibold text-center">Every {vaultData.unlock_schedule} days</p>
+                    <p className="font-semibold text-center">{vaultData.unlock_schedule === 0 ? 'None' : `$Every {vaultData.unlock_schedule} days`}</p>
                     </div>
                     {vaultData.unlock_goal_usd && (
                     <div className='md:w-1/3'>
@@ -207,6 +214,7 @@ const VaultDetails = () => {
                     <Button 
                     variant="outline" 
                     className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
+                    disabled={vaultData.lock_type === "goal" || vaultData.unlock_schedule > 0}
                     onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
                     <CircleFadingPlus className="w-4 h-4" />
@@ -217,7 +225,7 @@ const VaultDetails = () => {
                         <form method="dialog">
                           <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
-                        <AddSchedule />            
+                        <AddSchedule vaultData={vaultData}/>            
                       </div>
                     </dialog>
 

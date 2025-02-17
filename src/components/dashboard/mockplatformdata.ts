@@ -154,6 +154,6 @@ export const mockSingleVaultData: VaultData = {
     "asset_address": "0x0000000000000000000000000000000000000000",
     "asset_symbol": "ETH",
     "unlock_schedule": 0,
-    "next_unlock": "2025-02-14T09:00:00.000",
-    "unlock_amount": 0.001
+    "next_unlock": "2025-02-19T09:00:00.000",
+    "unlock_amount": 0
 }
