@@ -38,6 +38,7 @@ export interface VaultData {
     unlock_schedule: number;
     next_unlock: string;
     unlock_amount: number;
+    unlock_type: string;
 }
 
 export interface TokenConfig {
@@ -67,4 +68,15 @@ export interface VaultCardProps {
 export interface VaultGridProps {
     vaultData: VaultData[];
     vaultType: string;
+}
+
+export interface ScheduledData {
+    amount: number;
+    duration: number;
+    unlockType: string;
+    nextUnlock: string;
+    userAddress: string;
+    lockTitle: string;
+    lockAmount: number;
+    assetSymbol: string;
 }

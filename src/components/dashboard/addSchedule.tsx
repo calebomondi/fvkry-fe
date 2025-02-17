@@ -3,6 +3,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { VaultData } from '@/types';
 import { getWalletClient } from "@/blockchain-services/useFvkry";
+import apiService from "@/backendServices/apiservices";
 
 export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
     const { toast } = useToast();
@@ -112,15 +113,20 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                 duration: Number(formValues.duration),
                 unlockType: formValues.unLockType,
                 nextUnlock: nextUnlockTime,
-                userAddress: userAddress
+                userAddress: userAddress,
+                lockTitle: vaultData.title,
+                lockAmount: vaultData.amount,
+                assetSymbol: vaultData.asset_symbol
             };
 
-            alert(JSON.stringify(scheduleData, null, 2));
+            const resp = await apiService.addSchedule(scheduleData);
 
-            toast({
-                title: "Success",
-                description: "Unlock schedule has been set successfully",
-            });
+            if(resp.status) {
+                toast({
+                    title: "Success",
+                    description: "Unlock schedule has been set successfully",
+                });
+            }
 
             setFormValues({
                 amount: '',

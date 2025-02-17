@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { Send2DB, Lock, VaultData } from '@/types';
+import { Send2DB, Lock, VaultData, ScheduledData } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
@@ -41,26 +41,47 @@ const apiService = {
       }));
       
       try {
-          const response: AxiosResponse<VaultData[]> = await axios.post(
-            `${API_URL}/api/utils/combine`,
-            {
-              address,
-              bcData: serializedVaultData
-            },
-            {
-              headers: {
-                'Content-Type': 'application/json'
-              }
+        const response: AxiosResponse<VaultData[]> = await axios.post(
+          `${API_URL}/api/utils/combine`,
+          {
+            address,
+            bcData: serializedVaultData
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
             }
-          );
-    
-          return response.data;
-          
-        } catch (error) {
-          console.error('Asset Locking Failed:', error);
-          throw error;
-        }
-  },
+          }
+        );
+
+        return response.data;
+        
+      } catch (error) {
+        console.error('Asset Locking Failed:', error);
+        throw error;
+      }
+    },
+    addSchedule: async (scheduledData:ScheduledData): Promise<{status: boolean}> => {
+      try {
+        const response: AxiosResponse<{status: boolean}> = await axios.post(
+          `${API_URL}/api/write/lockSchedule`,
+          {
+            scheduleData: scheduledData
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Setting Unlock Schedule Failed:', error);
+        throw error;
+      }
+    }
 }
 
 export default apiService;

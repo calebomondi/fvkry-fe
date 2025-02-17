@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Timer, ArrowRight, TrendingUp, Send, CircleFadingPlus } from 'lucide-react';
+import { Timer, TrendingUp, Send, CircleFadingPlus, Rotate3d, CircleArrowOutDownRight } from 'lucide-react';
 import ConnectedNavbar from '../navbar/connectednavbar';
 import { VaultData } from '@/types';
 import { useAccount } from 'wagmi';
@@ -103,7 +103,7 @@ const VaultDetails = () => {
   useEffect(() => {
     if (vaultData.start_time && vaultData.end_time && vaultData.unlock_schedule) {
       const events: TimelineEvent[] = [];
-      const startDate = new Date(vaultData.start_time);
+      const startDate = new Date(Date.now() + (vaultData.unlock_schedule * 24 * 60 * 60 * 1000)).toISOString();
       const endDate = new Date(vaultData.end_time);
       let currentDate = new Date(startDate);
 
@@ -199,12 +199,18 @@ const VaultDetails = () => {
                     </div>
                     <div className='md:w-1/3'>
                     <p className="text-center text-gray-400">Unlock Schedule</p>
-                    <p className="font-semibold text-center">{vaultData.unlock_schedule === 0 ? 'None' : `$Every {vaultData.unlock_schedule} days`}</p>
+                    <p className="font-semibold text-center">{vaultData.unlock_schedule === 0 ? 'None' : `${vaultData.unlock_type} ${vaultData.unlock_schedule} days`}</p>
                     </div>
                     {vaultData.unlock_goal_usd && (
                     <div className='md:w-1/3'>
                         <p className="text-center text-gray-400">Goal Amount</p>
                         <p className="font-semibold text-center">{formatCurrency(vaultData.unlock_goal_usd)}</p>
+                    </div>
+                    )}
+                    {vaultData.unlock_schedule > 0 && (
+                    <div className='md:w-1/3'>
+                        <p className="text-center text-gray-400">Unlock Amount</p>
+                        <p className="font-semibold text-center">{vaultData.unlock_amount} {vaultData.asset_symbol}</p>
                     </div>
                     )}
                 </div>
@@ -218,7 +224,7 @@ const VaultDetails = () => {
                     onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
                     <CircleFadingPlus className="w-4 h-4" />
-                    <span>Update Schedule</span>
+                    <span>Set Unlock Schedule</span>
                     </Button>
                     <dialog id="my_modal_13" className="modal">
                       <div className="modal-box">
@@ -235,7 +241,7 @@ const VaultDetails = () => {
                     disabled={!isLockExpired}
                     onClick={() => {/* Implement withdraw logic */}}
                     >
-                    <ArrowRight className="w-4 h-4" />
+                    <CircleArrowOutDownRight className="w-4 h-4" />
                     <span>Withdraw</span>
                     </Button>
 
@@ -255,7 +261,7 @@ const VaultDetails = () => {
                     disabled={!isLockExpired}
                     onClick={() => {/* Implement transfer logic */}}
                     >
-                    <Send className="w-4 h-4" />
+                    <Rotate3d className="w-4 h-4" />
                     <span>Extend</span>
                     </Button>
                 </div>
