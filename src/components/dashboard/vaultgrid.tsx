@@ -143,7 +143,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
   const isExpired = (endTime: string) => {
     const end = new Date(endTime).getTime();
     const now = new Date().getTime();
-    return end - now <= 0;
+    return end - now <= 0 && now > end;
   };
 
   //search by name or address

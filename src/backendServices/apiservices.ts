@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { Send2DB, Lock, VaultData, ScheduledData } from '@/types';
+import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
@@ -67,6 +67,30 @@ const apiService = {
           `${API_URL}/api/write/lockSchedule`,
           {
             scheduleData: scheduledData
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Setting Unlock Schedule Failed:', error);
+        throw error;
+      }
+    },
+    updateLock: async (update:UpdateToLock): Promise<{status: boolean}> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<{status: boolean}> = await axios.post(
+          `${API_URL}/api/write/updateLock`,
+          {
+            address,
+            newData: update
           },
           {
             headers: {

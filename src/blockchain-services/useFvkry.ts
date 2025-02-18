@@ -165,6 +165,84 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
     }
 }
 
+export async function addToEthVault(_vault:number, _index:number, _amount:string) {
+    try {
+        const { walletClient, address } = await getWalletClient();
+
+        //convert amount to wei
+        const ethToWei = parseEther(_amount);
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "addToLockedETH",
+            args: [ _vault, _index],
+            account: address,
+            value: ethToWei
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+
+    } catch (error: any) {
+        // Check for custom contract errors
+        if (error.message.includes('InvalidAssetID')) {
+            throw new Error('This assetID entered is Invalid!');
+        }
+        
+        if (error.message.includes('LockPeriodExpired')) {
+            throw new Error('Lock Period Has Expired!');
+        }
+
+        // Handle other common wallet/network errors
+        if (error.message.includes('user rejected')) {
+            throw new Error('Transaction rejected by user');
+        }
+
+        if (error.message.includes('insufficient funds')) {
+            throw new Error('Insufficient balance for transaction');
+        }
+    }
+}
+
+export async function addToTokenVault(_vault:number, _index:number, _symbol:string, _amount:string) {
+    try {
+        //aprove token
+        const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: _symbol, amount: BigInt(_amount)});
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "addToLockedTokens",
+            args: [ tokenAddress, _index, approvedAmount, _vault],
+            account: address
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+    } catch (error) {
+        if (error instanceof Error) {
+            // Check for common contract errors
+            if (error.message.includes('TokenIsBlackListed')) {
+              throw new Error(`Token ${_symbol} is blacklisted`);
+            }
+            if (error.message.includes('InadequateTokenBalance')) {
+              throw new Error('Insufficient token balance');
+            }
+            if (error.message.includes('InvalidTokenAddress')) {
+              throw new Error('Invalid token address provided');
+            }
+        }
+
+        // Re-throw other errors
+        throw error;
+    }
+}
+
 //Read Functions
 export async function getContractEthBalance() {
     try {
@@ -192,13 +270,15 @@ export async function getSubVaults(vault: number): Promise<Lock[]> {
       }) as Lock[]
 
       // Ensure the data is properly typed
-      return data.map(lock => ({
+      return data.map((lock, index) => ({
         token: lock.token,
         amount: BigInt(lock.amount.toString()),
         lockEndTime: Number(lock.lockEndTime),
         title: lock.title,
         withdrawn: lock.withdrawn,
-        isNative: lock.isNative
+        isNative: lock.isNative,
+        vaultType: vault,
+        lockIndex: index
       }))
     } catch (error) {
       console.error('Error fetching vault data:', error)

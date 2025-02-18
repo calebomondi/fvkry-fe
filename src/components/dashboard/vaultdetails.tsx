@@ -9,6 +9,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import { getSpecificVaultData } from './fetchCombinedData';
 import { mockSingleVaultData } from './mockplatformdata';
 import AddSchedule from './addSchedule';
+import AddToLock from './addToLock';
 
 interface PriceData {
   currentPrice: number;
@@ -103,7 +104,7 @@ const VaultDetails = () => {
   useEffect(() => {
     if (vaultData.start_time && vaultData.end_time && vaultData.unlock_schedule) {
       const events: TimelineEvent[] = [];
-      const startDate = new Date(Date.now() + (vaultData.unlock_schedule * 24 * 60 * 60 * 1000)).toISOString();
+      const startDate = new Date(vaultData.next_unlock).toISOString();
       const endDate = new Date(vaultData.end_time);
       let currentDate = new Date(startDate);
 
@@ -218,13 +219,30 @@ const VaultDetails = () => {
                 {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4 items-center justify-center">
                     <Button 
-                    variant="outline" 
-                    className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
-                    disabled={vaultData.lock_type === "goal" || vaultData.unlock_schedule > 0}
-                    onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
+                      variant="outline"
+                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? 'hidden' : ''}`}
+                      onClick={() => (document.getElementById('my_modal_14') as HTMLDialogElement).showModal()}
+                    >
+                    <CircleArrowOutDownRight className="w-4 h-4" />
+                      <span>Add To Lock</span>
+                    </Button>
+                    <dialog id="my_modal_14" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <AddToLock vaultData={vaultData}/>            
+                      </div>
+                    </dialog>
+
+                    <Button 
+                      variant="outline" 
+                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
+                      disabled={vaultData.unlock_schedule > 0}
+                      onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
                     <CircleFadingPlus className="w-4 h-4" />
-                    <span>Set Unlock Schedule</span>
+                      <span>Set Unlock Schedule</span>
                     </Button>
                     <dialog id="my_modal_13" className="modal">
                       <div className="modal-box">
@@ -237,8 +255,7 @@ const VaultDetails = () => {
 
                     <Button 
                     variant="outline"
-                    className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
-                    disabled={!isLockExpired}
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
                     onClick={() => {/* Implement withdraw logic */}}
                     >
                     <CircleArrowOutDownRight className="w-4 h-4" />
@@ -247,8 +264,7 @@ const VaultDetails = () => {
 
                     <Button 
                     variant="outline"
-                    className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
-                    disabled={!isLockExpired}
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
                     onClick={() => {/* Implement transfer logic */}}
                     >
                     <Send className="w-4 h-4" />
@@ -257,8 +273,7 @@ const VaultDetails = () => {
 
                     <Button 
                     variant="outline"
-                    className="flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2"
-                    disabled={!isLockExpired}
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
                     onClick={() => {/* Implement transfer logic */}}
                     >
                     <Rotate3d className="w-4 h-4" />

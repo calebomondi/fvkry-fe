@@ -21,6 +21,8 @@ export interface Lock {
     title: string;
     withdrawn: boolean;
     isNative: boolean;
+    vaultType: number;
+    lockIndex: number;
 }
 
 type LockType = "goal" | "fixed";
@@ -39,6 +41,8 @@ export interface VaultData {
     next_unlock: string;
     unlock_amount: number;
     unlock_type: string;
+    vaultType?: number;
+    lockIndex?: number;
 }
 
 export interface TokenConfig {
@@ -78,5 +82,11 @@ export interface ScheduledData {
     userAddress: string;
     lockTitle: string;
     lockAmount: number;
+    assetSymbol: string;
+}
+
+export interface UpdateToLock {
+    updatedAmount: number;
+    title: string;
     assetSymbol: string;
 }
