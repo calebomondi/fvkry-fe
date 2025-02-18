@@ -243,6 +243,69 @@ export async function addToTokenVault(_vault:number, _index:number, _symbol:stri
     }
 }
 
+export async function withdrawAsset(_index:number, _vault:number, _amount:string, _goal:boolean, _decimals:number, _symbol:string) {
+    try {
+        const { walletClient, address } = await getWalletClient();
+
+        //parse amount
+        let parsedAmount;
+        if(_symbol === 'ETH') {
+            parsedAmount = parseEther(_amount)
+        } else {
+            parsedAmount = parseUnits(_amount, _decimals)
+        }
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "withdrawAsset",
+            args: [ _index, _vault, parsedAmount, _goal],
+            account: address
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+
+    } catch (error: any) {
+        console.log('Error in Withdrawing', error);
+
+        // Check for custom contract errors
+        if (error.message.includes('InvalidAssetID')) {
+            throw new Error('Invalid Asset ID');
+        }
+        
+        if (error.message.includes('VaultHasBeenFullyWithdrawn')) {
+            throw new Error('Vault has been fully withdrawn');
+        }
+
+        if (error.message.includes('NotEnoughToWithdraw')) {
+            throw new Error('Insufficient balance to withdraw');
+        }
+        
+        if (error.message.includes('LockPeriodNotExpiredAndGoalNotReached')) {
+            throw new Error('Lock period not expired and goal not reached');
+        }
+
+        if (error.message.includes('ETHTransferFailed')) {
+            throw new Error('ETH transfer failed');
+        }
+
+        // Handle other common wallet/network errors
+        if (error.message.includes('user rejected')) {
+            throw new Error('Transaction rejected by user');
+        }
+
+        if (error.message.includes('insufficient funds')) {
+            throw new Error('Insufficient balance for transaction');
+        }
+
+        // For any other error, throw the original message
+        throw new Error(error.message || 'Transaction failed');
+    }
+}
+
 //Read Functions
 export async function getContractEthBalance() {
     try {

@@ -10,6 +10,7 @@ import { getSpecificVaultData } from './fetchCombinedData';
 import { mockSingleVaultData } from './mockplatformdata';
 import AddSchedule from './addSchedule';
 import AddToLock from './addToLock';
+import Withdraw from './withdraw';
 
 interface PriceData {
   currentPrice: number;
@@ -256,11 +257,19 @@ const VaultDetails = () => {
                     <Button 
                     variant="outline"
                     className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
-                    onClick={() => {/* Implement withdraw logic */}}
+                    onClick={() => (document.getElementById('my_modal_15') as HTMLDialogElement).showModal()}
                     >
                     <CircleArrowOutDownRight className="w-4 h-4" />
                     <span>Withdraw</span>
                     </Button>
+                    <dialog id="my_modal_15" className="modal">
+                      <div className="modal-box">
+                        <form method="dialog">
+                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <Withdraw vaultData={vaultData}/>            
+                      </div>
+                    </dialog>
 
                     <Button 
                     variant="outline"
