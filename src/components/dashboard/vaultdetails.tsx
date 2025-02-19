@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Timer, TrendingUp, Send, CircleFadingPlus, Rotate3d, CircleArrowOutDownRight } from 'lucide-react';
+import { Timer, TrendingUp, CircleFadingPlus, CircleArrowOutDownRight } from 'lucide-react';
 import ConnectedNavbar from '../navbar/connectednavbar';
 import { VaultData } from '@/types';
 import { useAccount } from 'wagmi';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { getSpecificVaultData } from './fetchCombinedData';
 import { mockSingleVaultData } from './mockplatformdata';
 import AddSchedule from './addSchedule';
 import AddToLock from './addToLock';
 import Withdraw from './withdraw';
+import { deleteLock } from '@/blockchain-services/useFvkry';
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast"
+import apiService from '@/backendServices/apiservices';
 
 interface PriceData {
   currentPrice: number;
@@ -24,6 +28,8 @@ interface TimelineEvent {
 }
 
 const VaultDetails = () => {
+  const { toast } = useToast();
+
   const [vaultData, setVaultData] = useState<VaultData>(mockSingleVaultData)
   const [timeLeft, setTimeLeft] = useState<string>('')
   const [priceData, setPriceData] = useState<PriceData>({
@@ -34,10 +40,8 @@ const VaultDetails = () => {
   const [isLockExpired, setIsLockExpired] = useState<boolean>(false)
 
   //get params and query values
-  const location = useLocation();
   const [searchParams] = useSearchParams();
   
-  const vault = location.pathname.split('/')[2];
   const address = searchParams.get('address');
   const title = searchParams.get('title');
   const amount = searchParams.get('amount');
@@ -66,7 +70,7 @@ const VaultDetails = () => {
         }
     }
     fetchData();
-  }, [vault, isConnected]);
+  }, [timeLeft, isConnected]);
 
   // Calculate time remaining
   useEffect(() => {
@@ -141,6 +145,58 @@ const VaultDetails = () => {
       currency: 'USD'
     }).format(value);
   };
+
+  const vaultType = (vault:number):string => {
+    if(vault === 1)
+      return "days";
+    if(vault === 2)
+      return "weeks";
+    if(vault === 3)
+      return "months";
+    if(vault === 4)
+      return "years";
+
+    return "";
+  }
+
+  const deleteVault = async(_index:number, _vault:number) => {
+    try {
+      let tx;
+      tx = await deleteLock(_index, _vault);
+      if(tx) {
+        //toast
+        toast({
+          title: `${vaultData.title.toUpperCase()}`,
+          description: `Successfully Withdrew Deleted Lock`,
+          action: (
+              <ToastAction 
+                  altText="Goto schedule to undo"
+                  onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+              >
+                  View Transaction
+              </ToastAction>
+          )
+        });
+
+        //remove from db
+        const data2DB = {
+          assetSymbol: vaultData.asset_symbol,
+          title: vaultData.title,
+          vaultType: vaultType(vaultData.vaultType ?? 0)
+        }
+
+        await apiService.deleteLock(data2DB)
+
+      }
+    } catch (error) {
+      toast({
+          variant: "destructive",
+          title: "Error",
+          description: (error as any).message,
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
+    }
+  }
 
   return (
     <div className=''>
@@ -255,12 +311,13 @@ const VaultDetails = () => {
                     </dialog>
 
                     <Button 
-                    variant="outline"
-                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
-                    onClick={() => (document.getElementById('my_modal_15') as HTMLDialogElement).showModal()}
+                      variant="outline"
+                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
+                      onClick={() => (document.getElementById('my_modal_15') as HTMLDialogElement).showModal()}
+                      disabled = {vaultData.amount === 0}
                     >
-                    <CircleArrowOutDownRight className="w-4 h-4" />
-                    <span>Withdraw</span>
+                      <CircleArrowOutDownRight className="w-4 h-4" />
+                      <span>Withdraw</span>
                     </Button>
                     <dialog id="my_modal_15" className="modal">
                       <div className="modal-box">
@@ -272,28 +329,35 @@ const VaultDetails = () => {
                     </dialog>
 
                     <Button 
-                    variant="outline"
-                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
-                    onClick={() => {/* Implement transfer logic */}}
+                      variant="outline"
+                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired && vaultData.amount === 0 ? '' : 'hidden'}`}
+                      onClick={() => (document.getElementById('my_modal_16') as HTMLDialogElement).showModal()}
                     >
-                    <Send className="w-4 h-4" />
-                    <span>Transfer</span>
+                
+                      <span>Delete Lock</span>
                     </Button>
-
-                    <Button 
-                    variant="outline"
-                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
-                    onClick={() => {/* Implement transfer logic */}}
-                    >
-                    <Rotate3d className="w-4 h-4" />
-                    <span>Extend</span>
-                    </Button>
+                    <dialog id="my_modal_16" className="modal modal-bottom sm:modal-middle">
+                      <div className="modal-box">
+                        <h3 className="font-semibold text-lg text-red-500">Deleting Lock!</h3>
+                        <p className="py-4">{vaultData.title.toUpperCase()}</p>
+                        <div className="modal-action">
+                          <form method="dialog">
+                            <button className="btn btn-sm btn-error m-1" onClick={async () => {
+                              if (vaultData.lockIndex !== undefined && vaultData.vaultType !== undefined) {
+                               await deleteVault(vaultData.lockIndex, vaultData.vaultType);
+                              }
+                            }} >Proceed</button>
+                            <button className="btn btn-sm btn-success m-1">Cancel</button>
+                          </form>
+                        </div>
+                      </div>
+                    </dialog>
                 </div>
                 </CardContent>
             </Card>
         </div>
         {/* Timeline of Unlock Events */}
-        <div className="space-y-4 border border-white my-2 rounded-md p-2">
+        <div className={`space-y-4 border border-white my-2 rounded-md p-2 ${isLockExpired ? 'hidden' : ''}`}>
             <h3 className="text-xl font-semibold text-amber-600 m-2">Unlock Schedule</h3>
             <div className="h-auto overflow-x-auto">
               {
@@ -319,7 +383,8 @@ const VaultDetails = () => {
                       ))}
                   </ul> :
                   <div className='grid place-items-center '>
-                    No Unlock Schedule Have Been Set, SetUp One.
+                    {
+                      vaultData.lock_type === 'goal' ? 'Cannot Set Unlock Schedule For Goal Based Locks' : 'No Unlock Schedule Have Been Set, SetUp One.'}
                   </div>
               }
             </div>

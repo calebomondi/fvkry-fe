@@ -91,3 +91,9 @@ export interface UpdateToLock {
     title: string;
     assetSymbol: string;
 }
+
+export interface DeleteLock {
+    assetSymbol: string;
+    title: string;
+    vaultType: string;
+}

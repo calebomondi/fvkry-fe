@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock } from '@/types';
+import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
@@ -91,6 +91,30 @@ const apiService = {
           {
             address,
             newData: update
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Setting Unlock Schedule Failed:', error);
+        throw error;
+      }
+    },
+    deleteLock: async (lock:DeleteLock): Promise<{status: boolean}> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<{status: boolean}> = await axios.post(
+          `${API_URL}/api/write/deleteLock`,
+          {
+            address,
+            vault: lock
           },
           {
             headers: {

@@ -306,6 +306,38 @@ export async function withdrawAsset(_index:number, _vault:number, _amount:string
     }
 }
 
+export async function deleteLock(_index:number, _vault:number) {
+    try {
+        const { walletClient, address } = await getWalletClient();
+
+        //call function
+        const { request } = await publicClient.simulateContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: "deleteSubVault",
+            args: [ _vault,  _index],
+            account: address
+        });
+
+        const hash = await walletClient.writeContract(request)
+
+        return hash
+    } catch (error) {
+        if (error instanceof Error) {
+            // Check for common contract errors
+            if (error.message.includes('LockPeriodNotExpired')) {
+              throw new Error('Lock Period Has Not Expired!');
+            }
+            if (error.message.includes('VaultHasNotBeenFullyWithdrawn')) {
+              throw new Error(`Vault Has Not Been Fully Withdrawn!`);
+            }
+        }
+
+        // Re-throw other errors
+        throw error;
+    }
+}
+
 //Read Functions
 export async function getContractEthBalance() {
     try {
