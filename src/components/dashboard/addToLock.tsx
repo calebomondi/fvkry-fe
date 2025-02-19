@@ -55,7 +55,12 @@ export default function AddToLock({vaultData}:{vaultData:VaultData}) {
                     title: `${vaultData.title.toUpperCase()}`,
                     description: `Successfully Added ${formValues.amount} ${vaultData.asset_symbol} To Lock`,
                     action: (
-                        <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+                        <ToastAction 
+                            altText="Goto schedule to undo"
+                            onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+                        >
+                            View Transaction
+                        </ToastAction>
                     )
                 });
                 //clear form
@@ -89,7 +94,7 @@ export default function AddToLock({vaultData}:{vaultData:VaultData}) {
     return (
         <div className="flex justify-center items-center">
             <div className="m-2 p-2 flex flex-col justify-center items-center rounded-lg">
-                <h2 className="text-center text-lg font-semibold">Add To Lock</h2>
+                <h2 className="text-center text-lg font-semibold">Add To Lock ({vaultData.asset_symbol})</h2>
                 <form onSubmit={handleSubmit} className="w-full p-1">
                     <div className="flex flex-col md:flex-row md:space-x-4 md:space-y-0 space-y-2 space-x-0 items-center justify-center">
                         <label className="input input-bordered flex items-center justify-between gap-2 mb-1 font-semibold text-amber-600">

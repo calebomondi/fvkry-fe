@@ -41,6 +41,7 @@ const VaultDetails = () => {
   const [unlockEvents, setUnlockEvents] = useState<TimelineEvent[]>([]);
   const [isLockExpired, setIsLockExpired] = useState<boolean>(false)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
+  const [count, setCount] = useState(0);
 
   //get params and query values
   const [searchParams] = useSearchParams();
@@ -68,12 +69,10 @@ const VaultDetails = () => {
             console.error("Error fetching specific vault data:", error);
             throw new Error(`Error ${error} occured!`)
           }
-        } else {
-          setVaultData(mockSingleVaultData)
-        }
+        } 
     }
     fetchData();
-  }, [timeLeft, isConnected]);
+  }, [count, isConnected]);
 
   // Calculate time remaining
   useEffect(() => {
@@ -107,6 +106,15 @@ const VaultDetails = () => {
   
     return () => clearInterval(timer);
   }, [vaultData.end_time]);
+
+  //update component every second
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCount(prevCount => prevCount + 1);
+    }, 1000);
+    
+    return () => clearInterval(intervalId);
+  }, []);
 
   // Calculate unlock schedule timeline
   useEffect(() => {
@@ -148,6 +156,13 @@ const VaultDetails = () => {
       currency: 'USD'
     }).format(value);
   };
+
+  // Calculate total lock duration in days
+  const getTotalLockDays = () => {
+    const startDate = new Date();
+    const endDate = new Date(vaultData.end_time);
+    return Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+  }
 
   const vaultType = (vault:number):string => {
     if(vault === 1)
@@ -303,11 +318,11 @@ const VaultDetails = () => {
                     <Button 
                       variant="outline" 
                       className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
-                      disabled={vaultData.unlock_schedule > 0}
+                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 3}
                       onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
-                    <CircleFadingPlus className="w-4 h-4" />
-                      <span>Set Unlock Schedule</span>
+                      <CircleFadingPlus className="w-4 h-4" />
+                      <span> Set Unlock Schedule </span>
                     </Button>
                     <dialog id="my_modal_13" className="modal">
                       <div className="modal-box">

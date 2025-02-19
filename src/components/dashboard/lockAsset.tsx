@@ -43,7 +43,7 @@ export default function LockAsset() {
         goal: ''
     })
 
-    const TITLE_WORD_LIMIT = 10;
+    const TITLE_WORD_LIMIT = 5;
 
     const countWords = (text: string): number => {
         return text.trim() ? text.trim().split(/\s+/).length : 0;
@@ -155,7 +155,12 @@ export default function LockAsset() {
                     title: `${formValues.title.toUpperCase()}`,
                     description: `Lock has been Created Successfully`,
                     action: (
-                        <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+                        <ToastAction 
+                            altText="Goto schedule to undo"
+                            onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+                        >
+                            View Transaction
+                        </ToastAction>
                     )
                 });
                 //clear form

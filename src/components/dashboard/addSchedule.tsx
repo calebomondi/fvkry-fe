@@ -124,7 +124,7 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
             if(resp.status) {
                 toast({
                     title: "Success",
-                    description: "Unlock schedule has been set successfully",
+                    description: "Unlock schedule has been set successfully"
                 });
             }
 
