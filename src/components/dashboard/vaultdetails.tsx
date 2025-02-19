@@ -15,6 +15,7 @@ import { deleteLock } from '@/blockchain-services/useFvkry';
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import apiService from '@/backendServices/apiservices';
+import { useNavigate } from 'react-router-dom';
 
 interface PriceData {
   currentPrice: number;
@@ -29,6 +30,7 @@ interface TimelineEvent {
 
 const VaultDetails = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [vaultData, setVaultData] = useState<VaultData>(mockSingleVaultData)
   const [timeLeft, setTimeLeft] = useState<string>('')
@@ -38,6 +40,7 @@ const VaultDetails = () => {
   });
   const [unlockEvents, setUnlockEvents] = useState<TimelineEvent[]>([]);
   const [isLockExpired, setIsLockExpired] = useState<boolean>(false)
+  const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
   //get params and query values
   const [searchParams] = useSearchParams();
@@ -160,6 +163,8 @@ const VaultDetails = () => {
   }
 
   const deleteVault = async(_index:number, _vault:number) => {
+    setIsDeleting(true)
+
     try {
       let tx;
       tx = await deleteLock(_index, _vault);
@@ -167,7 +172,7 @@ const VaultDetails = () => {
         //toast
         toast({
           title: `${vaultData.title.toUpperCase()}`,
-          description: `Successfully Withdrew Deleted Lock`,
+          description: `Successfully Deleted Lock`,
           action: (
               <ToastAction 
                   altText="Goto schedule to undo"
@@ -177,6 +182,9 @@ const VaultDetails = () => {
               </ToastAction>
           )
         });
+
+        setIsDeleting(false)
+        navigate("/myvaults")
 
         //remove from db
         const data2DB = {
@@ -334,7 +342,7 @@ const VaultDetails = () => {
                       onClick={() => (document.getElementById('my_modal_16') as HTMLDialogElement).showModal()}
                     >
                 
-                      <span>Delete Lock</span>
+                      <span>{isDeleting ? 'Deleting...' : 'Delete Lock'}</span>
                     </Button>
                     <dialog id="my_modal_16" className="modal modal-bottom sm:modal-middle">
                       <div className="modal-box">
