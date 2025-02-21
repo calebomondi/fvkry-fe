@@ -106,17 +106,17 @@ interface Vault {
     user_address: string;
     vault_type: DurationType;
     asset_address: string;
-    amount: string;
+    amount: number;
     start_time: string;
     end_time: string;
-    unlock_goal_usd: string;
+    unlock_goal_usd: number;
     updated_at: string;
-    unlock_schedule: string;
+    unlock_schedule: number;
     lock_type: LockType;
     title: string;
     asset_symbol: string;
     next_unlock: string;
-    unlock_amount: string;
+    unlock_amount: number;
     decimals: number;
     unlock_type: string;
 }

@@ -21,22 +21,22 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   const renderOverview = (): JSX.Element => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {/* Total value card */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Total Locked Value</h3>
+      <div className="dark:bg-base-300 rounded-lg p-6 shadow-md">
+        <h3 className="text-lg font-medium dark:text-gray-600">Total Locked Value</h3>
         <p className="text-3xl font-bold text-blue-600 mt-2">{formatCurrency(data.totalValueUSD)}</p>
         <p className="text-sm text-gray-500 mt-1">Across {data.totalVaults} vaults</p>
       </div>
       
       {/* Average lock time */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Average Lock Time</h3>
+      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium dark:text-gray-600">Average Lock Time</h3>
         <p className="text-3xl font-bold text-green-600 mt-2">{Math.round(data.avgLockDays)} days</p>
         <p className="text-sm text-gray-500 mt-1">All assets combined</p>
       </div>
       
       {/* Lock Types */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Lock Types</h3>
+      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium dark:text-gray-600">Lock Types</h3>
         <div className="flex justify-around items-center mt-2">
           <div className="text-center">
             <p className="text-2xl font-bold text-indigo-600">{data.lockTypeCounts.fixed}</p>
@@ -50,8 +50,8 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Upcoming unlocks */}
-      <div className="bg-white rounded-lg shadow p-6 md:col-span-2">
-        <h3 className="text-lg font-medium text-gray-700">Upcoming Unlocks (Next 7 Days)</h3>
+      <div className="dark:bg-base-300 rounded-lg shadow p-6 md:col-span-2">
+        <h3 className="text-lg font-medium dark:text-gray-600">Upcoming Unlocks (Next 7 Days)</h3>
         {data.upcomingUnlocks.length > 0 ? (
           <div className="mt-2 overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
@@ -82,13 +82,13 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
             </table>
           </div>
         ) : (
-          <p className="text-gray-500 mt-2">No unlocks scheduled in the next 7 days</p>
+          <p className="text-gray-500 mt-2">No unlocks expriring in the next 7 days</p>
         )}
       </div>
       
       {/* Asset distribution */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Asset Distribution</h3>
+      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium dark:text-gray-600">Asset Distribution</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -117,12 +117,12 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   
   const renderAssets = (): JSX.Element => (
     <div className="space-y-6">
-      <h3 className="text-xl font-medium text-gray-800">Asset Overview</h3>
+      <h3 className="text-xl font-medium text-gray-600">Asset Overview</h3>
       
       {/* Asset details table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
+      <div className="dark:bg-base-300 rounded-lg shadow overflow-hidden">
+        <table className="min-w-full divide-y divide-gray-600">
+          <thead className="b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asset</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Amount</th>
@@ -131,7 +131,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lock Types</th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="dark:bg-base-300 divide-y divide-gray-200">
             {data.assetValues.map((asset) => {
               const avgDaysAsset = data.avgLockDaysByAsset.find(a => a.symbol === asset.symbol);
               const avgDays = avgDaysAsset ? avgDaysAsset.avgDays : 0;
@@ -141,11 +141,11 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
                 <tr key={asset.address}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center text-lg font-bold">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-lg border dark:border-gray-600 flex items-center justify-center text-lg font-bold">
                         {asset.symbol.charAt(0)}
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{asset.symbol}</div>
+                        <div className="text-sm font-medium text-gray-600">{asset.symbol}</div>
                         <div className="text-xs text-gray-500 truncate w-32" title={asset.address}>
                           {asset.address.substring(0, 6)}...{asset.address.substring(asset.address.length - 4)}
                         </div>
@@ -153,14 +153,14 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{asset.totalAmount} {asset.symbol}</div>
+                    <div className="text-sm text-gray-600">{asset.totalAmount} {asset.symbol}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{formatCurrency(asset.valueUSD)}</div>
+                    <div className="text-sm text-gray-600">{formatCurrency(asset.valueUSD)}</div>
                     <div className="text-xs text-gray-500">@ {formatCurrency(asset.price)} per {asset.symbol}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{Math.round(avgDays)} days</div>
+                    <div className="text-sm text-gray-600">{Math.round(avgDays)} days</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex space-x-2">
@@ -180,8 +180,8 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Asset lock duration chart */}
-      <div className="mt-6 bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Average Lock Duration by Asset</h3>
+      <div className="mt-6 dark:bg-base-300 rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium dark:text-gray-600">Average Lock Duration by Asset</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -202,12 +202,12 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   
   const renderAnalytics = (): JSX.Element => (
     <div className="space-y-6">
-      <h3 className="text-xl font-medium text-gray-800">Lock Analytics</h3>
+      <h3 className="text-xl font-medium text-gray-600">Lock Analytics</h3>
       
       {/* Lock Type Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-700">Lock Type Distribution</h3>
+        <div className="dark:bg-base-300 rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium dark:text-gray-600">Lock Type Distribution</h3>
           <div className="h-64 mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -236,8 +236,8 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
         </div>
         
         {/* Lock Duration Distribution */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-700">Lock Duration Type</h3>
+        <div className="dark:bg-base-300 rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium dark:text-gray-600">Lock Duration Type</h3>
           <div className="h-64 mt-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
@@ -260,8 +260,8 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Monthly Activity Chart */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-700">Monthly Locking Activity</h3>
+      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium dark:text-gray-600">Monthly Locking Activity</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
@@ -282,16 +282,9 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   );
   
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gray-50 min-h-screen">
-      <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Vault Dashboard</h2>
-        <p className="text-gray-600 mt-1">
-          User: <span className="font-mono">{data.userAddress.substring(0, 6)}...{data.userAddress.substring(data.userAddress.length - 4)}</span>
-        </p>
-      </div>
-      
+    <div className="max-w-7xl mx-auto px-2 sm:px-2 lg:px-8 py-2 min-h-screen">
       {/* Navigation tabs */}
-      <div className="border-b border-gray-200 mb-6">
+      <div className="border-b border-gray-600 mb-6 sticky top-20 dark:bg-black bg-white shadow-md bg-opacity-50 px-3 rounded-sm">
         <nav className="-mb-px flex space-x-8">
           {[
             { id: 'overview' as const, label: 'Overview' }, 
@@ -304,8 +297,8 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
               className={`
                 py-4 px-1 border-b-2 font-medium text-sm
                 ${selectedTab === tab.id
-                  ? 'border-indigo-500 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}
+                  ? 'border-amber-500 text-amber-600'
+                  : 'border-transparent text-amber-300  hover:dark:text-gray-600 hover:border-gray-300'}
               `}
             >
               {tab.label}

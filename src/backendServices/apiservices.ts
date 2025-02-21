@@ -130,11 +130,11 @@ const apiService = {
         throw error;
       }
     },
-    analysis: async (): Promise<{data: DashboardData}> => {
+    analysis: async (): Promise<DashboardData> => {
       const { address } = await getWalletClient();
 
       try {
-        const response: AxiosResponse<{data: DashboardData}> = await axios.get(
+        const response: AxiosResponse<DashboardData> = await axios.get(
           `${API_URL}/api/read/dashboard/analysis`,
           {
             headers: {
@@ -149,7 +149,7 @@ const apiService = {
         return response.data;
         
       } catch (error) {
-        console.error('Setting Unlock Schedule Failed:', error);
+        console.error('Getting Data Failed:', error);
         throw error;
       }
     }

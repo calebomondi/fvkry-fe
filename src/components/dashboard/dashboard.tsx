@@ -4,11 +4,11 @@ import ConnectedNavbar from "../navbar/connectednavbar";
 import { DashboardData } from '@/types';
 import apiService from '@/backendServices/apiservices';
 import UserVaultDashboard from './userdashboard';
+import { mockDashboardData } from './mockplatformdata';
 
 export default function Dashboard() {
   const { isConnected } = useAccount();
 
-  const [loading, setLoading] = useState<boolean>(true);
   const [dashData, setDashData] = useState<DashboardData | null>(null)
   
   useEffect(() => {
@@ -16,28 +16,28 @@ export default function Dashboard() {
       if (isConnected) {
         try {
           const response = await apiService.analysis()
-          setDashData(response.data)
+          setDashData(response)
+          console.log('data:', JSON.stringify(response))
         } catch (error) {
           console.error("Error fetching wallet data:", error);
-        } finally {
-          setLoading(false);
         }
+      } else {
+        setDashData(mockDashboardData)
       }
     }
 
     fetchData()
   }, [isConnected])
 
-  if (loading) {
-    return <div className="flex items-center justify-center h-screen">Loading...</div>;
-  }
-
   return (
     <div className="">
       <ConnectedNavbar />
-      <div className="p-4">
-        <UserVaultDashboard data={dashData} />
-      </div>
+      <UserVaultDashboard data={dashData} />
+      {!isConnected && (
+        <p className="text-center my-4 text-gray-600">
+          Connect your wallet to view your asset lock analytics
+        </p>
+      )}
     </div>
   )
 }
