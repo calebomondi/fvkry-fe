@@ -1,27 +1,26 @@
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from "react";
 import ConnectedNavbar from "../navbar/connectednavbar";
-import { getWalletClient, getContractEthBalance, getContractTokenBalance } from "@/blockchain-services/useFvkry";
+import { DashboardData } from '@/types';
+import apiService from '@/backendServices/apiservices';
+import UserVaultDashboard from './userdashboard';
 
 export default function Dashboard() {
   const { isConnected } = useAccount();
 
-  const [address, setAddress] = useState<string>('')
-  const [ethvalue, setethValue] = useState<string>('0')
-  const [tknvalue, settknValue] = useState<string>('0')
+  const [loading, setLoading] = useState<boolean>(true);
+  const [dashData, setDashData] = useState<DashboardData | null>(null)
   
   useEffect(() => {
     const fetchData = async () => {
-      if (isConnected) {  // Only fetch wallet data if connected
+      if (isConnected) {
         try {
-          const {address} = await getWalletClient();
-          setAddress(address);
-          const balance = await getContractEthBalance();
-          setethValue(String(balance))
-          const tknbalance = await getContractTokenBalance('0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf');
-          settknValue(String(tknbalance))
+          const response = await apiService.analysis()
+          setDashData(response.data)
         } catch (error) {
           console.error("Error fetching wallet data:", error);
+        } finally {
+          setLoading(false);
         }
       }
     }
@@ -29,19 +28,15 @@ export default function Dashboard() {
     fetchData()
   }, [isConnected])
 
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
+
   return (
     <div className="">
       <ConnectedNavbar />
       <div className="p-4">
-        {isConnected ? (
-          <p className="">
-            Address: {address.slice(0,8)} ETH Balance: {ethvalue} TKN Balance: {tknvalue}
-          </p>
-        ) : (
-          <p className="text-center">
-            Connect your wallet to view your balances and interact with the dashboard
-          </p>
-        )}
+        <UserVaultDashboard data={dashData} />
       </div>
     </div>
   )

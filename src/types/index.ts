@@ -97,3 +97,96 @@ export interface DeleteLock {
     title: string;
     vaultType: string;
 }
+
+// dahboard
+type DurationType = 'days' | 'weeks' | 'months'
+
+interface Vault {
+    vault_id: number;
+    user_address: string;
+    vault_type: DurationType;
+    asset_address: string;
+    amount: string;
+    start_time: string;
+    end_time: string;
+    unlock_goal_usd: string;
+    updated_at: string;
+    unlock_schedule: string;
+    lock_type: LockType;
+    title: string;
+    asset_symbol: string;
+    next_unlock: string;
+    unlock_amount: string;
+    decimals: number;
+    unlock_type: string;
+}
+  
+interface AssetTotal {
+    symbol: string;
+    totalAmount: number;
+    decimals: number;
+    address: string;
+}
+  
+interface AssetValue extends AssetTotal {
+    valueUSD: number;
+    price: number;
+}
+  
+interface AvgLockDaysByAsset {
+    symbol: string;
+    avgDays: number;
+}
+
+interface UniqueAsset {
+    address: string;
+    symbol: string;
+    name: string;
+}
+
+interface UpcomingUnlock {
+    id: number;
+    title: string;
+    asset: string;
+    unlockDate: string;
+    daysRemaining: number;
+    amount: number;
+}
+
+interface MonthlyActivity {
+    month: string;
+    count: number;
+}
+
+export interface DashboardData {
+    userAddress: string;
+    totalVaults: number;
+    avgLockDays: number;
+    avgLockDaysByAsset: AvgLockDaysByAsset[];
+    uniqueAssets: UniqueAsset[];
+    upcomingUnlocks: UpcomingUnlock[];
+    assetTotals: AssetTotal[];
+    assetValues: AssetValue[];
+    totalValueUSD: number;
+    lockTypeCounts: {
+        fixed: number;
+        goal: number;
+    };
+    lockTypeByAsset: {
+        [symbol: string]: {
+        fixed: number;
+        goal: number;
+        };
+    };
+    durationDistribution: {
+        days: number;
+        weeks: number;
+        months: number;
+    };
+    monthlyActivity: MonthlyActivity[];
+    vaults: Vault[];
+}
+
+export interface UserVaultDashboardProps {
+    data: DashboardData | null;
+}
