@@ -1,6 +1,6 @@
 import ConnectedNavbar from "../navbar/connectednavbar"
 
-export default function Rewards() {
+export default function Transactions() {
   return (
     <>
       <ConnectedNavbar />

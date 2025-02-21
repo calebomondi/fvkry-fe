@@ -173,7 +173,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
   return (
     <div className="space-y-6">
       {/* Search and Filter Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sticky top-20 dark:bg-black/90 p-2 rounded-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sticky top-20 dark:bg-black/90 bg-white shadow-md p-2 rounded-md">
         {/* Search Input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />

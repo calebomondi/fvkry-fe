@@ -1,13 +1,25 @@
 import logo2 from "/2.png";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import LockAsset from "../dashboard/lockAsset";
 import { useAccount } from "wagmi";
 import { CustomConnectButton } from "../walletconnect/walletconnect";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { CircleUserIcon } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 export default function ConnectedNavbar() {
   const { isConnected } = useAccount();
+  const location = useLocation();
+  const [path,setPath] = useState<string>('dashboard');
+  
+  useEffect(() => {
+    const path = location.pathname.substring(1);
+    const pathSegments = path.split('/');
+    const firstSegment = pathSegments[0];
+    console.log("FS: ",firstSegment);
+    setPath(firstSegment);
+  }, [])
 
   return (
     <div className="navbar dark:bg-black/90 bg-white sticky top-0 shadow-md z-50">
@@ -30,7 +42,7 @@ export default function ConnectedNavbar() {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            <li>
+            <li className={path === 'dashboard' ? 'text-amber-600' : ''}>
               <Link to="/dashboard/">Dashboard</Link>
             </li>
             <li>
@@ -38,6 +50,14 @@ export default function ConnectedNavbar() {
             </li>
             <li>
               <Link to="/rewards/">Rewards</Link>
+            </li>
+            <li>
+              <a>More</a>
+              <ul className="p-2">
+                <li>
+                  <Link to="/transactions/">Transactions</Link>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -52,15 +72,25 @@ export default function ConnectedNavbar() {
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li>
+        <ul className="menu menu-horizontal px-1 font-semibold">
+          <li className={path === 'dashboard' ? 'text-amber-600 scale-105' : ''}>
             <Link to="/dashboard/">Dashboard</Link>
           </li>
-          <li>
+          <li className={path === 'myvaults' ? 'text-amber-600 scale-105' : ''}>
             <Link to="/myvaults/">My Vaults</Link>
           </li>
-          <li>
+          <li className={path === 'rewards' ? 'text-amber-600 scale-105' : ''}>
             <Link to="/rewards/">Rewards</Link>
+          </li>
+          <li>
+            <details>
+              <summary>More</summary>
+              <ul className="p-2 bg-black/90 rounded-sm">
+                <li className={path === 'transactions' ? 'text-amber-600 scale-105' : ''}>
+                  <Link to="/transactions/">Transactions</Link>
+                </li>
+              </ul>
+            </details>
           </li>
         </ul>
       </div>

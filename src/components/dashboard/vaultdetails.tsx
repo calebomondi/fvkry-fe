@@ -224,6 +224,9 @@ const VaultDetails = () => {
   return (
     <div className=''>
     <ConnectedNavbar />
+    <p className={`text-center my-4 text-amber-600 ${isConnected ? 'hidden' : ''}`}>
+      Connect your wallet to view your indepth lock details
+    </p>
     <div className="max-w-4xl mx-auto p-6 grid grid-cols-1 md:h-screen">
         <div className="">
             {/* Header Section */}
@@ -302,6 +305,7 @@ const VaultDetails = () => {
                       variant="outline"
                       className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? 'hidden' : ''}`}
                       onClick={() => (document.getElementById('my_modal_14') as HTMLDialogElement).showModal()}
+                      disabled={!isConnected}
                     >
                     <CircleArrowOutDownRight className="w-4 h-4" />
                       <span>Add To Lock</span>
@@ -318,7 +322,7 @@ const VaultDetails = () => {
                     <Button 
                       variant="outline" 
                       className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
-                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 3}
+                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 3 || !isConnected}
                       onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
                       <CircleFadingPlus className="w-4 h-4" />
