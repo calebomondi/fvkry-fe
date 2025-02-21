@@ -73,21 +73,24 @@ export default function ConnectedNavbar() {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1 font-semibold">
-          <li className={path === 'dashboard' ? 'text-amber-600 scale-105' : ''}>
+          <li className={path === 'dashboard' ? 'text-amber-600' : ''}>
             <Link to="/dashboard/">Dashboard</Link>
           </li>
-          <li className={path === 'myvaults' ? 'text-amber-600 scale-105' : ''}>
+          <li className={path === 'myvaults' ? 'text-amber-600' : ''}>
             <Link to="/myvaults/">My Vaults</Link>
           </li>
-          <li className={path === 'rewards' ? 'text-amber-600 scale-105' : ''}>
+          <li className={path === 'rewards' ? 'text-amber-600' : ''}>
             <Link to="/rewards/">Rewards</Link>
           </li>
           <li>
             <details>
               <summary>More</summary>
               <ul className="p-2 bg-black/90 rounded-sm">
-                <li className={path === 'transactions' ? 'text-amber-600 scale-105' : ''}>
+                <li className={path === 'transactions' ? 'text-amber-600' : ''}>
                   <Link to="/transactions/">Transactions</Link>
+                </li>
+                <li className={path === 'financialHealth' ? 'text-amber-600' : ''}>
+                  <Link to="/financialHealth/">Financial Health</Link>
                 </li>
               </ul>
             </details>
