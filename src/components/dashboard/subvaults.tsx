@@ -49,12 +49,10 @@ export default function SubVaultsContainer() {
 
     return (
       <>
+        <p className={`text-center my-4 text-gray-600 ${isConnected ? 'hidden' : ''}`}>
+          Connect your wallet to interact with vaults
+        </p>
         <VaultGrid vaultData={vaultData} vaultType={String(id)} />
-        {!isConnected && (
-          <p className="text-center mt-4 text-gray-600">
-            Connect your wallet to interact with vaults
-          </p>
-        )}
       </>
     )
   }

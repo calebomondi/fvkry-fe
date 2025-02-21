@@ -283,7 +283,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   return (
     <div className="max-w-7xl mx-auto px-2 sm:px-2 lg:px-8 py-2 min-h-screen">
       {/* Navigation tabs */}
-      <div className="border-b border-gray-600 mb-6 sticky top-20 dark:bg-black bg-white shadow-md bg-opacity-50 px-3 rounded-sm z-10">
+      <div className="border-b border-gray-600 mb-6 sticky top-20 dark:bg-black bg-white shadow-md dark:bg-opacity-50 px-3 rounded-sm z-10">
         <nav className="-mb-px flex space-x-8">
           {[
             { id: 'overview' as const, label: 'Overview' }, 
@@ -297,7 +297,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
                 py-4 px-1 border-b-2 font-medium text-sm
                 ${selectedTab === tab.id
                   ? 'border-amber-500 text-amber-600'
-                  : 'border-transparent text-amber-300  hover:dark:text-gray-600 hover:border-gray-300'}
+                  : 'border-transparent text-amber-400  hover:dark:text-gray-600 hover:border-gray-300'}
               `}
             >
               {tab.label}

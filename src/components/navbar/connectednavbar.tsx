@@ -10,7 +10,7 @@ export default function ConnectedNavbar() {
   const { isConnected } = useAccount();
 
   return (
-    <div className="navbar dark:bg-black/90 sticky top-0 shadow-md z-50">
+    <div className="navbar dark:bg-black/90 bg-white sticky top-0 shadow-md z-50">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
