@@ -32,12 +32,10 @@ export default function Dashboard() {
   return (
     <div className="">
       <ConnectedNavbar />
+      <p className={`text-center my-2 text-gray-600 ${isConnected ? 'hidden' : ''}`}>
+        Connect your wallet to view your asset lock analytics
+      </p>
       <UserVaultDashboard data={dashData} />
-      {!isConnected && (
-        <p className="text-center my-4 text-gray-600">
-          Connect your wallet to view your asset lock analytics
-        </p>
-      )}
     </div>
   )
 }
