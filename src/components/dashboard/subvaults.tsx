@@ -6,6 +6,7 @@ import { VaultData } from "@/types"
 import VaultGrid from "./vaultgrid"
 import { mockVaultsData } from "./mockplatformdata"
 import { mergedVaultData } from "./fetchCombinedData"
+import Skeletun from "../skeletons/skeleton"
 
 export default function SubVaultsContainer() {
   const [vaultData, setVaultData] = useState<VaultData[]>([])
@@ -40,7 +41,7 @@ export default function SubVaultsContainer() {
 
   const renderContent = () => {
     if (loading) {
-      return <p className="text-center">Loading vault data...</p>
+      return <Skeletun />
     }
 
     if (error) {

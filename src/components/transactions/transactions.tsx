@@ -4,6 +4,7 @@ export default function Transactions() {
   return (
     <>
       <ConnectedNavbar />
+      
     </>
   )
 }

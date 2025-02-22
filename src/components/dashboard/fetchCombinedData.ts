@@ -1,6 +1,6 @@
 import apiService from "@/backendServices/apiservices"
-import { getSubVaults } from "@/blockchain-services/useFvkry"
-import { VaultData } from "@/types"
+import { getSubVaults, getTransanctions } from "@/blockchain-services/useFvkry"
+import { VaultData, Transaction } from "@/types"
 
 export const mergedVaultData = async (): Promise<VaultData[]> => {
     const vaultTypes = [1, 2, 3, 4]
@@ -24,4 +24,14 @@ export const getSpecificVaultData = async (address:string, title:string, amount:
     }
 
     return specificVault;
+}
+
+export const getTransactionsData = async (): Promise<Transaction[]> => {
+    const vaultTypes = [1, 2, 3, 4]
+    //fetch all subvaults concurrently
+    const subVaults = await Promise.all(
+        vaultTypes.map(type => getTransanctions(type))
+    )
+
+    return subVaults.flat()
 }

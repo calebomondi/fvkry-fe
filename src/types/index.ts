@@ -190,3 +190,11 @@ export interface DashboardData {
 export interface UserVaultDashboardProps {
     data: DashboardData | null;
 }
+
+export interface Transaction {
+    address: string;
+    amount: bigint;
+    title: string;
+    withdrawn: boolean;
+    timestamp: number;
+}

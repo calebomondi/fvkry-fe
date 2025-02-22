@@ -5,10 +5,11 @@ import { DashboardData } from '@/types';
 import apiService from '@/backendServices/apiservices';
 import UserVaultDashboard from './userdashboard';
 import { mockDashboardData } from './mockplatformdata';
+import Skeletun from '../skeletons/skeleton';
 
 export default function Dashboard() {
   const { isConnected } = useAccount();
-
+  const [loading, setLoading] = useState<boolean>(true)
   const [dashData, setDashData] = useState<DashboardData | null>(null)
   
   useEffect(() => {
@@ -23,11 +24,21 @@ export default function Dashboard() {
         }
       } else {
         setDashData(mockDashboardData)
+        setLoading(false)
       }
     }
 
     fetchData()
   }, [isConnected])
+
+  if (loading) {
+    return (
+      <>
+        <ConnectedNavbar />
+        <Skeletun />
+      </>
+    )
+  }
 
   return (
     <div className="">
