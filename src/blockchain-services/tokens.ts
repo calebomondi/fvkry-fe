@@ -24,3 +24,14 @@ export const SUPPORTED_TOKENS: { [key: string]: TokenConfig } = {
       symbol: 'MAN'
     },
 };
+
+export const TOKEN_SYMBOLS: { [key: string]: string } = {
+  "0x0000000000000000000000000000000000000000": "ETH",
+  "0x37D32Edc11F8Ed47fB4f4A9FBBA707D6047B7CDf": "MAN",
+};
+
+export const getTokenSymbol = (address: string): string => {
+  console.log(`address: `, address);
+  if (!address) return "Unknown";
+  return TOKEN_SYMBOLS[address] || address.slice(0, 6);
+};

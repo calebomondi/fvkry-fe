@@ -9,8 +9,6 @@ import TokensSection from './tokens';
 import FAQ from './faq';
 import Footer from './footer';
 import Navbar from '../navbar/navbar';
-import { CustomConnectButton } from '../walletconnect/walletconnect';
-
 import { useNavigate } from 'react-router-dom';
 
 export default function Home () {
@@ -79,7 +77,7 @@ export default function Home () {
                     className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
                     onClick={handleDash}
                   >
-                    Start Locking Now
+                    Let's Get You Started
                     <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
                   </motion.button>
                   <motion.button
@@ -151,7 +149,15 @@ export default function Home () {
         <div className="max-w-3xl mx-auto px-4 text-center flex flex-col items-center" id="cta">
           <h2 className="text-2xl font-bold text-navy mb-4">Ready to Start Saving?</h2>
           <p className="text-lg mb-8">Join thousands of users who trust FVKRY PRVNTA with their assets</p>
-          <CustomConnectButton />
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
+            onClick={handleDash}
+          >
+            Let's Get You Started
+            <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
+          </motion.button>
         </div>
       </AnimatedSection>
 

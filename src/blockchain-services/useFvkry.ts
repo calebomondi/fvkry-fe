@@ -399,22 +399,21 @@ export async function getContractTokenBalance(address: string) {
 export async function getTransanctions(vault:number): Promise<Transaction[]> {
     const { address } = await getWalletClient();
     try {
-      const data = await publicClient.readContract({
-        address: contractAddress as `0x${string}`,
-        abi: contractABI,
-        functionName: 'getUserTransactions',
-        args: [vault],
-        account: address
-      }) as Transaction[]
+        const data = await publicClient.readContract({
+            address: contractAddress as `0x${string}`,
+            abi: contractABI,
+            functionName: 'getUserTransactions',
+            args: [vault],
+            account: address,
+          }) as Transaction[];
+    
+          const formattedData = data.map((tx) => ({
+            ...tx,
+            amount: BigInt(tx.amount.toString()),
+          }));
 
-      // Ensure the data is properly typed
-      return data.map((transact) => ({
-        address: transact.address,
-        amount: BigInt(transact.amount.toString()),
-        title: transact.title,
-        withdrawn: transact.withdrawn,
-        timestamp: transact.timestamp
-      }))
+          return formattedData
+          
     } catch (error) {
       console.error('Error fetching user transanctions!:', error)
       throw new Error("Cannot Fetch User Transanctions Data!")

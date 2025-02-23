@@ -28,10 +28,9 @@ export const getSpecificVaultData = async (address:string, title:string, amount:
 
 export const getTransactionsData = async (): Promise<Transaction[]> => {
     const vaultTypes = [1, 2, 3, 4]
-    //fetch all subvaults concurrently
+    //fetch all transactions concurrently
     const subVaults = await Promise.all(
         vaultTypes.map(type => getTransanctions(type))
     )
-
     return subVaults.flat()
 }

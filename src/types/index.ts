@@ -192,7 +192,7 @@ export interface UserVaultDashboardProps {
 }
 
 export interface Transaction {
-    address: string;
+    token: `0x${string}`;
     amount: bigint;
     title: string;
     withdrawn: boolean;
