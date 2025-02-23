@@ -76,7 +76,7 @@ export default function ConnectedNavbar() {
           <li className={path === 'dashboard' ? 'text-amber-600' : ''}>
             <Link to="/dashboard/">Dashboard</Link>
           </li>
-          <li className={path === 'myvaults' || 'vault' ? 'text-amber-600' : ''}>
+          <li className={path === 'myvaults' ? 'text-amber-600' : ''}>
             <Link to="/myvaults/">My Vaults</Link>
           </li>
           <li className={path === 'rewards' ? 'text-amber-600' : ''}>
