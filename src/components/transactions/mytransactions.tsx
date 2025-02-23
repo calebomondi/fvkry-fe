@@ -45,7 +45,9 @@ export default function TransactionDisplay() {
         } finally {
           setLoading(false)
         }
-      } 
+      } else {
+        setLoading(false)
+      }
     }
     fetchTransactions()
   }, [isConnected]);
@@ -108,31 +110,42 @@ export default function TransactionDisplay() {
                 <th>Date</th>
               </tr>
             </thead>
-            <tbody>
-              {filteredTransactions.map((tx, index) => (
-                <tr key={index}>
-                  <th>{index + 1}</th>
-                  <td className="font-medium">{tx.title}</td>
-                  <td>
-                    <span
-                      className={`px-2 py-1 rounded-full text-sm ${
-                        tx.withdrawn
-                          ? 'bg-red-100 text-red-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}
-                    >
-                      {tx.withdrawn ? 'Withdrawal' : 'Deposit'}
-                    </span>
-                  </td>
-                  <td>{getTokenSymbol(tx.token)}</td>
-                  <td>{formatEther(tx.amount)}</td>
-                  <td>
-                    {new Date(tx.timestamp * 1000).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+            {
+              filteredTransactions.length > 0 && (
+                <tbody>
+                  {filteredTransactions.map((tx, index) => (
+                    <tr key={index}>
+                      <th>{index + 1}</th>
+                      <td className="font-medium">{tx.title}</td>
+                      <td>
+                        <span
+                          className={`px-2 py-1 rounded-full text-sm ${
+                            tx.withdrawn
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-green-100 text-green-800'
+                          }`}
+                        >
+                          {tx.withdrawn ? 'Withdrawal' : 'Deposit'}
+                        </span>
+                      </td>
+                      <td>{getTokenSymbol(tx.token)}</td>
+                      <td>{formatEther(tx.amount)}</td>
+                      <td>
+                        {new Date(tx.timestamp * 1000).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              )
+            }
           </table>
+          {
+            filteredTransactions.length === 0 && (
+              <div className="flex justify-center items-center h-1/2 py-10">
+                <p className="text-lg text-gray-500">No transactions found</p>
+              </div>
+            )
+          }
         </div>
       </CardContent>
     </Card>

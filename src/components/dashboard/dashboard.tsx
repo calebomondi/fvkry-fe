@@ -7,6 +7,15 @@ import UserVaultDashboard from './userdashboard';
 import { mockDashboardData } from './mockplatformdata';
 import Skeletun from '../skeletons/skeleton';
 
+interface ErrorResponse {
+  error: string;
+}
+
+// Type guard to check if response is an error
+function isErrorResponse(response: DashboardData | ErrorResponse): response is ErrorResponse {
+  return 'error' in response;
+}
+
 export default function Dashboard() {
   const { isConnected } = useAccount();
   const [loading, setLoading] = useState<boolean>(true)
@@ -16,8 +25,13 @@ export default function Dashboard() {
     const fetchData = async () => {
       if (isConnected) {
         try {
-          const response = await apiService.analysis()
-          setDashData(response)
+          const response: DashboardData | ErrorResponse = await apiService.analysis()
+          if (response && !isErrorResponse(response) && Object.keys(response).length > 0) {
+            setDashData(response)
+          } else {
+            setDashData(mockDashboardData)
+          }
+            
           console.log('data:', JSON.stringify(response))
         } catch (error) {
           console.error("Error fetching wallet data:", error);
