@@ -5,7 +5,6 @@ import { Lock, Wallet, Shield, Clock, Activity, LockKeyhole} from 'lucide-react'
 import vault from '/vault.png'
 
 import StatisticsSection from './stats';
-import TokensSection from './tokens';
 import FAQ from './faq';
 import Footer from './footer';
 import Navbar from '../navbar/navbar';
@@ -133,11 +132,12 @@ export default function Home () {
           </div>
         </div>
       </section>
-
-      {/* Tokens Section */}
+      
+      {/* Tokens Section 
       <AnimatedSection>
         <TokensSection />
       </AnimatedSection>
+      */}
 
       {/* FAQ Section */}
       <AnimatedSection>
