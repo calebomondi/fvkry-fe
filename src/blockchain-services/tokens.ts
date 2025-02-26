@@ -59,7 +59,6 @@ export const TOKEN_SYMBOLS: { [key: string]: string } = {
 };
 
 export const getTokenSymbol = (address: string): string => {
-  console.log(`address: `, address);
   if (!address) return "Unknown";
   return TOKEN_SYMBOLS[address] || address.slice(0, 6);
 };
