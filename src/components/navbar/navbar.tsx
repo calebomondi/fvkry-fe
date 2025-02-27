@@ -1,13 +1,20 @@
 import { useState, useEffect } from "react";
 import { X, Menu } from "lucide-react";
 import logo2 from "/2.png";
-
-import { CustomConnectButton } from "../walletconnect/walletconnect";
+import { motion } from 'framer-motion';
+import { LockKeyhole } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('hero');
     const [isVisible, setIsVisible] = useState(true);
+
+    const navigate = useNavigate();
+
+    const handleDash = () => {
+      navigate("/dashboard");
+    }
 
     useEffect(() => {
         let lastScrollY = window.scrollY;
@@ -61,7 +68,15 @@ export default function Navbar() {
                   {item}
                 </a>
               ))}
-              <CustomConnectButton />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="md:px-5 px-3 py-2 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
+                onClick={handleDash}
+              >
+                Start Locking
+                <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
+              </motion.button>
             </div>
 
             <div className="md:hidden flex items-center">
@@ -85,7 +100,15 @@ export default function Navbar() {
                   {item}
                 </a>
               ))}
-              <CustomConnectButton />
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="md:px-5 px-3 py-2 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
+                onClick={handleDash}
+              >
+                Start Locking
+                <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
+              </motion.button>
             </div>
           </div>
         )}
