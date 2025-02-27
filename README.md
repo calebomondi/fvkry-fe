@@ -104,33 +104,37 @@ VITE_LISK_RPC_URL=lisk_sepolia_url
 1. Navigate to the 'My Vault' tab on the dashboard.
 2. Select the lock you want to add the unlock schedule, the lock type must be fixed.
 3. Click the 'Set Unlock Schedule' button.
-4. Enter the 
+4. Enter the unlock amount, recurrence and the duration in the modal form the click the 'SET' button.
+5. Confirm the transanction
+6. The unlock schedule is set
 
-![u-disburse](https://github.com/user-attachments/assets/b6abd685-aef8-4826-aab3-0fa032b9df19)
+![Image](https://github.com/user-attachments/assets/64a50aaa-e477-462a-beef-a06823326c55)
 
-### Refund/Cancel Fundraiser
-1. Connect with admin wallet
-2. Access failed campaigns
-3. Refund donors
-4. Cancel fundraiser
-5. Confirm cancellation
+![Image](https://github.com/user-attachments/assets/8cea91db-3778-47bd-9756-ad97d5f93996)
 
-![u-refund1](https://github.com/user-attachments/assets/bafd3c0a-0317-4cd0-be75-ec993e8becba)
+### Delete Lock
+1. Navigate to the 'My Vault' tab on the dashboard.
+2. Clicking the 'Expired Locks' button.
+3. Select the lock you want to delete.
+4. Make sure the lock has no assets inside
+5. Confirm if you want to proceed with deleting.
+6. Confirm the transanction
+7. Your lock has been deleted
 
-![u-refund2](https://github.com/user-attachments/assets/c0000e03-3613-45aa-b5d8-35770054a0bd)
+![Image](https://github.com/user-attachments/assets/0faa31d2-5938-4912-b064-b36f4960702a)
 
-### Campaign Status Tracking
-- **Active**: Ongoing campaigns accepting donations
-- **Completed**: Campaigns that reached their goals
-- **Cancelled**: Failed campaigns eligible for refunds
+### View Transanctions
+1. Navigate to the More tab and click it to expand it.
+2. Click the Transanctions tab.
+3. Filter the transanctions by asset type.
+4. Search for a lock by name to view it's transanctions.
 
-![u-status](https://github.com/user-attachments/assets/78fc51ea-4f01-4de3-a1ff-33bbbda7f6d3)
+![Image](https://github.com/user-attachments/assets/fda31f83-7f6d-4fc6-83b2-5368788c8e91)
 
 ## Security Features
-- Multi-admin verification system
-- Automated fund locking until campaign completion
-- Transparent transaction history
-- Refund mechanism for cancelled campaigns
+- The smart contract has been audited
+- Transanction signage
+- Transparent transactions history
 
 ## Contributing
 We welcome contributions! Please follow these steps:
@@ -143,6 +147,4 @@ We welcome contributions! Please follow these steps:
 MIT License
 
 ## Appendices
-1. Smartcontract Repo: [Link](https://github.com/calebomondi/charity-donation-hardhat)
-2. Sepolia deployment: [Link](https://sepolia.etherscan.io/address/0x133818926101eEE247B1188fcE4a13f993d9c6E8#code)
-3. Undugu Live : [Link](https://undugu-beta.vercel.app/)
+3. Fvkry Live Link : [Link](https://fvkry.vercel.app/)
