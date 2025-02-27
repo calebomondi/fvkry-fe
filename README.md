@@ -32,8 +32,8 @@ FVKRY PRVNTA is a financial discipline tool designed to help virtual asset owner
 
 1. Clone this repository
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+git clone https://github.com/calebomondi/fvkry-fe
+cd fvkry-fe
 ```
 
 2. Install dependencies:
