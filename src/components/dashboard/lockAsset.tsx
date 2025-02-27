@@ -243,7 +243,7 @@ export default function LockAsset() {
                             value={formValues.title}
                             onChange={handleChange}
                             className="md:w-5/6 p-2 dark:text-white text-gray-700" 
-                            placeholder="#Longtime saving" 
+                            placeholder="Longtime saving" 
                             required
                         />
                     </label>
