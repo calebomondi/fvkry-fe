@@ -88,7 +88,7 @@ export default function ConnectedNavbar() {
           <li>
             <details>
               <summary>More</summary>
-              <ul className="p-2 bg-black/90 rounded-sm">
+              <ul className="p-2 dark:bg-black/90 rounded-md">
                 <li className={path === 'transactions' ? 'text-amber-600' : ''}>
                   <Link to="/transactions/">Transactions</Link>
                 </li>

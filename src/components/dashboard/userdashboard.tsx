@@ -28,14 +28,14 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Average lock time */}
-      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+      <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-medium dark:text-gray-600">Average Lock Time</h3>
         <p className="text-3xl font-bold text-green-600 mt-2">{Math.round(data.avgLockDays)} days</p>
         <p className="text-sm text-gray-500 mt-1">All assets combined</p>
       </div>
       
       {/* Lock Types */}
-      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+      <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-medium dark:text-gray-600">Lock Types</h3>
         <div className="flex justify-around items-center mt-2">
           <div className="text-center">
@@ -50,7 +50,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Upcoming unlocks */}
-      <div className="dark:bg-base-300 rounded-lg shadow p-6 md:col-span-2">
+      <div className="dark:bg-base-300 rounded-lg shadow-md p-6 md:col-span-2">
         <h3 className="text-lg font-medium dark:text-gray-600">Upcoming Unlocks (Next 7 Days)</h3>
         {data.upcomingUnlocks.length > 0 ? (
           <div className="mt-2 overflow-x-auto">
@@ -87,7 +87,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Asset distribution */}
-      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+      <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-medium dark:text-gray-600">Asset Distribution</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
@@ -120,7 +120,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       <h3 className="text-xl font-medium text-gray-600">Asset Overview</h3>
       
       {/* Asset details table */}
-      <div className="dark:bg-base-300 rounded-lg shadow overflow-hidden">
+      <div className="dark:bg-base-300 rounded-lg shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-600">
           <thead className="b">
             <tr>
@@ -180,7 +180,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Asset lock duration chart */}
-      <div className="mt-6 dark:bg-base-300 rounded-lg shadow p-6">
+      <div className="mt-6 dark:bg-base-300 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-medium dark:text-gray-600">Average Lock Duration by Asset</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
@@ -205,7 +205,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       <h3 className="text-xl font-medium text-gray-600">Lock Analytics</h3>
       {/* Lock Type Distribution */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
           <h3 className="text-lg font-medium dark:text-gray-600">Lock Type Distribution</h3>
           <div className="h-64 mt-4">
             <ResponsiveContainer width="100%" height="100%">
@@ -235,7 +235,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
         </div>
         
         {/* Lock Duration Distribution */}
-        <div className="dark:bg-base-300 rounded-lg shadow p-6">
+        <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
           <h3 className="text-lg font-medium dark:text-gray-600">Lock Duration Type</h3>
           <div className="h-64 mt-4">
             <ResponsiveContainer width="100%" height="100%">
@@ -259,7 +259,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
       </div>
       
       {/* Monthly Activity Chart */}
-      <div className="dark:bg-base-300 rounded-lg shadow p-6">
+      <div className="dark:bg-base-300 rounded-lg shadow-md p-6">
         <h3 className="text-lg font-medium dark:text-gray-600">Monthly Locking Activity</h3>
         <div className="h-64 mt-4">
           <ResponsiveContainer width="100%" height="100%">
