@@ -32,7 +32,7 @@ export default function Dashboard() {
             setDashData(mockDashboardData)
           }
             
-          console.log('data:', JSON.stringify(response))
+          console.log('data--->:', JSON.stringify(response))
         } catch (error) {
           console.error("Error fetching wallet data:", error);
         } finally {
