@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock, DashboardData } from '@/types';
+import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock, DashboardData, HealthRecord } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
@@ -152,7 +152,30 @@ const apiService = {
         console.error('Getting Data Failed:', error);
         throw error;
       }
-    }
+    },
+    healthCheck: async (): Promise<HealthRecord[]> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<HealthRecord[]> = await axios.get(
+          `${API_URL}/api/health/check`,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            params: {
+              address: address
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Getting Data Failed:', error);
+        throw error;
+      }
+    },
 }
 
 export default apiService;

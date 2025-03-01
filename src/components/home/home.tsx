@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import AnimatedSection from '../AnimatedSection/animatedsection';
 
-import { Lock, Wallet, Shield, Clock, Activity, LockKeyhole} from 'lucide-react';
+import { Lock, Wallet, Shield, Clock, LockKeyhole} from 'lucide-react';
 import vault from '/vault.png'
 
 import StatisticsSection from './stats';
@@ -36,10 +36,6 @@ export default function Home () {
 
   const navigate = useNavigate()
 
-  const handleHealth = () => {
-    navigate("/financialHealth");
-  }
-
   const handleDash = () => {
     navigate("/dashboard");
   }
@@ -69,7 +65,7 @@ export default function Home () {
               <p className="text-lg mb-8 text-center">Lock your assets for short and long-term goals, protect against impulsive spending, and build a stronger financial future — whether you're a trader, investor, or just holding for the short and long haul.</p>
               <div className="flex flex-col space-y-5 justify-center items-center">
                 <p className="text-amber-500 text-center">Ready to lock your crypto and stay disciplined?</p>
-                <div className='flex space-x-4 justify-center items-center'>
+                <div className='flex justify-center items-center'>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -78,15 +74,6 @@ export default function Home () {
                   >
                     Let's Get You Started
                     <LockKeyhole className="ml-2 w-5 h-5 animate-pulse" />
-                  </motion.button>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="md:px-6 px-4 py-3 bg-amber-500 rounded-lg text-base font-semibold hover:bg-amber-500 hover:scale-105 transition-all flex items-center"
-                    onClick={handleHealth}
-                  >
-                    Check Finacial Health
-                    <Activity  className="ml-2 w-5 h-5 animate-pulse" />
                   </motion.button>
                 </div>
               </div>

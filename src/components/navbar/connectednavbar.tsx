@@ -57,6 +57,9 @@ export default function ConnectedNavbar() {
                 <li>
                   <Link to="/transactions/">Transactions</Link>
                 </li>
+                <li className={path === 'financialHealth' ? 'text-amber-600' : ''}>
+                  <Link to="/financialHealth/">Financial Health</Link>
+                </li>
               </ul>
             </li>
           </ul>

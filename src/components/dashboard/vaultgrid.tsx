@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { LockKeyholeOpen, Timer, Target, Wallet, ArrowUpRight, Anchor, Search, Lock } from 'lucide-react';
+import { LockKeyholeOpen, Timer, Target, Wallet, ArrowUpRight, Anchor, Search, Lock, Filter } from 'lucide-react';
 import { VaultCardProps, VaultGridProps } from '@/types';
 import { useNavigate } from 'react-router-dom';
   
@@ -126,6 +126,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
   const [showNearExpiry, setShowNearExpiry] = useState(false);
   const [showExpired, setShowExpired] = useState(false);
   const [filteredVaults, setFilteredVaults] = useState(vaultData);
+  const [showFilters, setShowFilters] = useState(false);
 
   // Get unique asset symbols and lock types for filter options
   const assetSymbols = [...new Set(vaultData.map(vault => vault.asset_symbol))];
@@ -173,75 +174,93 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
   return (
     <div className="space-y-6">
       {/* Search and Filter Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 sticky top-20 dark:bg-black/90 bg-white shadow-md p-2 rounded-md">
-        {/* Search Input */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Title or Asset Symbol..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 w-full h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
-          />
+      <div className="flex flex-col gap-4 sticky top-20 dark:bg-black/90 bg-white shadow-md p-4 rounded-md">
+        {/* Top Row - Always visible */}
+        <div className="flex flex-col sm:flex-row gap-3 w-full">
+          {/* Search Input */}
+          <div className="relative flex-grow">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Title or Asset Symbol..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 w-full h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
+            />
+          </div>
+          
+          {/* Mobile-friendly toggle for filters */}
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="sm:hidden flex items-center justify-center h-10 px-4 rounded-md border border-gray-300 dark:border-gray-600"
+          >
+            <Filter className="w-4 h-4 mr-2" />
+            Filters 
+          </button>
         </div>
+        
+        {/* Collapsible Filter Section */}
+        <div className={`flex flex-col gap-3 ${showFilters ? 'block' : 'hidden sm:flex sm:flex-row'} sm:flex-wrap`}>
+          {/* Asset Symbol Filter */}
+          <select
+            value={selectedAsset}
+            onChange={(e) => setSelectedAsset(e.target.value)}
+            className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent sm:max-w-xs"
+          >
+            <option className='bg-base-300' value="">All Assets</option>
+            {assetSymbols.map(symbol => (
+              <option className='bg-base-300' key={symbol} value={symbol}>{symbol}</option>
+            ))}
+          </select>
 
-        {/* Asset Symbol Filter */}
-        <select
-          value={selectedAsset}
-          onChange={(e) => setSelectedAsset(e.target.value)}
-          className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
-        >
-          <option className='bg-base-300' value="">All Assets</option>
-          {assetSymbols.map(symbol => (
-            <option className='bg-base-300' key={symbol} value={symbol}>{symbol}</option>
-          ))}
-        </select>
+          {/* Lock Type Filter */}
+          <select
+            value={selectedLockType}
+            onChange={(e) => setSelectedLockType(e.target.value)}
+            className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent sm:max-w-xs"
+          >
+            <option className='bg-base-300' value="">All Lock Types</option>
+            {lockTypes.map(type => (
+              <option className='bg-base-300' key={type} value={type}>{type}</option>
+            ))}
+          </select>
 
-        {/* Lock Type Filter */}
-        <select
-          value={selectedLockType}
-          onChange={(e) => setSelectedLockType(e.target.value)}
-          className="h-10 rounded-md border border-gray-300 dark:border-gray-600 bg-transparent"
-        >
-          <option className='bg-base-300' value="">All Lock Types</option>
-          {lockTypes.map(type => (
-            <option className='bg-base-300' key={type} value={type}>{type}</option>
-          ))}
-        </select>
+          {/* Filter Buttons Row */}
+          <div className="flex flex-row gap-3 sm:ml-auto">
+            {/* Expiring Soon Toggle */}
+            <button
+              onClick={() => {
+                setShowNearExpiry(!showNearExpiry);
+                if (showExpired && !showNearExpiry) setShowExpired(false);
+              }}
+              className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors flex-1 sm:flex-none
+                ${showNearExpiry 
+                  ? 'border-amber-600 text-amber-600 bg-amber-600/10' 
+                  : 'border-gray-300 dark:border-gray-600'}`}
+            >
+              <Timer className="w-4 h-4" />
+              <span className="sm:inline">Expiring Soon</span>
+            </button>
 
-        {/* Expiring Soon Toggle */}
-        <button
-          onClick={() => {
-            setShowNearExpiry(!showNearExpiry);
-            if (showExpired && !showNearExpiry) setShowExpired(false); // Disable expired when enabling near expiry
-          }}
-          className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors
-            ${showNearExpiry 
-              ? 'border-amber-600 text-amber-600 bg-amber-600/10' 
-              : 'border-gray-300 dark:border-gray-600'}`}
-        >
-          <Timer className="w-4 h-4" />
-          Expiring Soon
-        </button>
-
-        {/* Expired Toggle */}
-        <button
-          onClick={() => {
-            setShowExpired(!showExpired);
-            if (showNearExpiry && !showExpired) setShowNearExpiry(false); // Disable near expiry when enabling expired
-          }}
-          className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors
-            ${showExpired 
-              ? 'border-red-600 text-red-600 bg-red-600/10' 
-              : 'border-gray-300 dark:border-gray-600'}`}
-        >
-          <Lock className="w-4 h-4" />
-          Expired Locks
-        </button>
-
-        {/* Results Count */}
-        <div className="text-sm text-gray-500">
+            {/* Expired Toggle */}
+            <button
+              onClick={() => {
+                setShowExpired(!showExpired);
+                if (showNearExpiry && !showExpired) setShowNearExpiry(false);
+              }}
+              className={`h-10 px-4 rounded-md border flex items-center justify-center gap-2 transition-colors flex-1 sm:flex-none
+                ${showExpired 
+                  ? 'border-red-600 text-red-600 bg-red-600/10' 
+                  : 'border-gray-300 dark:border-gray-600'}`}
+            >
+              <Lock className="w-4 h-4" />
+              <span className="sm:inline">Expired</span>
+            </button>
+          </div>
+        </div>
+        
+        {/* Results Count - Always visible */}
+        <div className="text-sm text-gray-500 mt-1">
           Showing {filteredVaults.length} of {vaultData.length} vaults
         </div>
       </div>

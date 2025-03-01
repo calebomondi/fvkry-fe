@@ -198,3 +198,26 @@ export interface Transaction {
     withdrawn: boolean;
     timestamp: number;
 }
+
+export interface HealthRecord {
+    "timestamp": number;
+    "formattedDate": string;
+    "token": {
+      "address": string;
+      "name": string;
+      "symbol": string;
+      "decimals": number;
+    };
+    "priceInfo": {
+      "priceAtTransaction": number;
+      "currency": string;
+      "priceNow": number;
+    };
+    "transfer": {
+      "rawValue": string;
+      "tokenAmount": number;
+      "value_now": number;
+      "value_then": number;
+      "value_diff": number;
+    };
+  }
