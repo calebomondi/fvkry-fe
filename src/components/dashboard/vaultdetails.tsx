@@ -41,7 +41,6 @@ const VaultDetails = () => {
   const [unlockEvents, setUnlockEvents] = useState<TimelineEvent[]>([]);
   const [isLockExpired, setIsLockExpired] = useState<boolean>(false)
   const [isDeleting, setIsDeleting] = useState<boolean>(false)
-  const [count, setCount] = useState(0);
 
   //get params and query values
   const [searchParams] = useSearchParams();
@@ -72,7 +71,7 @@ const VaultDetails = () => {
         } 
     }
     fetchData();
-  }, [count, isConnected]);
+  }, [isConnected]);
 
   // Calculate time remaining
   useEffect(() => {
@@ -100,21 +99,12 @@ const VaultDetails = () => {
   
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
-    }, 60000);
+    }, 1000);
   
     setTimeLeft(calculateTimeLeft()); // Initial calculation
   
     return () => clearInterval(timer);
   }, [vaultData.end_time]);
-
-  //update component every second
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCount(prevCount => prevCount + 1);
-    }, 1000);
-    
-    return () => clearInterval(intervalId);
-  }, []);
 
   // Calculate unlock schedule timeline
   useEffect(() => {
@@ -322,7 +312,7 @@ const VaultDetails = () => {
                     <Button 
                       variant="outline" 
                       className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
-                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 3 || !isConnected}
+                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 5 || !isConnected}
                       onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
                     >
                       <CircleFadingPlus className="w-4 h-4" />
@@ -384,7 +374,7 @@ const VaultDetails = () => {
             </Card>
         </div>
         {/* Timeline of Unlock Events */}
-        <div className={`space-y-4 border border-white my-2 rounded-md p-2 ${isLockExpired ? 'hidden' : ''}`}>
+        <div className={`space-y-4 border border-white shadow-md my-2 rounded-md p-2 ${isLockExpired ? 'hidden' : ''}`}>
             <h3 className="text-xl font-semibold text-amber-600 m-2">Unlock Schedule</h3>
             <div className="h-auto overflow-x-auto">
               {

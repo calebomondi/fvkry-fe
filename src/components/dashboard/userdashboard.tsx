@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, LineChart, Line, CartesianGrid, ResponsiveContainer } from 'recharts';
 import { UserVaultDashboardProps } from '@/types';
+import Skeletun from '../skeletons/skeleton';
 
 const formatCurrency = (value: number): string => {
   return new Intl.NumberFormat('en-US', {
@@ -15,7 +16,7 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   const [selectedTab, setSelectedTab] = useState<'overview' | 'assets' | 'analytics'>('overview');
   
   if (!data) {
-    return <div className="flex justify-center items-center h-64">Loading dashboard data...</div>;
+    return <Skeletun />;
   }
 
   const renderOverview = (): JSX.Element => (
