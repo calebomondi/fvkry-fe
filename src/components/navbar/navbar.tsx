@@ -57,7 +57,7 @@ export default function Navbar() {
             </div>
 
             <div className="hidden md:flex items-center space-x-8">
-              {['How It Works', 'FAQ'].map((item) => (
+              {[''].map((item) => (
                 <a
                   key={item}
                   href={item == "How It Works" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
@@ -90,7 +90,7 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden absolute w-full bg-white dark:bg-black dark: text-gray-800 backdrop-blur-md rounded-xl my-1">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {['How It Works','FAQ'].map((item) => (
+              {[''].map((item) => (
                 <a
                   key={item}
                   href={item == "How It Works" ? `/documentation` : `/#${item.toLowerCase().replace(' ', '-')}`}
