@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
-import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock, DashboardData, HealthRecord } from '@/types';
+import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock, DashboardData, HealthRecord, PointsData } from '@/types';
 import { getWalletClient } from '@/blockchain-services/useFvkry';
 
 const apiService = {
@@ -176,6 +176,77 @@ const apiService = {
         throw error;
       }
     },
+    awardPoints: async (points: number): Promise<{status: boolean}> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<{status: boolean}> = await axios.post(
+          `${API_URL}/api/write/awardPoints`,
+          {
+            address,
+            points
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Awarding Points Failed:', error);
+        throw error;
+      }
+    },
+    getPoints: async (): Promise<PointsData[] | []> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<PointsData[] | []> = await axios.get(
+          `${API_URL}/api/read/getpoints`,
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            params: {
+              address: address
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Getting User Lock Data Failed:', error);
+        throw error;
+      }
+    },
+    updatePoints: async (points: number): Promise<{status: boolean}> => {
+      const { address } = await getWalletClient();
+
+      try {
+        const response: AxiosResponse<{status: boolean}> = await axios.post(
+          `${API_URL}/api/write/updatePoints`,
+          {
+            address,
+            points
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+  
+        return response.data;
+        
+      } catch (error) {
+        console.error('Setting Updating Points', error);
+        throw error;
+      }
+    }
 }
 
 export default apiService;

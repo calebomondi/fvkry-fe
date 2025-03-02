@@ -221,3 +221,9 @@ export interface HealthRecord {
       "value_diff": number;
     };
   }
+
+export interface PointsData {
+    fvkry_points: number; 
+    redeemed: number; 
+    next_check: string;
+}

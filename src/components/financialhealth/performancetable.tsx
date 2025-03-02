@@ -1,12 +1,45 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { HealthRecord } from '@/types';
+import apiService from '@/backendServices/apiservices';
+import { useAccount } from 'wagmi';
+import { useToast } from "@/hooks/use-toast";
+import { PointsData } from '@/types';
+import { useNavigate } from 'react-router-dom';
 
 interface TokenPerformanceTableProps {
   transactions: HealthRecord[];
 }
 
 const TokenPerformanceTable: React.FC<TokenPerformanceTableProps> = ({ transactions }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { isConnected } = useAccount();
   const [filterToken, setFilterToken] = useState<string>('all');
+  const [canClaim, setCanClaim] = useState<boolean>(false);
+  const [pointsExist, setPointsExist] = useState<boolean>(false)
+  const [pointsData, setPointsData] = useState<PointsData>(
+    {
+      "fvkry_points": 0,
+      "redeemed": 0,
+      "next_check": ""
+    });
+  const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if(isConnected) {
+        const response = await apiService.getPoints();
+        if(response.length > 0 && response[0]) {
+          setCanClaim(new Date() > new Date(response[0].next_check));
+          setPointsExist(true);
+          setPointsData(response[0]);
+        } else {
+          setCanClaim(true);
+        }
+      }
+    }
+    fetchData();
+  }, [isConnected])
   
   // Get unique token symbols for filter dropdown
   const uniqueTokens = useMemo(() => {
@@ -48,6 +81,36 @@ const TokenPerformanceTable: React.FC<TokenPerformanceTableProps> = ({ transacti
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
+
+  const Toast = (amount:number) => {
+    toast({
+      title: `${amount} FVKRY POINTS CLAIMED`,
+      description: `Start Locking Your Assets To Redeem Them!`,
+    });
+  }
+
+  const handleClaimPoints = async () => {
+    let totalPoints = summary.Total >= 0 ? summary.Total : summary.Total * -1;
+    totalPoints = Math.ceil(totalPoints);
+    setLoading(true)
+    
+    if(!pointsExist) {
+      const response = await apiService.awardPoints(totalPoints);
+      if(response.status) {
+        Toast(totalPoints);
+      }
+    } else {
+      const new_points = pointsData.fvkry_points + totalPoints;
+      const response = await apiService.updatePoints(new_points);
+      if(response.status) {
+        Toast(totalPoints);
+      }
+    }
+
+    setCanClaim(false)
+    setLoading(false)
+    navigate('/rewards')
+  }
   
   return (
     <div className="p-4 max-w-6xl mx-auto">
@@ -55,13 +118,23 @@ const TokenPerformanceTable: React.FC<TokenPerformanceTableProps> = ({ transacti
       <div className="sticky top-20 dark:bg-black/90 bg-white/90 p-2 m-2 rounded-md">
         <div className='flex flex-col md:flex-row justify-between items-center'>
             <h1 className="text-2xl font-bold mb-6 text-amber-600">Financial Health Status</h1>
-            <div className="mb-4 sticky top-28 dark:bg-black/90 bg-white/90 p-2 m-2 rounded-md">
-                <label htmlFor="tokenFilter" className="mr-2 font-medium">Filter by Token:</label>
+            <div className="mb-4 sticky top-28 p-2 m-2 rounded-md space-x-1 flex items-center justify-center">
+                <button
+                  className="bg-amber-600 text-white hover:bg-amber-700 px-2 py-2 rounded-md btn-sm btn-ghost btn hover:scale-95"
+                  onClick={ async () => await handleClaimPoints()}
+                  disabled={!canClaim}
+                >
+                  {
+                    loading ? 
+                      'Claiming...' : 
+                      `Claim Points (${summary.Total >= 0 ? `${summary.Total.toFixed(0)}` : `${(summary.Total * -1).toFixed(0)}`})`
+                  }
+                </button>
                 <select 
-                id="tokenFilter"
-                value={filterToken}
-                onChange={(e) => setFilterToken(e.target.value)}
-                className="border border-gray-300 rounded px-3 py-1"
+                  id="tokenFilter"
+                  value={filterToken}
+                  onChange={(e) => setFilterToken(e.target.value)}
+                  className="border border-gray-300 rounded px-3 py-1"
                 >
                 {uniqueTokens.map(token => (
                     <option key={token} value={token}>
@@ -83,7 +156,7 @@ const TokenPerformanceTable: React.FC<TokenPerformanceTableProps> = ({ transacti
             <div className={`p-4 rounded shadow ${summary.Total >= 0 ? 'bg-blue-100' : 'bg-orange-100'}`}>
             <h2 className={`text-lg font-semibold ${summary.Total >= 0 ? 'text-blue-700' : 'text-orange-700'}`}>Net Performance</h2>
             <p className={`text-2xl font-bold ${summary.Total >= 0 ? 'text-blue-600' : 'text-orange-600'}`}>
-                {summary.Total >= 0 ? `$${summary.Total.toFixed(2)}` : `-$${-summary.Total.toFixed(2)}`}
+                {summary.Total >= 0 ? `$${summary.Total.toFixed(2)}` : `-$${(summary.Total * -1).toFixed(2)}`}
             </p>
             </div>
         </div>
