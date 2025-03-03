@@ -29,6 +29,9 @@ export default function Rewards() {
   return (
     <>
       <ConnectedNavbar />
+      <p className={`text-center my-2 text-amber-600 ${isConnected ? 'hidden' : ''}`}>
+          Connect your wallet to view your claimed points.
+      </p>
       <UserPointsDashboard data={pointsData}/>
     </>
   )

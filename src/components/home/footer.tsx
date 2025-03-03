@@ -88,7 +88,7 @@ export default function Footer() {
                   <Shield className="w-4 h-4 mr-2" />
                   Smart Contracts Audited by
                   <a href="#" className="text-golden hover:text-golden/80 ml-1">
-                    CertiK
+                    ___
                   </a>
                 </span>
               </div>

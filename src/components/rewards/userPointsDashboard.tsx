@@ -1,5 +1,5 @@
 import React from 'react';
-import { Circle } from 'lucide-react';
+import { Circle, Info } from 'lucide-react';
 import { PointsData } from '@/types';
 
 interface UserPointsDashboardProps {
@@ -33,8 +33,7 @@ const UserPointsDashboard: React.FC<UserPointsDashboardProps> = ({ data }) => {
   return (
     <div className="rounded-lg shadow-lg p-6 max-w-4xl mx-auto">
       <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-amber-600 mb-1">Your FVKRY Points</h2>
-        <p className="">Earn points, get rewards</p>
+        <p className="text-lg text-amber-600 font-semibold">Earn Fvkry points, redeem, get rewards</p>
       </div>
       
       {/* Points Summary */}
@@ -68,7 +67,7 @@ const UserPointsDashboard: React.FC<UserPointsDashboardProps> = ({ data }) => {
       </div>
       
       {/* Next Check */}
-      <div className="rounded-lg p-4 mb-6 shadow-md border border-indigo-100">
+      <div className="rounded-lg p-4 mb-6 shadow-md">
         <div className="flex items-center">
           <Circle className="text-amber-600 animate-pulse mr-2" size={16} />
           <h3 className="font-medium">Next Finacial Health Check</h3>
@@ -82,6 +81,24 @@ const UserPointsDashboard: React.FC<UserPointsDashboardProps> = ({ data }) => {
               `${daysRemaining} day${daysRemaining !== 1 ? 's' : ''} remaining`
             )}
           </p>
+        </div>
+        <div 
+          className="mt-12 p-6 bg-amber-200 rounded-lg"
+        >
+          <div className="flex items-start gap-4">
+            <Info className="w-6 h-6 text-amber-600 mt-1" />
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-2">
+                FVKRY Points Information
+              </h4>
+              <div className="text-gray-600 space-y-2">
+                <p>• Claim points by checking your financial health status.</p>
+                <p>• Financial checks are performed every 100 days.</p>
+                <p>• Redeem Points by locking assets for upto 100 days.</p>
+                <p>• Redeemed points can be used to earn rewards on the platform,</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       

@@ -11,8 +11,11 @@ import { ToastAction } from "@/components/ui/toast"
 import { createETHVault, createTokenVault } from "@/blockchain-services/useFvkry";
 import { isTokenSupported, getTokenConfig } from "@/blockchain-services/tokens";
 
+import { useNavigate } from "react-router-dom";
+
 export default function LockAsset() {
     const { toast } = useToast()
+    const navigate = useNavigate()
 
     //listen to add events
    useEffect(() => {
@@ -177,6 +180,8 @@ export default function LockAsset() {
                 setIsLoading(false)
                 //uplaod to db
                 await apiService.lockAsset(data2DB)
+
+                navigate("/myvaults")
             }
 
         } catch (error:any) {

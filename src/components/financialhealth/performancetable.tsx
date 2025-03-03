@@ -122,7 +122,7 @@ const TokenPerformanceTable: React.FC<TokenPerformanceTableProps> = ({ transacti
                 <button
                   className="bg-amber-600 text-white hover:bg-amber-700 px-2 py-2 rounded-md btn-sm btn-ghost btn hover:scale-95"
                   onClick={ async () => await handleClaimPoints()}
-                  disabled={!canClaim}
+                  disabled={!canClaim || summary.Total <= 0}
                 >
                   {
                     loading ? 
