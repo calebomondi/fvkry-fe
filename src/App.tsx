@@ -8,11 +8,6 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  mainnet,
-  sepolia,
-  base,
-  baseSepolia,
-  lisk,
   liskSepolia,
 } from 'wagmi/chains';
 import {
@@ -23,7 +18,7 @@ import {
 const config = getDefaultConfig({
   appName: 'FVKRY PRVNTA',
   projectId: 'd197c1d5cc4f7d7adc34f24682989fca',
-  chains: [mainnet, lisk, base, liskSepolia, baseSepolia, sepolia],
+  chains: [liskSepolia],
 });
 
 const queryClient = new QueryClient();
