@@ -14,7 +14,7 @@ export default function TransactionDisplay() {
   const [error, setError] = useState<string | null>(null)
   const [selectedAsset, setSelectedAsset] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-
+  
   const uniqueAssets = useMemo(() => {
     const assets = Array.from(new Set(transactions.map(tx => tx.token)));
     return assets.map(address => ({
@@ -40,8 +40,9 @@ export default function TransactionDisplay() {
         try {
           const data = await getTransactionsData()
           setTransactions(data)
+
         } catch (error) {
-          setError("Cannot Fetch Data!")
+          setError(`Cannot Fetch Data!, ${error}`)
         } finally {
           setLoading(false)
         }

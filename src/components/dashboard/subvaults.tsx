@@ -7,6 +7,7 @@ import VaultGrid from "./vaultgrid"
 import { mockVaultsData } from "./mockplatformdata"
 import { mergedVaultData } from "./fetchCombinedData"
 import Skeletun from "../skeletons/skeleton"
+import {useCookies} from 'react-cookie'
 
 export default function SubVaultsContainer() {
   const [vaultData, setVaultData] = useState<VaultData[]>([])
@@ -15,6 +16,9 @@ export default function SubVaultsContainer() {
   const { id } = useParams()
   const { isConnected } = useAccount()
 
+  //cookies
+  const [cookies, setCookies] = useCookies(['vault_data'])
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -22,9 +26,23 @@ export default function SubVaultsContainer() {
         setError(null)
         
         if (isConnected) {
+          //fetch cookie data
+          const cookieData = cookies['vault_data']
+          if(cookieData) {
+            setVaultData(cookieData)
+          }
+
           //get combined data from db and contract
           const combinedData = await mergedVaultData()
           setVaultData(combinedData)
+
+          //set cookies data
+          setCookies(`vault_data`, combinedData, {
+            path: '/myvaults',
+            maxAge: 3600, // Cookie expires in 1 hour
+            secure: true,
+            sameSite: 'strict'
+          });
         } else {
           // If not connected, show mock or public data
           setVaultData(mockVaultsData)
