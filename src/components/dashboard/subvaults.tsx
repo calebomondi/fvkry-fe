@@ -7,50 +7,39 @@ import VaultGrid from "./vaultgrid"
 import { mockVaultsData } from "./mockplatformdata"
 import { mergedVaultData } from "./fetchCombinedData"
 import Skeletun from "../skeletons/skeleton"
-import {useCookies} from 'react-cookie'
 
 export default function SubVaultsContainer() {
   const [vaultData, setVaultData] = useState<VaultData[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { id } = useParams()
   const { isConnected } = useAccount()
 
-  //cookies
-  const [cookies, setCookies] = useCookies(['vault_data'])
-
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        
-        if (isConnected) {
-          //fetch cookie data
-          const cookieData = cookies['vault_data']
-          if(cookieData) {
-            setVaultData(cookieData)
+      setLoading(true)
+      if(isConnected) {
+        try {
+          //from ls
+          const cachedData = localStorage.getItem('vault_data')
+          if(cachedData) {
+            setVaultData(JSON.parse(cachedData))
+            setLoading(false)
           }
-
-          //get combined data from db and contract
+          //from db
           const combinedData = await mergedVaultData()
           setVaultData(combinedData)
-
-          //set cookies data
-          setCookies(`vault_data`, combinedData, {
-            path: '/myvaults',
-            maxAge: 3600, // Cookie expires in 1 hour
-            secure: true,
-            sameSite: 'strict'
-          });
-        } else {
-          // If not connected, show mock or public data
-          setVaultData(mockVaultsData)
+          localStorage.setItem('vault_data', JSON.stringify(combinedData))
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Failed to fetch vault data')
+        } finally {
+          setLoading(false)
         }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch vault data')
-      } finally {
+      } else {
+        // If not connected, show mock or public data
+        setVaultData(mockVaultsData)
         setLoading(false)
+        localStorage.removeItem('vault_data')
       }
     }
 

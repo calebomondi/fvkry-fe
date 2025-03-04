@@ -5,46 +5,40 @@ import apiService from "@/backendServices/apiservices"
 import TokenPerformanceTable from "./performancetable"
 import Skeletun from "../skeletons/skeleton"
 import { useAccount } from "wagmi"
-import { useCookies } from "react-cookie"
 
 export default function Health() {
   const { isConnected } = useAccount()
   const [healthRecords, setHealthRecords] = useState<HealthRecord[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
-  //cookies
-  const [cookies, setCookies] = useCookies(['health_data'])
 
   useEffect(() => {
-    if(isConnected) {
-      //fetch cookie data
-      const cookieData = cookies['health_data']
-      if(cookieData) {
-        setHealthRecords(cookieData)
-      }
-
       const fetchData = async () => {
         setLoading(true)
-        try {
-          const data = await apiService.healthCheck()
-          setHealthRecords(data)
-
-          //set cookies data
-          setCookies(`health_data`, data, {
-            path: '/financialHealth',
-            maxAge: 3600, // Cookie expires in 1 hour
-            secure: true,
-            sameSite: 'strict'
-          });
-        } catch (error) {
-          console.error('Error fetching health data:', error)
-          setError(error instanceof Error ? error.message : String(error))
-        } finally {
+        if(isConnected) {
+          try {
+            //from ls
+            const cachedData = localStorage.getItem('health_data')
+            if(cachedData) {
+              setHealthRecords(JSON.parse(cachedData))
+              setLoading(false)
+            }
+            //from db
+            const data = await apiService.healthCheck()
+            setHealthRecords(data)
+            localStorage.setItem('health_data', JSON.stringify(data))
+          } catch (error) {
+            console.error('Error fetching health data:', error)
+            setError(error instanceof Error ? error.message : String(error))
+          } finally {
+            setLoading(false)
+          }
+        } else {
           setLoading(false)
+          localStorage.removeItem('health_data')
         }
       } 
       fetchData()
-    } 
   }, [isConnected])
 
   if (loading) {

@@ -6,7 +6,6 @@ import apiService from '@/backendServices/apiservices';
 import UserVaultDashboard from './userdashboard';
 import { mockDashboardData } from './mockplatformdata';
 import Skeletun from '../skeletons/skeleton';
-import {useCookies} from 'react-cookie'
 
 interface ErrorResponse {
   error: string;
@@ -19,35 +18,25 @@ function isErrorResponse(response: DashboardData | ErrorResponse): response is E
 
 export default function Dashboard() {
   const { isConnected } = useAccount();
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
   const [dashData, setDashData] = useState<DashboardData | null>(null)
-
-  //cookies
-  const [cookies, setCookies] = useCookies(['dashboard_data'])
   
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true)
       if (isConnected) {
-        //fetch cookie data
-        const cookieData = cookies['dashboard_data']
-        if(cookieData) {
-          setDashData(cookieData)
-        }
-
-        //fetch realtime data
         try {
+          //from ls
+          const cachedData = localStorage.getItem('dashboard_data')
+          if(cachedData) {
+            setDashData(JSON.parse(cachedData))
+            setLoading(false)
+          }
+          //from db
           const response: DashboardData | ErrorResponse = await apiService.analysis()
           if (response && !isErrorResponse(response) && Object.keys(response).length > 0) {
             setDashData(response)
-
-            //set cookies data
-            setCookies(`dashboard_data`, response, {
-              path: '/dashboard',
-              maxAge: 3600, // Cookie expires in 1 hour
-              secure: true,
-              sameSite: 'strict'
-            });
-
+            localStorage.setItem('dashboard_data', JSON.stringify(response))
           } else {
             setDashData(mockDashboardData)
           }
@@ -59,6 +48,7 @@ export default function Dashboard() {
       } else {
         setDashData(mockDashboardData)
         setLoading(false)
+        localStorage.removeItem('dashboard_data')
       }
     }
 

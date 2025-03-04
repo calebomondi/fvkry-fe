@@ -17,7 +17,7 @@ import {
 
 const config = getDefaultConfig({
   appName: 'FVKRY PRVNTA',
-  projectId: 'd197c1d5cc4f7d7adc34f24682989fca',
+  projectId: import.meta.env.VITE_PROJECT_ID,
   chains: [liskSepolia],
 });
 
