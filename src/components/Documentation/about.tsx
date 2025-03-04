@@ -1,11 +1,9 @@
-import Navbar from "../navbar/navbar"
+import Documentation from "./docs"
 
 export default function About() {
   return (
     <section>
-      {/* Navigation */}
-      <Navbar />
-      
+      <Documentation />
     </section>
   )
 }

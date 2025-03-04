@@ -37,7 +37,7 @@ export default function Home () {
   const navigate = useNavigate()
 
   const handleDash = () => {
-    navigate("/dashboard");
+    navigate("/documentation");
   }
 
   return (
