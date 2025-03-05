@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Book, Lock, Wallet, Code, LockKeyhole } from 'lucide-react';
+import { Book, Lock, Wallet, LockKeyhole } from 'lucide-react';
 import logo2 from "/2.png";
 import banner from "/fp_banner.png"
 import { motion } from 'framer-motion';
@@ -92,28 +92,6 @@ const Documentation: React.FC = () => {
             <div>
               <h3 className="font-semibold">Step 3: Confirm Transaction</h3>
               <p>Review and confirm the lock transaction in your wallet</p>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 'smart-contract',
-      title: 'Smart Contract',
-      icon: <Code className="mr-2" />,
-      content: (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Smart Contract Details</h2>
-          <div className="space-y-4">
-            <p>Our asset locking smart contract is designed with security and transparency in mind.</p>
-            <div>
-              <h3 className="font-semibold">Key Features:</h3>
-              <ul className="list-disc pl-6">
-                <li>Time-based asset locking</li>
-                <li>Configurable lock periods</li>
-                <li>Transparent unlock conditions</li>
-                <li>No intermediate custody</li>
-              </ul>
             </div>
           </div>
         </div>
