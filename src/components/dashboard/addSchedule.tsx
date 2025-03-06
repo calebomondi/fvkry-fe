@@ -4,11 +4,9 @@ import { ToastAction } from "@/components/ui/toast"
 import { VaultData } from '@/types';
 import { getWalletClient } from "@/blockchain-services/useFvkry";
 import apiService from "@/backendServices/apiservices";
-import {useNavigate} from 'react-router-dom'
 
 export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
     const { toast } = useToast();
-    const navigate = useNavigate();
 
     const [userAddress,setUserAddress] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -135,8 +133,6 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                 duration: '',
                 unLockType: 'after'
             });
-
-            navigate("/myvaults")
 
         } catch (error: any) {
             console.error("Failed to create schedule:", error.message);

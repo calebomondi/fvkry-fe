@@ -5,11 +5,9 @@ import { VaultData } from '@/types';
 import { withdrawAsset } from "@/blockchain-services/useFvkry";
 import apiService from "@/backendServices/apiservices";
 import Decimal from 'decimal.js';
-import { useNavigate } from 'react-router-dom'
 
 export default function Withdraw({vaultData}:{vaultData:VaultData}) {
     const { toast } = useToast();
-    const navigate = useNavigate();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [formValues, setFormValues] = useState<{amount: string}>({
@@ -79,8 +77,6 @@ export default function Withdraw({vaultData}:{vaultData:VaultData}) {
                 }
 
                 await apiService.updateLock(data2DB)
-
-                navigate("/myvaults")
             }
             
         } catch (error: any) {

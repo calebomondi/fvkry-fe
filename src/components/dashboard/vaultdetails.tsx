@@ -47,7 +47,6 @@ const VaultDetails = () => {
   
   const address = searchParams.get('address');
   const title = searchParams.get('title');
-  const amount = searchParams.get('amount');
 
   //check if connected
   const { isConnected } = useAccount();
@@ -57,8 +56,8 @@ const VaultDetails = () => {
     const fetchData = async () => {
         if (isConnected) {
           try {
-            if (address && title && amount) {
-              const resp = await getSpecificVaultData(address, title, Number(amount));
+            if (address && title) {
+              const resp = await getSpecificVaultData(address, title);
               if(resp) {
                 setVaultData(resp)
                 setIsLockExpired(new Date() >= new Date(resp.end_time))
@@ -71,7 +70,7 @@ const VaultDetails = () => {
         } 
     }
     fetchData();
-  }, [isConnected]);
+  }, [isConnected, timeLeft]);
 
   // Calculate time remaining
   useEffect(() => {

@@ -9,7 +9,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-      navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}&amount=${subvault.amount}`)
+      navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}`)
     }
     
     useEffect(() => {
