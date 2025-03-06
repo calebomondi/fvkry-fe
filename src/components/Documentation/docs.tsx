@@ -49,8 +49,8 @@ const Documentation: React.FC = () => {
             <hr className='mb-4'/>
             <h2 className="text-3xl font-bold mb-4">Use Cases</h2>
             <div className='space-y-2 mb-4'>
-                <p><span className='font-semibold'>Short and Long Term Savings:</span> You can lock your assets for days, weeks, months and upto years</p>
-                <p><span className='font-semibold'>Check Impulsive Spanding or Trading:</span> You can set up and unlock schedule that will allow you to access a portion of your locked assets for defined intervals during the lock period.</p>
+                <p><span className='font-semibold text-amber-600'>• Short and Long Term Savings:</span> You can lock your assets for days, weeks, months and upto years</p>
+                <p><span className='font-semibold text-amber-600'>• Check Impulsive Spanding or Trading:</span> You can set up and unlock schedule that will allow you to access a portion of your locked assets for defined intervals during the lock period.</p>
             </div>
         </div>
       )
@@ -141,10 +141,10 @@ const Documentation: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="md:flex h-screen">
       {/* Sidebar */}
-      <div className="w-64 p-4 border-r border-gray-600">
-        <div className="flex items-center justify-evenly mb-6">
+      <div className="md:w-64 p-4 shadow-md sticky top-0 left-0 dark:bg-black/90 bg-white/90 md:bg-transparent">
+        <div className="flex items-center md:justify-evenly mb-6">
             <a href="/">
                 <img
                     src={logo2}
@@ -154,7 +154,7 @@ const Documentation: React.FC = () => {
             </a>
             <h1 className="text-xl font-bold">Documentation</h1>
         </div>
-        <nav>
+        <nav className='flex md:flex-col'>
           {docSections.map((section) => (
             <button
               key={section.id}
@@ -170,7 +170,7 @@ const Documentation: React.FC = () => {
             </button>
           ))}
         </nav>
-        <div className='grid place-items-center my-10'>
+        <div className='grid place-items-center md:my-10 my-2'>
             <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -184,7 +184,7 @@ const Documentation: React.FC = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-8 overflow-y-auto">
+      <div className="flex-1 md:p-8 p-3 overflow-y-auto">
         <Card className="w-full max-w-7xl mx-auto border-none">
           <CardContent>
             {docSections.find(section => section.id === activeSection)?.content}
