@@ -182,13 +182,6 @@ export const tokens = [
       supported: true,
     },
   ];
-  
-export const categories = [
-    { id: 'all', name: 'All', count: tokens.length },
-    { id: 'stablecoins', name: 'Stablecoins', count: tokens.filter(t => t.category.includes('stablecoins')).length },
-    { id: 'defi', name: 'DeFi Tokens', count: tokens.filter(t => t.category.includes('defi')).length },
-    { id: 'meme', name: 'Meme Tokens', count: tokens.filter(t => t.category.includes('popular')).length }
-];
 
 export const faqs = [
   {
@@ -201,11 +194,15 @@ export const faqs = [
   },
   {
     question: "What are the fees?",
-    answer: "We charge a minimal 0.3% withdrawal fee to support platform sustainability and continuous development. There are no hidden fees, and all costs are transparently displayed before you initiate a lock."
+    answer: "We charge a minimal 0.3% deposit fee to support platform sustainability and continuous development. There are no hidden fees, and all costs are transparently displayed before you initiate a lock."
   },
   {
     question: "Can I withdraw early?",
-    answer: "No. Once locked, your assets are secured until the lock period expires. This feature is designed to promote financial discipline and discourage impulsive decisions. However, you can unlock your assets if they achieve their set value goal."
+    answer: "No. Once locked, your assets are secured until the lock period expires. This feature is designed to promote financial discipline and discourage impulsive decisions. However, you can set up an unlock schedule."
+  },
+  {
+    question: "What is an unlock schedule?",
+    answer: "Its a timetable that you set up for a fixed-duration based lock that allows you to withdraw a portion amount of your locked asset in that vault after a certain set duration, it can be once (after) or frequently (every)."
   },
   {
     question: "What happens when my lock period ends?",

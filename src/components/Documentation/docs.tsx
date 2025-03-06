@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Book, Lock, Wallet, LockKeyhole } from 'lucide-react';
+import { Book, Wallet, LockKeyhole } from 'lucide-react';
 import logo2 from "/2.png";
 import banner from "/fp_banner.png"
 import { motion } from 'framer-motion';
@@ -129,34 +129,6 @@ const Documentation: React.FC = () => {
             <li>Points can be redeemed to tokens if lock any asset for upto 100 days</li>
             <li>The Points to redeem we'll be dependanct on the total amount of points</li>
           </ol>
-        </div>
-      )
-    },
-    {
-      id: 'faq',
-      title: 'FAQ',
-      icon: <Lock className="mr-2" />,
-      content: (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">How to Lock Your Assets</h2>
-          <div className="space-y-4">
-            <div>
-              <h3 className="font-semibold">Step 1: Select Asset</h3>
-              <p>Choose the cryptocurrency or token you wish to lock</p>
-            </div>
-            <div>
-              <h3 className="font-semibold">Step 2: Define Lock Parameters</h3>
-              <ul className="list-disc pl-6">
-                <li>Amount to lock</li>
-                <li>Lock duration</li>
-                <li>Withdrawal conditions</li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold">Step 3: Confirm Transaction</h3>
-              <p>Review and confirm the lock transaction in your wallet</p>
-            </div>
-          </div>
         </div>
       )
     }

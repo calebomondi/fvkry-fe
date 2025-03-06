@@ -3,7 +3,7 @@
 ![Image](https://github.com/user-attachments/assets/401154ff-2157-48b1-ba00-b31717a689e6)
 
 ## Overview
-FVKRY PRVNTA is a financial discipline tool designed to help virtual asset owners manage impulsive spending and trading by locking assets (ETH and ERC-20 tokens) for set durations. Users can create multiple sub-vaults within the defined main vaults to manage their locked assets securely. By implementing strategic asset locking mechanisms, the protocol provides structure in volatile markets, countering cognitive biases and promoting long-term financial stability.
+FVKRY PRVNTA is a blockchain-based virtual assets and crypto locking platform that aims to enhance financial discipline and promote long-term saving among cryptocurrency and virtual asset owners. It allows users to check their impulsive spending and trading habits by allowing them to lock their ETH and ERC-20 tokens in secure vaults that can only be accessed after a predefined lock period ranging from days, weeks, months and upto years.
 
 ## Features
 - Lock ETH and ERC-20 tokens for a specified duration or goal.
