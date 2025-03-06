@@ -36,6 +36,7 @@ const Documentation: React.FC = () => {
                 cryptocurrency and virtual asset owners. It allows users to check their impulsive spending and trading habits by allowing them to lock their ETH and ERC-20 tokens 
                 in secure vaults that can only be accessed after a predefined lock period ranging from days, weeks, months and upto years.
             </p>
+            <hr className='mb-4'/>
             <h2 className="text-3xl font-bold mb-4">Key Features</h2>
             <div className='space-y-2 mb-4'>
                 <p>• A dashboard that show a summary of yout locked assets in details</p>
@@ -45,6 +46,7 @@ const Documentation: React.FC = () => {
                 <p>• Withdraw assets upon lock period expiration.</p>
                 <p>• Partial and full withdrawal options</p>
             </div>
+            <hr className='mb-4'/>
             <h2 className="text-3xl font-bold mb-4">Use Cases</h2>
             <div className='space-y-2 mb-4'>
                 <p><span className='font-semibold'>Short and Long Term Savings:</span> You can lock your assets for days, weeks, months and upto years</p>
@@ -59,19 +61,80 @@ const Documentation: React.FC = () => {
       icon: <Wallet className="mr-2" />,
       content: (
         <div>
-          <h2 className="text-2xl font-bold mb-4">Connecting Your Wallet</h2>
-          <ol className="list-decimal pl-6 space-y-2">
-            <li>Install a Web3 wallet (MetaMask, WalletConnect)</li>
-            <li>Ensure you're on the correct network</li>
-            <li>Click "Connect Wallet" in the main interface</li>
-            <li>Approve the connection in your wallet</li>
+          <h2 className="text-3xl font-bold mb-4">Connecting Your Wallet</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Install a Web3 wallet (MetaMask, WalletConnect).</li>
+            <li>Ensure you're on the correct network (Lisk Sepolia | Ethereum Sepolia).</li>
+            <li>Click "Connect Wallet" in the main interface.</li>
+            <li>Approve the connection in your wallet.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Locking Your Asset</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Click the 'Lock' button on the dashboard to open the modal form.</li>
+            <li>Enter the details of the asset ( ETH or ERC20 token ) you want to lock on the form fields.</li>
+            <li>Click the Lock button the form to initiate the asset transfer.</li>
+            <li>Confirm the transaction on your wallet.</li>
+            <li>Check 'My Vaults' for the vault you have created.</li>
+            <li>Check 'Transaction' for the transaction of the new vault.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Adding More Asset</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Navigate to the 'My Vaults' section.</li>
+            <li>Search and select the vault you want to add to and click the 'View Details' button.</li>
+            <li>Click the 'Add To Lock' button to open the form modal.</li>
+            <li>Enter the amount of the asset you want to add and click the 'ADD' button</li>
+            <li>Confirm the transfer transaction on your wallet.</li>
+            <li>View your vault for the added asset</li>
+            <li>Check 'Transaction' for the transaction of the added asset.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Adding Unlock Schedule</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Navigate to the 'My Vaults' section <span className='italic'>(The Vault should be fixed-based)</span>.</li>
+            <li>Search and select the vault you want to add an unlock schedule to and click the 'View Details' button.</li>
+            <li>Click the 'Add Unlock Schedule' button to open the form modal.</li>
+            <li>Enter the amount of the asset you want to unlock, the unlock frequency and the number of days</li>
+            <li>Confirm the the schedule and click the 'ADD SCHEDULE' button.</li>
+            <li>View the unlock schedule on the vaults details page.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Withdrawing Your Asset</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Navigate to the 'My Vaults' section.</li>
+            <li>Search and select the vault you want to withdraw from and click the 'View Details' button.</li>
+            <li>Click the 'Withdraw' button to open the form modal.</li>
+            <li>Enter the amount of the asset you want to withdraw and click the 'Withdraw' button.</li>
+            <li>Confirm the withdrawal transaction on your wallet.</li>
+            <li>View your vault for the new balance.</li>
+            <li>Check your wallet balance.</li>
+            <li>Check 'Transaction' for the transaction of the withdrawal.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Delete A Vault</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Navigate to the 'My Vaults' section.</li>
+            <li>Search and select the vault you want to delete and click the 'View Details' button.</li>
+            <li>Make sure the vault has no asset, if so, withdraw all the assets.</li>
+            <li>Click the 'Delete' button </li>
+            <li>Confirm the deletion transaction on your wallet.</li>
+          </ol>
+          <hr className='mb-4'/>
+          <h2 className="text-3xl font-bold mb-4">Claim Fvkry Points</h2>
+          <ol className="list-decimal pl-6 space-y-2 mb-4">
+            <li>Navigate to the 'Financial Health' section.</li>
+            <li>Click the 'Claim Points' button (Points are claimed once every 100 days)</li>
+            <li>You'll be navigated to the 'Rewards' section where you can view your total points.</li>
+            <li>Points can be redeemed to tokens if lock any asset for upto 100 days</li>
+            <li>The Points to redeem we'll be dependanct on the total amount of points</li>
           </ol>
         </div>
       )
     },
     {
-      id: 'locking-assets',
-      title: 'Locking Assets',
+      id: 'faq',
+      title: 'FAQ',
       icon: <Lock className="mr-2" />,
       content: (
         <div>
