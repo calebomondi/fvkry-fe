@@ -24,7 +24,6 @@ const useCurrentContract = () => {
     //get chain id
     const chainId = getChainId(config)
     const chainHex = `0x${chainId.toString(16)}`
-    console.log(`---> ${chainHex}`)
 
     //get contract
     const contractConfig = CONTRACT_ADDRESSES[chainHex as keyof typeof CONTRACT_ADDRESSES]
@@ -36,9 +35,20 @@ const useCurrentContract = () => {
 }
 
 //set up public cient
+function getPublicClient() {
+    const chainId = currentChainId();
+    const isLisk = chainId === 4202;
+    
+    return createPublicClient({
+      chain: isLisk ? liskSepolia : sepolia,
+      transport: http(`${isLisk ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
+    });
+}
+
+//replace
 export const publicClient = createPublicClient({
     chain: currentChainId() === 4202 ? liskSepolia : sepolia,
-    transport: http(`${currentChainId() === 4202 ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_LISK_RPC_URL}`)
+    transport: http(`${currentChainId() === 4202 ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
 });
 
 //get the wallet client using browser wallet
@@ -47,8 +57,11 @@ export async function getWalletClient() {
         throw new Error('Please install MetaMask or another web3 wallet');
     }
 
+    const chainId = currentChainId();
+    const isLisk = chainId === 4202;
+
     const walletClient = createWalletClient({
-        chain: currentChainId() === 4202 ? liskSepolia : sepolia,
+        chain: isLisk ? liskSepolia : sepolia,
         transport: custom(window.ethereum)
     })
 
@@ -57,9 +70,6 @@ export async function getWalletClient() {
 
     return {walletClient, address}
 }
-
-//get current contract
-
 
 //Write Functions
 export async function createETHVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
@@ -430,10 +440,10 @@ export async function getContractTokenBalance(address: string) {
 export async function getTransanctions(vault:number): Promise<Transaction[] | []> {
     const { address } = await getWalletClient();
     const { contractAddress, contractAbi } = useCurrentContract()
-    console.log(`===> ${contractAddress}`)
+    const PublicClient = getPublicClient()
     
     try {
-        const data = await publicClient.readContract({
+        const data = await PublicClient.readContract({
             address: contractAddress as `0x${string}`,
             abi: contractAbi,
             functionName: 'getUserTransactions',
