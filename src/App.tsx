@@ -8,7 +8,7 @@ import {
 } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
 import {
-  liskSepolia,
+  liskSepolia, sepolia
 } from 'wagmi/chains';
 import {
   QueryClientProvider,
@@ -18,7 +18,7 @@ import {
 const config = getDefaultConfig({
   appName: 'FVKRY PRVNTA',
   projectId: import.meta.env.VITE_PROJECT_ID,
-  chains: [liskSepolia],
+  chains: [liskSepolia, sepolia],
 });
 
 const queryClient = new QueryClient();

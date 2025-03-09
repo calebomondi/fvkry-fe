@@ -1109,3 +1109,16 @@ export const contractABI = [
     "type": "function"
   }
 ]
+
+export const CONTRACT_ADDRESSES = {
+  // Lisk Sepolia Testnet Chain ID
+  '0x106a': {
+    address: '0x16e05EA02BBB69D50c858DCeCC707CA81657D8fa',
+    abi: contractABI
+  },
+  // Ethereum Sepolia Testnet Chain ID
+  '0xaa36a7': {
+    address: '0x760d07bB72599C692097EC81EB2D16b9Bb76431E',
+    abi: contractABI
+  }
+}

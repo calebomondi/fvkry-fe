@@ -1,16 +1,44 @@
 import { createPublicClient, createWalletClient, custom, http, parseEther, getContract, parseUnits } from "viem";
-import { contractABI, contractAddress } from "./core";
-import { liskSepolia } from 'viem/chains'
-import { Lock, Transaction } from "@/types";
-
-import { ApproveTokenParams, TokenVaultParams } from "@/types";
-
+import { createConfig } from "wagmi";
+import { contractABI, contractAddress, CONTRACT_ADDRESSES } from "./core"
+import { liskSepolia, sepolia } from '@wagmi/core/chains'
+import { getChainId } from '@wagmi/core'
+import { ApproveTokenParams, TokenVaultParams, Lock, Transaction } from "@/types";
 import { getTokenConfig } from "./tokens";
+
+//wagmi config and get chain ID
+const config = createConfig({
+    chains: [liskSepolia, sepolia],
+    transports: {
+        [liskSepolia.id]: http(`${import.meta.env.VITE_LISK_RPC_URL}`),
+        [sepolia.id]: http(`${import.meta.env.VITE_SEP_RPC_URL}`),
+    },
+})
+
+const currentChainId = () => {
+    const chainId = getChainId(config)
+    return chainId
+}
+
+const useCurrentContract = () => {
+    //get chain id
+    const chainId = getChainId(config)
+    const chainHex = `0x${chainId.toString(16)}`
+    console.log(`---> ${chainHex}`)
+
+    //get contract
+    const contractConfig = CONTRACT_ADDRESSES[chainHex as keyof typeof CONTRACT_ADDRESSES]
+
+    return {
+        contractAddress: contractConfig.address,
+        contractAbi: contractConfig.abi
+    }
+}
 
 //set up public cient
 export const publicClient = createPublicClient({
-    chain: liskSepolia,
-    transport: http(`${import.meta.env.VITE_LISK_RPC_URL}`)
+    chain: currentChainId() === 4202 ? liskSepolia : sepolia,
+    transport: http(`${currentChainId() === 4202 ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_LISK_RPC_URL}`)
 });
 
 //get the wallet client using browser wallet
@@ -20,7 +48,7 @@ export async function getWalletClient() {
     }
 
     const walletClient = createWalletClient({
-        chain: liskSepolia,
+        chain: currentChainId() === 4202 ? liskSepolia : sepolia,
         transport: custom(window.ethereum)
     })
 
@@ -29,6 +57,9 @@ export async function getWalletClient() {
 
     return {walletClient, address}
 }
+
+//get current contract
+
 
 //Write Functions
 export async function createETHVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
@@ -396,12 +427,15 @@ export async function getContractTokenBalance(address: string) {
     }
 }
 
-export async function getTransanctions(vault:number): Promise<Transaction[]> {
+export async function getTransanctions(vault:number): Promise<Transaction[] | []> {
     const { address } = await getWalletClient();
+    const { contractAddress, contractAbi } = useCurrentContract()
+    console.log(`===> ${contractAddress}`)
+    
     try {
         const data = await publicClient.readContract({
             address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            abi: contractAbi,
             functionName: 'getUserTransactions',
             args: [vault],
             account: address,
