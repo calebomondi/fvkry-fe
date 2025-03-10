@@ -44,13 +44,13 @@ function getPublicClient() {
       transport: http(`${isLisk ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
     });
 }
-
+/*
 //replace
 export const publicClient = createPublicClient({
     chain: currentChainId() === 4202 ? liskSepolia : sepolia,
     transport: http(`${currentChainId() === 4202 ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
 });
-
+*/
 //get the wallet client using browser wallet
 export async function getWalletClient() {
     if(!window.ethereum) {
@@ -75,6 +75,7 @@ export async function getWalletClient() {
 export async function createETHVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const publicClient = getPublicClient()
 
         //convert days to seconds
         const daysToSeconds = BigInt(_lockperiod * 24 * 60 * 60);
@@ -126,6 +127,7 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
 async function approveToken({symbol, amount}: ApproveTokenParams) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const publicClient = getPublicClient()
 
         //get token
         const token = getTokenConfig(symbol);
@@ -168,6 +170,7 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
     try {
         //aprove token
         const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: symbol, amount: BigInt(amountT)});
+        const publicClient = getPublicClient()
 
         //convert days to seconds
         const daysToSeconds = BigInt(lockPeriod * 24 * 60 * 60);
@@ -209,6 +212,7 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
 export async function addToEthVault(_vault:number, _index:number, _amount:string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const publicClient = getPublicClient()
 
         //convert amount to wei
         const ethToWei = parseEther(_amount);
@@ -252,6 +256,7 @@ export async function addToTokenVault(_vault:number, _index:number, _symbol:stri
     try {
         //aprove token
         const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: _symbol, amount: BigInt(_amount)});
+        const publicClient = getPublicClient()
 
         //call function
         const { request } = await publicClient.simulateContract({
@@ -287,6 +292,7 @@ export async function addToTokenVault(_vault:number, _index:number, _symbol:stri
 export async function withdrawAsset(_index:number, _vault:number, _amount:string, _goal:boolean, _decimals:number, _symbol:string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const publicClient = getPublicClient()
 
         //parse amount
         let parsedAmount;
@@ -350,6 +356,7 @@ export async function withdrawAsset(_index:number, _vault:number, _amount:string
 export async function deleteLock(_index:number, _vault:number) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const publicClient = getPublicClient()
 
         //call function
         const { request } = await publicClient.simulateContract({
@@ -381,6 +388,8 @@ export async function deleteLock(_index:number, _vault:number) {
 
 //Read Functions
 export async function getContractEthBalance() {
+    const publicClient = getPublicClient()
+
     try {
         const balance = await publicClient.readContract({
             address: contractAddress as `0x${string}`,
@@ -396,6 +405,8 @@ export async function getContractEthBalance() {
 
 export async function getSubVaults(vault: number): Promise<Lock[]> {
     const { address } = await getWalletClient();
+    const publicClient = getPublicClient()
+
     try {
       const data = await publicClient.readContract({
         address: contractAddress as `0x${string}`,
@@ -423,6 +434,8 @@ export async function getSubVaults(vault: number): Promise<Lock[]> {
 }
 
 export async function getContractTokenBalance(address: string) {
+    const publicClient = getPublicClient()
+
     try {
         const balance = await publicClient.readContract({
             address: contractAddress as `0x${string}`,
@@ -440,10 +453,10 @@ export async function getContractTokenBalance(address: string) {
 export async function getTransanctions(vault:number): Promise<Transaction[] | []> {
     const { address } = await getWalletClient();
     const { contractAddress, contractAbi } = useCurrentContract()
-    const PublicClient = getPublicClient()
+    const publicClient = getPublicClient()
     
     try {
-        const data = await PublicClient.readContract({
+        const data = await publicClient.readContract({
             address: contractAddress as `0x${string}`,
             abi: contractAbi,
             functionName: 'getUserTransactions',

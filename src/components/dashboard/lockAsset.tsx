@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { LockMyAsset, Send2DB, TokenConfig } from "@/types";
-
-import { publicClient } from "@/blockchain-services/useFvkry";
-import { contractABI, contractAddress } from "@/blockchain-services/core";
 import apiService from "@/backendServices/apiservices";
 
 import { useToast } from "@/hooks/use-toast";
@@ -16,22 +13,6 @@ import { useNavigate } from "react-router-dom";
 export default function LockAsset() {
     const { toast } = useToast()
     const navigate = useNavigate()
-
-    //listen to add events
-   useEffect(() => {
-        //AssetLocked
-        const unwatchAssetLocked = publicClient.watchContractEvent({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
-            eventName: 'AssetLocked',
-            onError: error => console.log(`error - ${error}`),
-            onLogs: logs => console.log(`logs - ${JSON.stringify(logs)}`)
-        });
-
-        return () => {
-            unwatchAssetLocked();
-        }
-   },[])
 
     //form
     const [isLoading, setIsLoading] = useState<boolean>(false);
