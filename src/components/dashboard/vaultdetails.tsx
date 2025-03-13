@@ -124,7 +124,7 @@ const VaultDetails = () => {
 
       setUnlockEvents(events);
     }
-  }, [vaultData.start_time, vaultData.end_time, vaultData.unlock_schedule, vaultData.unlock_amount]);
+  }, [vaultData.unlock_schedule]);
 
   //price data
   useEffect(() => {
@@ -220,159 +220,163 @@ const VaultDetails = () => {
     </p>
     <div className="max-w-4xl mx-auto p-6 grid grid-cols-1 md:h-screen">
         <div className="">
-            {/* Header Section */}
-            <Card>
-                <CardHeader>
+          {/* Header Section */}
+          <Card>
+              <CardHeader>
                 <CardTitle className="flex items-center justify-between">
-                    <span className="text-2xl text-amber-600">#{vaultData.title}</span>
-                    <p className="text-lg font-mono flex space-x-2"> <Timer /> <span>{timeLeft}</span></p>
+                  <span className="text-2xl text-amber-600">#{vaultData.title}</span>
+                  <p className="text-lg font-mono flex space-x-2"> <Timer /> <span>{timeLeft}</span></p>
                 </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                {/* Asset Information */}
-                <div className="flex flex-col md:flex-row items-center md:justify-evenly">
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-center">Locked Amount</h3>
-                        <p className="text-2xl font-bold text-center">
-                            {vaultData.amount} {vaultData.asset_symbol}
-                        </p>
-                        <p className="text-gray-500 text-center">
-                            ≈ {formatCurrency(vaultData.amount * priceData.currentPrice)}
-                        </p>
-                    </div>
-                    
-                    <div className="space-y-2">
-                        <h3 className="text-lg font-semibold text-center">Value Change</h3>
-                        <div className="flex items-center space-x-2 justify-center">
-                            <TrendingUp className="w-5 h-5" />
-                            <span className={`text-xl font-bold ${
-                            priceData.currentPrice > priceData.lockedPrice 
-                                ? 'text-green-500' 
-                                : 'text-red-500'
-                            }`}>
-                            {((priceData.currentPrice - priceData.lockedPrice) / priceData.lockedPrice * 100).toFixed(2)}%
-                            </span>
-                        </div>
-                        <p className="text-gray-500 text-center">
-                            Initial: {formatCurrency(vaultData.amount * priceData.lockedPrice)}
-                        </p>
-                    </div>
-                </div>
+              </CardHeader>
+              <CardContent className="space-y-6">
+              {/* Asset Information */}
+              <div className="flex flex-col md:flex-row items-center md:justify-evenly">
+                  <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-center">Locked Amount</h3>
+                      <p className="text-2xl font-bold text-center">
+                          {vaultData.amount} {vaultData.asset_symbol}
+                      </p>
+                      <p className="text-gray-500 text-center">
+                          ≈ {formatCurrency(vaultData.amount * priceData.currentPrice)}
+                      </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                      <h3 className="text-lg font-semibold text-center">Value Change</h3>
+                      <div className="flex items-center space-x-2 justify-center">
+                          <TrendingUp className="w-5 h-5" />
+                          <span className={`text-xl font-bold ${
+                          priceData.currentPrice > priceData.lockedPrice 
+                              ? 'text-green-500' 
+                              : 'text-red-500'
+                          }`}>
+                          {((priceData.currentPrice - priceData.lockedPrice) / priceData.lockedPrice * 100).toFixed(2)}%
+                          </span>
+                      </div>
+                      <p className="text-gray-500 text-center">
+                          Initial: {formatCurrency(vaultData.amount * priceData.lockedPrice)}
+                      </p>
+                  </div>
+              </div>
 
-                <div className="flex flex-col md:flex-row">
-                    <div className='md:w-1/3'>
-                    <p className="text-center text-gray-400">Start Date</p>
-                    <p className="font-semibold text-center">{formatDate(new Date(vaultData.start_time))}</p>
-                    </div>
-                    <div className='md:w-1/3'>
-                    <p className="text-center text-gray-400">End Date</p>
-                    <p className="font-semibold text-center">{formatDate(new Date(vaultData.end_time))}</p>
-                    </div>
-                    <div className='md:w-1/3'>
-                    <p className="text-center text-gray-400">Lock Type</p>
-                    <p className="font-semibold text-center capitalize">{vaultData.lock_type}</p>
-                    </div>
-                    <div className='md:w-1/3'>
-                    <p className="text-center text-gray-400">Unlock Schedule</p>
-                    <p className="font-semibold text-center">{vaultData.unlock_schedule === 0 ? 'None' : `${vaultData.unlock_type} ${vaultData.unlock_schedule} days`}</p>
-                    </div>
-                    {vaultData.unlock_goal_usd && (
-                    <div className='md:w-1/3'>
-                        <p className="text-center text-gray-400">Goal Amount</p>
-                        <p className="font-semibold text-center">{formatCurrency(vaultData.unlock_goal_usd)}</p>
-                    </div>
-                    )}
-                    {vaultData.unlock_schedule > 0 && (
-                    <div className='md:w-1/3'>
-                        <p className="text-center text-gray-400">Unlock Amount</p>
-                        <p className="font-semibold text-center">{vaultData.unlock_amount} {vaultData.asset_symbol}</p>
-                    </div>
-                    )}
-                </div>
+              <div className="flex flex-col md:flex-row">
+                  <div className='md:w-1/3'>
+                  <p className="text-center text-gray-400">Start Date</p>
+                  <p className="font-semibold text-center">{formatDate(new Date(vaultData.start_time))}</p>
+                  </div>
+                  <div className='md:w-1/3'>
+                  <p className="text-center text-gray-400">End Date</p>
+                  <p className="font-semibold text-center">{formatDate(new Date(vaultData.end_time))}</p>
+                  </div>
+                  <div className='md:w-1/3'>
+                  <p className="text-center text-gray-400">Lock Type</p>
+                  <p className="font-semibold text-center capitalize">{vaultData.lock_type}</p>
+                  </div>
+                  <div className='md:w-1/3'>
+                  <p className="text-center text-gray-400">Unlock Schedule</p>
+                  <p className="font-semibold text-center">{vaultData.unlock_schedule === 0 ? 'None' : `${vaultData.unlock_type} ${vaultData.unlock_schedule} days`}</p>
+                  </div>
+                  {vaultData.unlock_goal_usd && (
+                  <div className='md:w-1/3'>
+                      <p className="text-center text-gray-400">Goal Amount</p>
+                      <p className="font-semibold text-center">{formatCurrency(vaultData.unlock_goal_usd)}</p>
+                  </div>
+                  )}
+                  {vaultData.unlock_schedule > 0 && (
+                  <div className='md:w-1/3'>
+                      <p className="text-center text-gray-400">Unlock Amount</p>
+                      <p className="font-semibold text-center">{vaultData.unlock_amount} {vaultData.asset_symbol}</p>
+                  </div>
+                  )}
+              </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-wrap gap-4 items-center justify-center">
-                    <Button 
-                      variant="outline"
-                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? 'hidden' : ''}`}
-                      onClick={() => (document.getElementById('my_modal_14') as HTMLDialogElement).showModal()}
-                      disabled={!isConnected}
-                    >
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 items-center justify-center">
+                  {/*Add 2 Lock*/}
+                  <Button 
+                    variant="outline"
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? 'hidden' : ''}`}
+                    onClick={() => (document.getElementById('my_modal_14') as HTMLDialogElement).showModal()}
+                    disabled={!isConnected}
+                  >
+                  <CircleArrowOutDownRight className="w-4 h-4" />
+                    <span>Add To Lock</span>
+                  </Button>
+                  <dialog id="my_modal_14" className="modal">
+                    <div className="modal-box">
+                      <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                      </form>
+                      <AddToLock vaultData={vaultData}/>            
+                    </div>
+                  </dialog>
+
+                  {/*Unlock Schedule*/}
+                  <Button 
+                    variant="outline" 
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
+                    disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 5 || !isConnected}
+                    onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
+                  >
+                    <CircleFadingPlus className="w-4 h-4" />
+                    <span> Set Unlock Schedule </span>
+                  </Button>
+                  <dialog id="my_modal_13" className="modal">
+                    <div className="modal-box">
+                      <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                      </form>
+                      <AddSchedule vaultData={vaultData}/>            
+                    </div>
+                  </dialog>
+
+                  {/*Withdraw*/}
+                  <Button 
+                    variant="outline"
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
+                    onClick={() => (document.getElementById('my_modal_15') as HTMLDialogElement).showModal()}
+                    disabled = {vaultData.amount === 0}
+                  >
                     <CircleArrowOutDownRight className="w-4 h-4" />
-                      <span>Add To Lock</span>
-                    </Button>
-                    <dialog id="my_modal_14" className="modal">
-                      <div className="modal-box">
-                        <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                        </form>
-                        <AddToLock vaultData={vaultData}/>            
-                      </div>
-                    </dialog>
+                    <span>Withdraw</span>
+                  </Button>
+                  <dialog id="my_modal_15" className="modal">
+                    <div className="modal-box">
+                      <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                      </form>
+                      <Withdraw vaultData={vaultData}/>            
+                    </div>
+                  </dialog>
 
-                    <Button 
-                      variant="outline" 
-                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${vaultData.lock_type === "goal" || isLockExpired ? 'hidden' : ''}`}
-                      disabled={vaultData.unlock_schedule > 0 || getTotalLockDays() <= 5 || !isConnected}
-                      onClick={() => (document.getElementById('my_modal_13') as HTMLDialogElement).showModal()}
-                    >
-                      <CircleFadingPlus className="w-4 h-4" />
-                      <span> Set Unlock Schedule </span>
-                    </Button>
-                    <dialog id="my_modal_13" className="modal">
-                      <div className="modal-box">
-                        <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                        </form>
-                        <AddSchedule vaultData={vaultData}/>            
-                      </div>
-                    </dialog>
+                  {/*Delete Lock*/}
+                  <Button 
+                    variant="outline"
+                    className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired && vaultData.amount === 0 ? '' : 'hidden'}`}
+                    onClick={() => (document.getElementById('my_modal_16') as HTMLDialogElement).showModal()}
+                  >
 
-                    <Button 
-                      variant="outline"
-                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired ? '' : 'hidden'}`}
-                      onClick={() => (document.getElementById('my_modal_15') as HTMLDialogElement).showModal()}
-                      disabled = {vaultData.amount === 0}
-                    >
-                      <CircleArrowOutDownRight className="w-4 h-4" />
-                      <span>Withdraw</span>
-                    </Button>
-                    <dialog id="my_modal_15" className="modal">
-                      <div className="modal-box">
+                    <span>{isDeleting ? 'Deleting...' : 'Delete Lock'}</span>
+                  </Button>
+                  <dialog id="my_modal_16" className="modal modal-bottom sm:modal-middle">
+                    <div className="modal-box">
+                      <h3 className="font-semibold text-lg text-red-500">Deleting Lock!</h3>
+                      <p className="py-4">{vaultData.title.toUpperCase()}</p>
+                      <div className="modal-action">
                         <form method="dialog">
-                          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                          <button className="btn btn-sm btn-error m-1" onClick={async () => {
+                            if (vaultData.lockIndex !== undefined && vaultData.vaultType !== undefined) {
+                              await deleteVault(vaultData.lockIndex, vaultData.vaultType);
+                            }
+                          }} >Proceed</button>
+                          <button className="btn btn-sm btn-success m-1">Cancel</button>
                         </form>
-                        <Withdraw vaultData={vaultData}/>            
                       </div>
-                    </dialog>
-
-                    <Button 
-                      variant="outline"
-                      className={`flex bg-amber-600 border-none text-gray-900 font-semibold hover:bg-gray-900 hover:border-amber-600 hover:text-amber-600 items-center space-x-2 ${isLockExpired && vaultData.amount === 0 ? '' : 'hidden'}`}
-                      onClick={() => (document.getElementById('my_modal_16') as HTMLDialogElement).showModal()}
-                    >
-                
-                      <span>{isDeleting ? 'Deleting...' : 'Delete Lock'}</span>
-                    </Button>
-                    <dialog id="my_modal_16" className="modal modal-bottom sm:modal-middle">
-                      <div className="modal-box">
-                        <h3 className="font-semibold text-lg text-red-500">Deleting Lock!</h3>
-                        <p className="py-4">{vaultData.title.toUpperCase()}</p>
-                        <div className="modal-action">
-                          <form method="dialog">
-                            <button className="btn btn-sm btn-error m-1" onClick={async () => {
-                              if (vaultData.lockIndex !== undefined && vaultData.vaultType !== undefined) {
-                               await deleteVault(vaultData.lockIndex, vaultData.vaultType);
-                              }
-                            }} >Proceed</button>
-                            <button className="btn btn-sm btn-success m-1">Cancel</button>
-                          </form>
-                        </div>
-                      </div>
-                    </dialog>
-                </div>
-                </CardContent>
-            </Card>
+                    </div>
+                  </dialog>
+              </div>
+              </CardContent>
+          </Card>
         </div>
         {/* Timeline of Unlock Events */}
         <div className={`space-y-4 border border-white shadow-md my-2 rounded-md p-2 ${isLockExpired ? 'hidden' : ''}`}>

@@ -2,7 +2,7 @@ import React, { useState,useEffect } from "react"
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { VaultData } from '@/types';
-import { getWalletClient, currentChainId } from "@/blockchain-services/useFvkry";
+import { getWalletClient } from "@/blockchain-services/useFvkry";
 import apiService from "@/backendServices/apiservices";
 
 export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
@@ -107,9 +107,6 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
             validateForm();
             //get next unlock time
             const nextUnlockTime = generateNextUnlock();
-            
-            //get chain id
-            const chainId = currentChainId()
 
             const scheduleData = {
                 amount: Number(formValues.amount),
@@ -120,7 +117,7 @@ export default function AddSchedule({vaultData}:{vaultData:VaultData}) {
                 lockTitle: vaultData.title,
                 lockAmount: vaultData.amount,
                 assetSymbol: vaultData.asset_symbol,
-                chainId: chainId.toString()
+                chainId: vaultData.chainId
             };
 
             const resp = await apiService.addSchedule(scheduleData);

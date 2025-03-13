@@ -17,7 +17,6 @@ export default function ConnectedNavbar() {
     const path = location.pathname.substring(1);
     const pathSegments = path.split('/');
     const firstSegment = pathSegments[0];
-    console.log("FS: ",firstSegment);
     setPath(firstSegment);
   }, [])
 
