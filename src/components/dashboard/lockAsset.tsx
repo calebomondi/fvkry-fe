@@ -5,7 +5,7 @@ import apiService from "@/backendServices/apiservices";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 
-import { createETHVault, createTokenVault } from "@/blockchain-services/useFvkry";
+import { createETHVault, createTokenVault, currentChainId } from "@/blockchain-services/useFvkry";
 import { isTokenSupported, getTokenConfig } from "@/blockchain-services/tokens";
 
 import { useNavigate } from "react-router-dom";
@@ -112,6 +112,9 @@ export default function LockAsset() {
                 token = getTokenConfig(formValues.symbol);
             }
 
+            //get chainID
+            const chainID = currentChainId()
+
             const data2DB: Send2DB = {
                 title: formValues.title,
                 amount: formValues.amount,
@@ -122,7 +125,8 @@ export default function LockAsset() {
                 assetType: formValues.assetType,
                 goal: formValues.goal.length === 0 ? '0' : formValues.goal,
                 token: token.address,
-                decimals: token.decimals
+                decimals: token.decimals,
+                chainId: chainID.toString()
             }
 
             //1. lock asset

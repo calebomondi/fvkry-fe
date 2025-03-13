@@ -73,7 +73,8 @@ export default function Withdraw({vaultData}:{vaultData:VaultData}) {
                 const data2DB = {
                     updatedAmount,
                     title: vaultData.title,
-                    assetSymbol: vaultData.asset_symbol
+                    assetSymbol: vaultData.asset_symbol,
+                    chainId: vaultData.chainId
                 }
 
                 await apiService.updateLock(data2DB)

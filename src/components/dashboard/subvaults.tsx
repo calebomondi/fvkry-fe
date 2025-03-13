@@ -28,6 +28,7 @@ export default function SubVaultsContainer() {
           }
           //from db
           const combinedData = await mergedVaultData()
+          
           setVaultData(combinedData)
           localStorage.setItem('vault_data', JSON.stringify(combinedData))
         } catch (err) {

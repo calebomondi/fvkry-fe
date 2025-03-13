@@ -15,7 +15,7 @@ const config = createConfig({
     },
 })
 
-const currentChainId = () => {
+export const currentChainId = () => {
     const chainId = getChainId(config)
     return chainId
 }
@@ -44,13 +44,7 @@ function getPublicClient() {
       transport: http(`${isLisk ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
     });
 }
-/*
-//replace
-export const publicClient = createPublicClient({
-    chain: currentChainId() === 4202 ? liskSepolia : sepolia,
-    transport: http(`${currentChainId() === 4202 ? import.meta.env.VITE_LISK_RPC_URL : import.meta.env.VITE_SEP_RPC_URL}`)
-});
-*/
+
 //get the wallet client using browser wallet
 export async function getWalletClient() {
     if(!window.ethereum) {

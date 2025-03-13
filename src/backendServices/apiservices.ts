@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from 'axios';
 import { API_URL } from './apiurl';
 import { Send2DB, Lock, VaultData, ScheduledData, UpdateToLock, DeleteLock, DashboardData, HealthRecord, PointsData } from '@/types';
-import { getWalletClient } from '@/blockchain-services/useFvkry';
+import { getWalletClient, currentChainId } from '@/blockchain-services/useFvkry';
 
 const apiService = {
     lockAsset: async (formData:Send2DB): Promise<any> => {
@@ -30,6 +30,7 @@ const apiService = {
     },
     getCombinedVaultData: async (vaultData:Lock[]): Promise<VaultData[]> => {
       const { address } = await getWalletClient();
+      const chainId = currentChainId()
 
       // Convert the vaultData to make it JSON-serializable
       const serializedVaultData = vaultData.map(vault => ({
@@ -45,7 +46,8 @@ const apiService = {
           `${API_URL}/api/utils/combine`,
           {
             address,
-            bcData: serializedVaultData
+            bcData: serializedVaultData,
+            chainId: chainId.toString()
           },
           {
             headers: {
@@ -57,7 +59,7 @@ const apiService = {
         return response.data;
         
       } catch (error) {
-        console.error('Asset Locking Failed:', error);
+        console.error('FETCHING COMBINED DATA FAILED:', error);
         throw error;
       }
     },
@@ -132,6 +134,7 @@ const apiService = {
     },
     analysis: async (): Promise<DashboardData> => {
       const { address } = await getWalletClient();
+      const chainId = currentChainId()
 
       try {
         const response: AxiosResponse<DashboardData> = await axios.get(
@@ -141,7 +144,8 @@ const apiService = {
               'Content-Type': 'application/json'
             },
             params: {
-              userAddress: address
+              userAddress: address,
+              chainId: chainId.toString()
             }
           }
         );

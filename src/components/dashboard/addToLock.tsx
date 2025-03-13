@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import { VaultData } from '@/types';
-import { addToEthVault, addToTokenVault } from "@/blockchain-services/useFvkry";
+import { addToEthVault, addToTokenVault, currentChainId } from "@/blockchain-services/useFvkry";
 import apiService from "@/backendServices/apiservices";
 
 export default function AddToLock({vaultData}:{vaultData:VaultData}) {
@@ -69,10 +69,12 @@ export default function AddToLock({vaultData}:{vaultData:VaultData}) {
                 })
                 setIsLoading(false)
                 //upload to db
+                const chainId = currentChainId()
                 const data2DB = {
                     updatedAmount: Number(formValues.amount) + vaultData.amount,
                     title: vaultData.title,
-                    assetSymbol: vaultData.asset_symbol
+                    assetSymbol: vaultData.asset_symbol,
+                    chainId: chainId.toString()
                 }
 
                 await apiService.updateLock(data2DB)

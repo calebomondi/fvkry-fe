@@ -12,6 +12,7 @@ export interface LockMyAsset {
 export interface Send2DB extends LockMyAsset {
     token: `0x${string}`;
     decimals: number;
+    chainId: string;
 }
 
 export interface Lock {
@@ -44,6 +45,7 @@ export interface VaultData {
     unlock_type: string;
     vaultType?: number;
     lockIndex?: number;
+    chainId: string;
 }
 
 export interface TokenConfig {
@@ -84,18 +86,21 @@ export interface ScheduledData {
     lockTitle: string;
     lockAmount: number;
     assetSymbol: string;
+    chainId: string;
 }
 
 export interface UpdateToLock {
     updatedAmount: number;
     title: string;
     assetSymbol: string;
+    chainId: string;
 }
 
 export interface DeleteLock {
     assetSymbol: string;
     title: string;
     vaultType: string;
+    chainId: string;
 }
 
 // dahboard

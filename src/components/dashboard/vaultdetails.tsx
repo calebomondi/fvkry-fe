@@ -11,7 +11,7 @@ import { mockSingleVaultData } from './mockplatformdata';
 import AddSchedule from './addSchedule';
 import AddToLock from './addToLock';
 import Withdraw from './withdraw';
-import { deleteLock } from '@/blockchain-services/useFvkry';
+import { deleteLock, currentChainId } from '@/blockchain-services/useFvkry';
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import apiService from '@/backendServices/apiservices';
@@ -191,10 +191,12 @@ const VaultDetails = () => {
         navigate("/myvaults")
 
         //remove from db
+        const chainId = currentChainId()
         const data2DB = {
           assetSymbol: vaultData.asset_symbol,
           title: vaultData.title,
-          vaultType: vaultType(vaultData.vaultType ?? 0)
+          vaultType: vaultType(vaultData.vaultType ?? 0),
+          chainId: chainId.toString()
         }
 
         await apiService.deleteLock(data2DB)
