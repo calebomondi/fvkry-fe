@@ -9,7 +9,7 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-      navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}`)
+      navigate(`/vault?address=${subvault.asset_address}&title=${subvault.title}&chainId=${subvault.chainId}`)
     }
     
     useEffect(() => {
@@ -137,14 +137,14 @@ const VaultCard: React.FC<VaultCardProps> = ({ subvault }) => {
     const end = new Date(endTime).getTime();
     const now = new Date().getTime();
     const sevenDays = 7 * 24 * 60 * 60 * 1000;
-    return end - now <= sevenDays && end - now > 0;
+    return end - now < sevenDays && end - now > 0;
   };
 
   // Check if a vault has expired
   const isExpired = (endTime: string) => {
     const end = new Date(endTime).getTime();
     const now = new Date().getTime();
-    return end - now <= 0 && now > end;
+    return end - now < 0 && now > end;
   };
 
   //search by name or address

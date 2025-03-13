@@ -14,10 +14,10 @@ export const mergedVaultData = async (): Promise<VaultData[]> => {
     return combinedData
 }
 
-export const getSpecificVaultData = async (address:string, title:string): Promise<VaultData> => {
+export const getSpecificVaultData = async (address:string, title:string, chainId: string): Promise<VaultData> => {
     const data = await mergedVaultData()
     //get specific data
-    const specificVault = data.find((vaultItem) => vaultItem.asset_address === address && vaultItem.title === title);
+    const specificVault = data.find((vaultItem) => vaultItem.asset_address === address && vaultItem.title === title && vaultItem.chainId === chainId);
     //return only necessary data
     if (!specificVault) {
         throw new Error('Specific vault data not found');

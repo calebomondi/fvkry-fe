@@ -47,6 +47,7 @@ const VaultDetails = () => {
   
   const address = searchParams.get('address');
   const title = searchParams.get('title');
+  const chainId = searchParams.get('chainId');
 
   //check if connected
   const { isConnected } = useAccount();
@@ -56,8 +57,8 @@ const VaultDetails = () => {
     const fetchData = async () => {
         if (isConnected) {
           try {
-            if (address && title) {
-              const resp = await getSpecificVaultData(address, title);
+            if (address && title && chainId) {
+              const resp = await getSpecificVaultData(address, title, chainId);
               if(resp) {
                 setVaultData(resp)
                 setIsLockExpired(new Date() >= new Date(resp.end_time))
