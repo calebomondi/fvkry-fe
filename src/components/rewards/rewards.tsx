@@ -20,7 +20,7 @@ export default function Rewards() {
         const response = await apiService.getPoints();
         if(response.length > 0 && response[0]) {
           setPointsData(response[0]);
-        } 
+        }
       }
     }
     fetchData();

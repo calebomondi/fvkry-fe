@@ -15,7 +15,9 @@ const UserVaultDashboard: React.FC<UserVaultDashboardProps> = ({ data }) => {
   const [selectedTab, setSelectedTab] = useState<'overview' | 'assets' | 'analytics'>('overview');
   
   if (!data) {
-    return <p>No Data!</p>
+    return <p className='text-center text-lg my-4'>
+      <span className="loading loading-spinner loading-xl text-amber-600"></span>
+    </p>
   }
 
   const renderOverview = (): JSX.Element => (

@@ -1,6 +1,6 @@
 import { createPublicClient, createWalletClient, custom, http, parseEther, getContract, parseUnits } from "viem";
 import { createConfig } from "wagmi";
-import { contractABI, contractAddress, CONTRACT_ADDRESSES } from "./core"
+import { CONTRACT_ADDRESSES } from "./core"
 import { liskSepolia, sepolia } from '@wagmi/core/chains'
 import { getChainId } from '@wagmi/core'
 import { ApproveTokenParams, TokenVaultParams, Lock, Transaction } from "@/types";
@@ -29,8 +29,8 @@ const useCurrentContract = () => {
     const contractConfig = CONTRACT_ADDRESSES[chainHex as keyof typeof CONTRACT_ADDRESSES]
 
     return {
-        contractAddress: contractConfig.address,
-        contractAbi: contractConfig.abi
+        currentAddress: contractConfig.address,
+        currentABI: contractConfig.abi
     }
 }
 
@@ -69,6 +69,7 @@ export async function getWalletClient() {
 export async function createETHVault(_amount:string, _vault:number, _lockperiod:number, _title: string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //convert days to seconds
@@ -79,8 +80,8 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "lockETH",
             args: [ _vault, daysToSeconds, _title],
             account: address,
@@ -120,7 +121,8 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
 
 async function approveToken({symbol, amount}: ApproveTokenParams) {
     try {
-        const { walletClient, address } = await getWalletClient();
+        const { walletClient, address } = await getWalletClient()
+        const { currentAddress } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //get token
@@ -140,7 +142,7 @@ async function approveToken({symbol, amount}: ApproveTokenParams) {
         const amountInWei = parseUnits(amount.toString(), token.decimals);
 
         //send approve transaction
-        const hash = await contract.write.approve([contractAddress, amountInWei], { account: address });
+        const hash = await contract.write.approve([currentAddress, amountInWei], { account: address });
 
         // Wait for transaction confirmation
         const receipt = await publicClient.waitForTransactionReceipt({ hash });
@@ -164,6 +166,7 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
     try {
         //aprove token
         const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: symbol, amount: BigInt(amountT)});
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //convert days to seconds
@@ -171,8 +174,8 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "lockToken",
             args: [ tokenAddress, approvedAmount, vault, daysToSeconds, title],
             account: address
@@ -206,6 +209,7 @@ export async function createTokenVault({ symbol, amountT, vault, lockPeriod, tit
 export async function addToEthVault(_vault:number, _index:number, _amount:string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //convert amount to wei
@@ -213,8 +217,8 @@ export async function addToEthVault(_vault:number, _index:number, _amount:string
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "addToLockedETH",
             args: [ _vault, _index],
             account: address,
@@ -250,12 +254,13 @@ export async function addToTokenVault(_vault:number, _index:number, _symbol:stri
     try {
         //aprove token
         const { tokenAddress, amount: approvedAmount, walletClient, address} = await approveToken({symbol: _symbol, amount: BigInt(_amount)});
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "addToLockedTokens",
             args: [ tokenAddress, _index, approvedAmount, _vault],
             account: address
@@ -286,6 +291,7 @@ export async function addToTokenVault(_vault:number, _index:number, _symbol:stri
 export async function withdrawAsset(_index:number, _vault:number, _amount:string, _goal:boolean, _decimals:number, _symbol:string) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //parse amount
@@ -298,8 +304,8 @@ export async function withdrawAsset(_index:number, _vault:number, _amount:string
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "withdrawAsset",
             args: [ _index, _vault, parsedAmount, _goal],
             account: address
@@ -350,12 +356,13 @@ export async function withdrawAsset(_index:number, _vault:number, _amount:string
 export async function deleteLock(_index:number, _vault:number) {
     try {
         const { walletClient, address } = await getWalletClient();
+        const { currentAddress, currentABI } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //call function
         const { request } = await publicClient.simulateContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: "deleteSubVault",
             args: [ _vault,  _index],
             account: address
@@ -383,11 +390,12 @@ export async function deleteLock(_index:number, _vault:number) {
 //Read Functions
 export async function getContractEthBalance() {
     const publicClient = getPublicClient()
+    const { currentAddress, currentABI } = useCurrentContract()
 
     try {
         const balance = await publicClient.readContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: 'getContractETHBalance'
         });
     
@@ -399,12 +407,13 @@ export async function getContractEthBalance() {
 
 export async function getSubVaults(vault: number): Promise<Lock[]> {
     const { address } = await getWalletClient();
+    const { currentAddress, currentABI } = useCurrentContract()
     const publicClient = getPublicClient()
 
     try {
       const data = await publicClient.readContract({
-        address: contractAddress as `0x${string}`,
-        abi: contractABI,
+        address: currentAddress as `0x${string}`,
+        abi: currentABI,
         functionName: 'getUserLocks',
         args: [vault],
         account: address
@@ -428,12 +437,13 @@ export async function getSubVaults(vault: number): Promise<Lock[]> {
 }
 
 export async function getContractTokenBalance(address: string) {
+    const { currentAddress, currentABI } = useCurrentContract()
     const publicClient = getPublicClient()
 
     try {
         const balance = await publicClient.readContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractABI,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: 'getContractTokenBalance',
             args:[address]
         });
@@ -446,13 +456,13 @@ export async function getContractTokenBalance(address: string) {
 
 export async function getTransanctions(vault:number): Promise<Transaction[] | []> {
     const { address } = await getWalletClient();
-    const { contractAddress, contractAbi } = useCurrentContract()
+    const { currentAddress, currentABI } = useCurrentContract()
     const publicClient = getPublicClient()
     
     try {
         const data = await publicClient.readContract({
-            address: contractAddress as `0x${string}`,
-            abi: contractAbi,
+            address: currentAddress as `0x${string}`,
+            abi: currentABI,
             functionName: 'getUserTransactions',
             args: [vault],
             account: address,
