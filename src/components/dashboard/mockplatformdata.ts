@@ -18,7 +18,8 @@ export const mockSingleVaultData: VaultData = {
     "next_unlock": "2025-02-19T09:00:00.000",
     "unlock_amount": 0,
     "decimals": 18,
-    "unlock_type": "linear"
+    "unlock_type": "linear",
+    "chainId": ""
 }
 
 export const mockDashboardData: DashboardData = {
