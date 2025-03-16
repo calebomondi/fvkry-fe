@@ -151,7 +151,7 @@ export default function LockAsset() {
                     action: (
                         <ToastAction 
                             altText="Goto schedule to undo"
-                            onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+                            onClick={() => window.open(chainID === 4202 ? `https://sepolia-blockscout.lisk.com/tx/${tx}` : `https://sepolia.etherscan.io/tx/${tx}`, '_blank')}
                         >
                             View Transaction
                         </ToastAction>

@@ -11,7 +11,7 @@ import { mockSingleVaultData } from './mockplatformdata';
 import AddSchedule from './addSchedule';
 import AddToLock from './addToLock';
 import Withdraw from './withdraw';
-import { deleteLock, currentChainId } from '@/blockchain-services/useFvkry';
+import { deleteLock } from '@/blockchain-services/useFvkry';
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast"
 import apiService from '@/backendServices/apiservices';
@@ -181,7 +181,7 @@ const VaultDetails = () => {
           action: (
               <ToastAction 
                   altText="Goto schedule to undo"
-                  onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+                  onClick={() => window.open(vaultData.chainId === '4202' ? `https://sepolia-blockscout.lisk.com/tx/${tx}` : `https://sepolia.ethersan.io/tx/${tx}`, '_blank')}
               >
                   View Transaction
               </ToastAction>
@@ -192,12 +192,11 @@ const VaultDetails = () => {
         navigate("/myvaults")
 
         //remove from db
-        const chainId = currentChainId()
         const data2DB = {
           assetSymbol: vaultData.asset_symbol,
           title: vaultData.title,
           vaultType: vaultType(vaultData.vaultType ?? 0),
-          chainId: chainId.toString()
+          chainId: vaultData.chainId
         }
 
         await apiService.deleteLock(data2DB)

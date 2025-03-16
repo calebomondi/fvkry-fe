@@ -54,7 +54,7 @@ export default function Withdraw({vaultData}:{vaultData:VaultData}) {
                     action: (
                         <ToastAction 
                             altText="Goto schedule to undo"
-                            onClick={() => window.open(`https://sepolia-blockscout.lisk.com/tx/${tx}`, '_blank')}
+                            onClick={() => window.open(vaultData.chainId === '4202' ? `https://sepolia-blockscout.lisk.com/tx/${tx}` : `https://sepolia.ethersan.io/tx/${tx}`, '_blank')}
                         >
                             View Transaction
                         </ToastAction>
