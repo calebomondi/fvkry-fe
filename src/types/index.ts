@@ -49,7 +49,8 @@ export interface VaultData {
 }
 
 export interface TokenConfig {
-    address: `0x${string}`;
+    addressLSK: `0x${string}`;
+    addressSEP: `0x${string}`;
     abi: any;
     decimals: number;
     symbol: string;

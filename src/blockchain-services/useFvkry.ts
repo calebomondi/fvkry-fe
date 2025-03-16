@@ -30,7 +30,8 @@ const useCurrentContract = () => {
 
     return {
         currentAddress: contractConfig.address,
-        currentABI: contractConfig.abi
+        currentABI: contractConfig.abi,
+        chainId
     }
 }
 
@@ -122,7 +123,7 @@ export async function createETHVault(_amount:string, _vault:number, _lockperiod:
 async function approveToken({symbol, amount}: ApproveTokenParams) {
     try {
         const { walletClient, address } = await getWalletClient()
-        const { currentAddress } = useCurrentContract()
+        const { currentAddress, chainId } = useCurrentContract()
         const publicClient = getPublicClient()
 
         //get token
@@ -130,7 +131,7 @@ async function approveToken({symbol, amount}: ApproveTokenParams) {
 
         //get contract instance
         const contract = getContract({
-            address: token.address,
+            address: chainId === 4202 ? token.addressLSK : token.addressSEP,
             abi: token.abi,
             client : {
                 public: publicClient,
@@ -151,7 +152,7 @@ async function approveToken({symbol, amount}: ApproveTokenParams) {
 
         return {
             receipt,
-            tokenAddress: token.address,
+            tokenAddress: chainId === 4202 ? token.addressLSK : token.addressSEP,
             amount: amountInWei,
             walletClient,
             address

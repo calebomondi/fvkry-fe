@@ -107,7 +107,13 @@ export default function LockAsset() {
             const days = convertToDays(formValues.durationType,Number(formValues.duration))
 
             //get asset details
-            let token: TokenConfig = {address: '0x0000000000000000000000000000000000000000', abi: [], decimals: 18, symbol: ''}
+            let token: TokenConfig = {
+                addressLSK: '0x0000000000000000000000000000000000000000', 
+                addressSEP: '0x0000000000000000000000000000000000000000', 
+                abi: [], 
+                decimals: 18, 
+                symbol: ''
+            }
             if (formValues.assetType !== 'ethereum') {
                 token = getTokenConfig(formValues.symbol);
             }
@@ -124,7 +130,7 @@ export default function LockAsset() {
                 lockType: formValues.lockType,
                 assetType: formValues.assetType,
                 goal: formValues.goal.length === 0 ? '0' : formValues.goal,
-                token: token.address,
+                token: chainID === 4202 ? token.addressLSK : token.addressSEP,
                 decimals: token.decimals,
                 chainId: chainID.toString()
             }
