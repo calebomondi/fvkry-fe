@@ -147,4 +147,5 @@ We welcome contributions! Please follow these steps:
 MIT License
 
 ## Appendices
-3. Fvkry Live Link : [Link](https://fvkry.vercel.app/)
+1. [Fvkry Live Link](https://fvkry.vercel.app/)
+2. [Fvkry Video Demo](https://youtu.be/-m-DzAUTqtE)
